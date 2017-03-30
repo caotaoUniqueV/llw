@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+	http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.2.xsd
+    http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd
+    http://code.alibabatech.com/schema/dubbo  
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
+    
+    <!-- 扫描controller（controller层注入） -->
+    <task:scheduler id="taskScheduler" pool-size="100"/>
+    <dubbo:annotation package="com.linwang.rpc" />
+	<context:component-scan base-package="com.linwang.rpc" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	<context:component-scan base-package="com.linwang.uitls.init" />
+	<context:component-scan base-package="com.linwang.task" />
+	
+	<mvc:annotation-driven ignore-default-model-on-redirect="true">
+		<mvc:async-support default-timeout="10000" />
+		<mvc:message-converters>
+			<bean
+				class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>application/json</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+<!--     <mvc:annotation-driven />   -->
+<!--     <mvc:default-servlet-handler/> -->
+   <!-- 访问静态文件 -->
+   <mvc:resources location="/WEB-INF/js/" mapping="/js/**"/>
+   <mvc:resources location="/WEB-INF/css/" mapping="/css/**"/>
+   <mvc:resources location="/WEB-INF/plugin/" mapping="/plugin/**"/>
+   <mvc:resources location="/WEB-INF/images/" mapping="/images/**"/>
+   <mvc:resources location="/WEB-INF/fonts/" mapping="/fonts/**"/>
+   <mvc:resources location="/" mapping="/*.html"/>
+    
+    <bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- <property name="maxUploadSize" value="100000"/> -->
+	</bean>
+	
+	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+	<!-- shiro的注解：
+	@RequiresAuthentication : 是否有登录
+	@RequiresUser : 验证用户是否被记忆
+	@RequiresGuest : 要求当前Subject是一个“访客”
+	@RequiresRoles("") : 验证是否有某个角色 
+	@RequiresPermissions : 验证是否某个权限-->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"></bean>
+	
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+	    <property name="proxyTargetClass" value="true" />
+	</bean>
+	
+    <!-- 配置jsp视图 -->
+<!--     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">   -->
+<!-- 		 <property name="prefix" value="/WEB-INF/views/" />  -->
+<!-- 		 <property name="suffix" value=".jsp" />  -->
+<!-- 	</bean>   -->
+     
+   <bean id="freemarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/views/" />
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="defaultEncoding">UTF-8</prop>
+				<prop key="url_escaping_charset">UTF-8</prop>
+				<prop key="locale">zh_CN</prop>
+				<prop key="localized_lookup">false</prop>
+				<prop key="classic_compatible">true</prop>
+				<prop key="number_format">0.######</prop>
+				<prop key="template_exception_handler">com.linwang.uitls.web.ExceptionHandler
+				</prop>
+				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+				<prop key="date_format">yyyy-MM-dd</prop>
+				<prop key="time_format">HH:mm:ss</prop>
+				<!-- <prop key="template_update_delay">1</prop> <prop key="boolean_format">true,false</prop> 
+					<prop key="whitespace_stripping">true</prop> -->
+			</props>
+		</property>
+	</bean>
+	<bean class="org.springframework.web.servlet.view.XmlViewResolver">
+		<property name="location">
+			<value>/WEB-INF/ext-views.xml</value>
+		</property>
+	</bean>
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="cache" value="true" />
+		<property name="prefix" value="" />
+		<property name="suffix" value=".html" />
+	</bean>
+</beans>

@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AuthUserMapper">
+         <resultMap id="BaseResultMap" type="com.linwang.entity.AuthUser" extends="associationMap">
+			<id column="id" property="id" />
+			<result column="username" property="username" />
+			<result column="pwd" property="pwd" />
+			<result column="dateLogin" property="dateLogin" />
+			<result column="ipLogin" property="ipLogin" />
+			<result column="realname" property="realname" />
+			<result column="mobile" property="mobile" />
+			<result column="isLock" property="isLock" />
+		 </resultMap>
+		 <sql id="Base_Column_List" >
+				`id`
+	            `username`,
+	            `pwd`,
+	            `dateLogin`,
+	            `ipLogin`,
+	            `realname`,
+	            `mobile`,
+	            `isLock`
+	            
+		 </sql>
+		 <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `auth_user`
+		    WHERE `id` = #{id}
+		  </select>
+		  <select id="getByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `auth_user`
+		    <include refid="map_params_where_condition" />
+			<if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+			LIMIT 1
+		  </select>
+		  <select id="aggregate" parameterType="java.util.Map" resultType="java.util.Map">
+		    SELECT ${aggregate_sql} FROM `auth_user`
+		    <include refid="map_params_where_condition" />
+		  </select>
+		  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		    DELETE FROM `auth_user`
+		    WHERE `id` = #{id}
+		  </delete>
+         <insert id="insertAuthUser" parameterType="com.linwang.entity.AuthUser">
+         	 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+		      SELECT LAST_INSERT_ID()
+		     </selectKey>
+             insert into `auth_user`(
+	             `username`,
+	             `pwd`,
+	             `dateLogin`,
+	             `ipLogin`,
+	             `realname`,
+	             `mobile`,
+	             `isLock`
+	             
+             ) 
+	         values 
+	         (
+				 #{username},
+				 #{pwd},
+				 #{dateLogin},
+				 #{ipLogin},
+				 #{realname},
+				 #{mobile},
+				 #{isLock}	         	
+		      )    
+	      </insert>
+	      <insert id="insertSelective" parameterType="com.linwang.entity.AuthUser" >
+			    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+			      SELECT LAST_INSERT_ID()
+			    </selectKey>
+			    INSERT INTO `auth_user`
+			    <trim prefix="(" suffix=")" suffixOverrides="," >
+		              <if test="username!= null" >
+						`username`,
+					  </if>
+		              <if test="pwd!= null" >
+						`pwd`,
+					  </if>
+		              <if test="dateLogin!= null" >
+						`dateLogin`,
+					  </if>
+		              <if test="ipLogin!= null" >
+						`ipLogin`,
+					  </if>
+		              <if test="realname!= null" >
+						`realname`,
+					  </if>
+		              <if test="mobile!= null" >
+						`mobile`,
+					  </if>
+		              <if test="isLock!= null" >
+						`isLock`,
+					  </if>
+			    </trim>
+			    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		         	   <if test="username != null" >
+						#{username},
+					   </if>
+		         	   <if test="pwd != null" >
+						#{pwd},
+					   </if>
+		         	   <if test="dateLogin != null" >
+						#{dateLogin},
+					   </if>
+		         	   <if test="ipLogin != null" >
+						#{ipLogin},
+					   </if>
+		         	   <if test="realname != null" >
+						#{realname},
+					   </if>
+		         	   <if test="mobile != null" >
+						#{mobile},
+					   </if>
+		         	   <if test="isLock != null" >
+						#{isLock},
+					   </if>
+			    </trim>
+		  </insert>
+          <update id="updateByPrimaryKeySelective" parameterType="com.linwang.entity.AuthUser" >
+			UPDATE `auth_user`
+			<set >
+		         <if test="username != null" >
+					`username` = #{username},
+			  	 </if>	
+		         <if test="pwd != null" >
+					`pwd` = #{pwd},
+			  	 </if>	
+		         <if test="dateLogin != null" >
+					`dateLogin` = #{dateLogin},
+			  	 </if>	
+		         <if test="ipLogin != null" >
+					`ipLogin` = #{ipLogin},
+			  	 </if>	
+		         <if test="realname != null" >
+					`realname` = #{realname},
+			  	 </if>	
+		         <if test="mobile != null" >
+					`mobile` = #{mobile},
+			  	 </if>	
+		         <if test="isLock != null" >
+					`isLock` = #{isLock},
+			  	 </if>	
+			</set>
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByPrimaryKey" parameterType="com.linwang.entity.AuthUser" >
+			UPDATE `auth_user` SET
+					`username` = #{username},
+					`pwd` = #{pwd},
+					`dateLogin` = #{dateLogin},
+					`ipLogin` = #{ipLogin},
+					`realname` = #{realname},
+					`mobile` = #{mobile},
+					`isLock` = #{isLock}
+	         		
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByCondition" parameterType="java.util.Map" >
+			UPDATE `auth_user`
+			<set>
+		         <if test="entity.username != null" >
+					`username` = #{entity.username},
+			  	 </if>	
+		         <if test="entity.pwd != null" >
+					`pwd` = #{entity.pwd},
+			  	 </if>	
+		         <if test="entity.dateLogin != null" >
+					`dateLogin` = #{entity.dateLogin},
+			  	 </if>	
+		         <if test="entity.ipLogin != null" >
+					`ipLogin` = #{entity.ipLogin},
+			  	 </if>	
+		         <if test="entity.realname != null" >
+					`realname` = #{entity.realname},
+			  	 </if>	
+		         <if test="entity.mobile != null" >
+					`mobile` = #{entity.mobile},
+			  	 </if>	
+		         <if test="entity.isLock != null" >
+					`isLock` = #{entity.isLock},
+			  	 </if>	
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <update id="updateIncreateNumbers" parameterType="java.util.Map" >
+			UPDATE `auth_user`
+			<set>
+			  <foreach collection="increateNumbers" item="numberCloums">
+				`${numberCloums.column}` = `${numberCloums.column}` + #{numberCloums.number},
+			  </foreach>
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <sql id="map_params_where_condition" >
+		    <trim prefix="WHERE" prefixOverrides="AND">
+		      	<if test="id != null" >
+			       AND `username` = #{username}
+			    </if>
+		      	<if test="id != null" >
+			       AND `pwd` = #{pwd}
+			    </if>
+		      	<if test="id != null" >
+			       AND `dateLogin` = #{dateLogin}
+			    </if>
+		      	<if test="id != null" >
+			       AND `ipLogin` = #{ipLogin}
+			    </if>
+		      	<if test="id != null" >
+			       AND `realname` = #{realname}
+			    </if>
+		      	<if test="id != null" >
+			       AND `mobile` = #{mobile}
+			    </if>
+		      	<if test="id != null" >
+			       AND `isLock` = #{isLock}
+			    </if>
+			  <if test="condition != null">
+				  <if test="condition.username != null" >
+			        AND `username` = #{condition.username}
+				  </if>
+				  <if test="condition.pwd != null" >
+			        AND `pwd` = #{condition.pwd}
+				  </if>
+				  <if test="condition.dateLogin != null" >
+			        AND `dateLogin` = #{condition.dateLogin}
+				  </if>
+				  <if test="condition.ipLogin != null" >
+			        AND `ipLogin` = #{condition.ipLogin}
+				  </if>
+				  <if test="condition.realname != null" >
+			        AND `realname` = #{condition.realname}
+				  </if>
+				  <if test="condition.mobile != null" >
+			        AND `mobile` = #{condition.mobile}
+				  </if>
+				  <if test="condition.isLock != null" >
+			        AND `isLock` = #{condition.isLock}
+				  </if>
+			  </if>
+			  <if test="vo != null and !vo.expressionChainList.empty">
+		        AND
+		        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		      <if test="expressionChainList != null and !expressionChainList.empty">
+		        AND
+		        <foreach collection="expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		    </trim>
+		 </sql>
+         <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT
+		    <include refid="Base_Column_List" />
+		    FROM `auth_user`
+		    <include refid="map_params_where_condition" />
+		    <if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize != null" >
+		      LIMIT #{pageBeginIndex},#{pageSize}
+		    </if>
+		    <if test="pageBeginIndex == null and pageSize != null" >
+		      LIMIT #{pageSize}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize == null" >
+		      LIMIT #{pageBeginIndex}
+		    </if>
+		  </select>
+		  <delete id="delete" parameterType="java.util.Map" >
+		    DELETE
+		    FROM `auth_user`
+		    <include refid="map_params_where_condition" />
+		  </delete>
+		  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		    SELECT COUNT(id)
+		    FROM `auth_user`
+		    <include refid="map_params_where_condition" />
+		  </select>
+</mapper>

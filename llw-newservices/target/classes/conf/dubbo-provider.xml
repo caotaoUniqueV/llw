@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+ xmlns:context="http://www.springframework.org/schema/context"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        ">
+ <bean id="authUserService" class="com.linwang.impl.AuthUserServiceImpl" />
+ <bean id="authUserRoleService" class="com.linwang.impl.AuthUserRoleServiceImpl" />
+ <bean id="authFunctionService" class="com.linwang.impl.AuthFunctionServiceImpl" />
+ <bean id="authRoleFunctionService" class="com.linwang.impl.AuthRoleFunctionServiceImpl" />
+ <bean id="authRoleService" class="com.linwang.impl.AuthRoleServiceImpl" />
+ <!-- 提供方应用信息，用于计算依赖关系 -->
+ <dubbo:application name="llw-provider-app"/>
+ <!-- 使用zookeeper注册中心暴露服务地址 -->
+ <dubbo:registry address="zookeeper://127.0.0.1:2181" />
+ <!-- 用dubbo协议在20880端口暴露服务 -->
+ <dubbo:protocol name="dubbo" port="20880"/>
+ <!-- 声明需要暴露的服务接口 -->
+ <dubbo:service interface="com.linwang.api.IAuthUserService" ref="authUserService"/>
+ <dubbo:service interface="com.linwang.api.IAuthUserRoleService" ref="authUserRoleService"/>
+ <dubbo:service interface="com.linwang.api.IAuthFunctionService" ref="authFunctionService"/>
+ <dubbo:service interface="com.linwang.api.IAuthRoleFunctionService" ref="authRoleFunctionService"/>
+ <dubbo:service interface="com.linwang.api.IAuthRoleService" ref="authRoleService"/>
+<dubbo:annotation />
+<context:component-scan base-package="com.linwang.api,com.linwang.impl">
+    <context:include-filter type="annotation" expression="com.alibaba.dubbo.config.annotation.Service" />
+</context:component-scan>
+ <dubbo:provider token="true" />
+</beans>

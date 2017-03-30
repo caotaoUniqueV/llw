@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration debug="true">
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{dd/MM/yy hh:mm:ss:sss z}] %t %5p %c{2}: %m%n"/>
+        </layout>
+    </appender>
+    <appender name="rollingFile" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${app1.root}/WEB-INF/logs/newservices.log"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%d{MMdd HH:mm:ss SSS\} %-5p] [%t] %c{3\} - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- druid数据源配置打印日志 start-->
+    <logger name="druid.sql">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="druid.sql.DataSource">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="druid.sql.Connection">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="druid.sql.Statement">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="druid.sql.ResultSet">
+        <level value="DEBUG"/>
+    </logger>
+    <!-- druid数据源配置打印日志 end -->
+    <!-- ++++++++++++++++++++++++ -->
+    
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="rollingFile" />
+    </root>
+</log4j:configuration>

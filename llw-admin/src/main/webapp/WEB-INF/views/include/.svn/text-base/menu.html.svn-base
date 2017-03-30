@@ -1,0 +1,48 @@
+<div id="sidebar" class="sidebar responsive ace-save-state">
+	<script type="text/javascript">
+		try{ace.settings.loadState('sidebar')}catch(e){}
+	</script>
+	<ul class="nav nav-list">
+    <#list ownerAdminActions as first>
+    <#if first.pid == 0>
+    <#if first.url?? && first.url != "">
+    <li ${(adminMenuPosFlag=="${first.menuPosStr}")?string("class='active'","")}>
+    <#else>
+    <li>
+    </#if>
+			<#if first.url?? && first.url != "">
+      <a href="${first.url}">
+				<i class="menu-icon fa ${first.icon}"></i>
+				<span class="menu-text"> ${first.name} </span>
+        <b class="arrow"></b>
+			</a>
+      <#else>
+      <a href="#" class="dropdown-toggle">
+				<i class="menu-icon fa ${first.icon}"></i>
+				<span class="menu-text"> ${first.name} </span>
+				<b class="arrow fa fa-angle-down"></b>
+			</a>
+      <b class="arrow"></b>
+      <ul class="submenu">
+      <#list ownerAdminActions as second>
+      <#if second.pid == first.id>
+        <li ${(adminMenuPosFlag=="${second.menuPosStr}")?string("class='active'","")}>
+					<a href="${second.url}">
+						<i class="menu-icon fa fa-caret-right"></i>
+						${second.name}
+					</a>
+          <b class="arrow"></b>
+				</li>
+      </#if>
+      </#list>
+      </ul>
+      </#if>
+		</li>
+    </#if>
+    </#list>
+	</ul><!-- /.nav-list -->
+
+	<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+		<i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+	</div>
+</div>

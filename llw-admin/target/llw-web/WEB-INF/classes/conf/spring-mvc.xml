@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd	
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    
+    <!-- 扫描controller（controller层注入） -->
+	<context:component-scan base-package="com.linwang.rpc" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+    
+   <!-- 避免IE在ajax请求时，返回json出现下载 -->
+   <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">    
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/html;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+    
+    <!-- 解决ajax返回string乱码,需要在annotation-driven之前 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<value>application/json;charset=UTF-8</value>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+    
+    <mvc:annotation-driven />  
+    <mvc:default-servlet-handler/>
+   <!-- 访问静态文件 -->
+   <mvc:resources location="/WEB-INF/js/" mapping="/js/**"/>
+   <mvc:resources location="/WEB-INF/css/" mapping="/css/**"/>
+   <mvc:resources location="/WEB-INF/images/" mapping="/images/**"/>
+<!--    <mvc:resources location="/WEB-INF/img/" mapping="/img/**"/> -->
+<!--    <mvc:resources location="/WEB-INF/fonts/" mapping="/fonts/**"/> -->
+<!--    <mvc:resources location="/WEB-INF/plugins/" mapping="/plugins/**"/> -->
+
+    <!-- 配置JSON视图 -->
+<!--      <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"> -->
+<!--        <property name="supportedMediaTypes"> -->
+<!--            <list> -->
+<!--                <value>application/json;charset=UTF-8</value> -->
+<!--            </list> -->
+<!--        </property>      -->
+<!--        <property name="objectMapper"> -->
+<!--            <bean class="org.codehaus.jackson.map.ObjectMapper"> -->
+<!--                <property name="dateFormat"> -->
+<!--                    <bean class="java.text.SimpleDateFormat"> -->
+<!--                        <constructor-arg index="0" type="java.lang.String" value="yyyy-MM-dd HH:mm:ss"/> -->
+<!--                    </bean> -->
+<!--                </property> -->
+<!--            </bean> -->
+<!--        </property> -->
+<!--      </bean> -->
+<!--      <bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter"/> -->
+<!--      <bean id="requestMappingHandlerAdapter" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"> -->
+<!--        <property name="messageConverters"> -->
+<!--            <list> -->
+<!--                <ref bean="mappingJacksonHttpMessageConverter"/> -->
+<!--                <ref bean="stringHttpMessageConverter"/> -->
+<!--            </list> -->
+<!--        </property> -->
+<!--      </bean> -->
+    
+    <!-- 配置jsp视图 -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
+		 <property name="prefix" value="/WEB-INF/views/" /> 
+		 <property name="suffix" value=".jsp" /> 
+	</bean>  
+     
+   <!-- 对模型视图添加前后缀 -->
+    <!-- ViewResolver For FreeMarker -->
+<!--     <bean id="freemarkerResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"> -->
+<!--         <property name="order" value="2" /> -->
+<!--         <property name="suffix" value=".html" /> -->
+<!--         <property name="contentType" value="text/html;charset=utf-8" /> -->
+<!--         <property name="requestContextAttribute" value="base" /> -->
+<!--         <property name="viewClass"> -->
+<!--             <value>org.springframework.web.servlet.view.freemarker.FreeMarkerView</value> -->
+<!--         </property> -->
+<!--     </bean> -->
+<!--      ViewResolver For FreeMarkerConfigurer -->
+<!--     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer"> -->
+<!--         <property name="templateLoaderPath"> -->
+<!--             <value>/WEB-INF/views/</value> -->
+<!--         </property> -->
+<!--         <property name="freemarkerSettings">设置FreeMarker环境属性 -->
+<!--             <props> -->
+<!--                 <prop key="template_update_delay">0</prop>刷新模板的周期，单位为秒 -->
+<!--                 <prop key="default_encoding">UTF-8</prop>模板的编码格式 -->
+<!--                 <prop key="locale">UTF-8</prop>本地化设置 -->
+<!--                 <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop> -->
+<!--                 <prop key="time_format">HH:mm:ss</prop> -->
+<!--                 <prop key="number_format">0.####</prop> -->
+<!--                 <prop key="boolean_format">true,false</prop> -->
+<!--                 <prop key="whitespace_stripping">true</prop> -->
+<!--                 <prop key="tag_syntax">auto_detect</prop> -->
+<!--                 <prop key="url_escaping_charset">UTF-8</prop> -->
+<!--             </props> -->
+<!--         </property> -->
+<!--     </bean> -->
+</beans>

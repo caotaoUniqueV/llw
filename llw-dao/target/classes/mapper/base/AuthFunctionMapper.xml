@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AuthFunctionMapper">
+         <resultMap id="BaseResultMap" type="com.linwang.entity.AuthFunction" extends="associationMap">
+			<id column="id" property="id" />
+			<result column="name" property="name" />
+			<result column="url" property="url" />
+			<result column="pid" property="pid" />
+			<result column="level" property="level" />
+			<result column="paixu" property="paixu" />
+			<result column="is_menu" property="isMenu" />
+			<result column="menu_pos_str" property="menuPosStr" />
+			<result column="icon" property="icon" />
+		 </resultMap>
+		 <sql id="Base_Column_List" >
+				`id`
+	            `name`,
+	            `url`,
+	            `pid`,
+	            `level`,
+	            `paixu`,
+	            `is_menu`,
+	            `menu_pos_str`,
+	            `icon`
+	            
+		 </sql>
+		 <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `auth_function`
+		    WHERE `id` = #{id}
+		  </select>
+		  <select id="getByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `auth_function`
+		    <include refid="map_params_where_condition" />
+			<if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+			LIMIT 1
+		  </select>
+		  <select id="aggregate" parameterType="java.util.Map" resultType="java.util.Map">
+		    SELECT ${aggregate_sql} FROM `auth_function`
+		    <include refid="map_params_where_condition" />
+		  </select>
+		  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		    DELETE FROM `auth_function`
+		    WHERE `id` = #{id}
+		  </delete>
+         <insert id="insertAuthFunction" parameterType="com.linwang.entity.AuthFunction">
+         	 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+		      SELECT LAST_INSERT_ID()
+		     </selectKey>
+             insert into `auth_function`(
+	             `name`,
+	             `url`,
+	             `pid`,
+	             `level`,
+	             `paixu`,
+	             `is_menu`,
+	             `menu_pos_str`,
+	             `icon`
+	             
+             ) 
+	         values 
+	         (
+				 #{name},
+				 #{url},
+				 #{pid},
+				 #{level},
+				 #{paixu},
+				 #{isMenu},
+				 #{menuPosStr},
+				 #{icon}	         	
+		      )    
+	      </insert>
+	      <insert id="insertSelective" parameterType="com.linwang.entity.AuthFunction" >
+			    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+			      SELECT LAST_INSERT_ID()
+			    </selectKey>
+			    INSERT INTO `auth_function`
+			    <trim prefix="(" suffix=")" suffixOverrides="," >
+		              <if test="name!= null" >
+						`name`,
+					  </if>
+		              <if test="url!= null" >
+						`url`,
+					  </if>
+		              <if test="pid!= null" >
+						`pid`,
+					  </if>
+		              <if test="level!= null" >
+						`level`,
+					  </if>
+		              <if test="paixu!= null" >
+						`paixu`,
+					  </if>
+		              <if test="isMenu!= null" >
+						`is_menu`,
+					  </if>
+		              <if test="menuPosStr!= null" >
+						`menu_pos_str`,
+					  </if>
+		              <if test="icon!= null" >
+						`icon`,
+					  </if>
+			    </trim>
+			    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		         	   <if test="name != null" >
+						#{name},
+					   </if>
+		         	   <if test="url != null" >
+						#{url},
+					   </if>
+		         	   <if test="pid != null" >
+						#{pid},
+					   </if>
+		         	   <if test="level != null" >
+						#{level},
+					   </if>
+		         	   <if test="paixu != null" >
+						#{paixu},
+					   </if>
+		         	   <if test="isMenu != null" >
+						#{isMenu},
+					   </if>
+		         	   <if test="menuPosStr != null" >
+						#{menuPosStr},
+					   </if>
+		         	   <if test="icon != null" >
+						#{icon},
+					   </if>
+			    </trim>
+		  </insert>
+          <update id="updateByPrimaryKeySelective" parameterType="com.linwang.entity.AuthFunction" >
+			UPDATE `auth_function`
+			<set >
+		         <if test="name != null" >
+					`name` = #{name},
+			  	 </if>	
+		         <if test="url != null" >
+					`url` = #{url},
+			  	 </if>	
+		         <if test="pid != null" >
+					`pid` = #{pid},
+			  	 </if>	
+		         <if test="level != null" >
+					`level` = #{level},
+			  	 </if>	
+		         <if test="paixu != null" >
+					`paixu` = #{paixu},
+			  	 </if>	
+		         <if test="isMenu != null" >
+					`is_menu` = #{isMenu},
+			  	 </if>	
+		         <if test="menuPosStr != null" >
+					`menu_pos_str` = #{menuPosStr},
+			  	 </if>	
+		         <if test="icon != null" >
+					`icon` = #{icon},
+			  	 </if>	
+			</set>
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByPrimaryKey" parameterType="com.linwang.entity.AuthFunction" >
+			UPDATE `auth_function` SET
+					`name` = #{name},
+					`url` = #{url},
+					`pid` = #{pid},
+					`level` = #{level},
+					`paixu` = #{paixu},
+					`is_menu` = #{isMenu},
+					`menu_pos_str` = #{menuPosStr},
+					`icon` = #{icon}
+	         		
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByCondition" parameterType="java.util.Map" >
+			UPDATE `auth_function`
+			<set>
+		         <if test="entity.name != null" >
+					`name` = #{entity.name},
+			  	 </if>	
+		         <if test="entity.url != null" >
+					`url` = #{entity.url},
+			  	 </if>	
+		         <if test="entity.pid != null" >
+					`pid` = #{entity.pid},
+			  	 </if>	
+		         <if test="entity.level != null" >
+					`level` = #{entity.level},
+			  	 </if>	
+		         <if test="entity.paixu != null" >
+					`paixu` = #{entity.paixu},
+			  	 </if>	
+		         <if test="entity.isMenu != null" >
+					`is_menu` = #{entity.isMenu},
+			  	 </if>	
+		         <if test="entity.menuPosStr != null" >
+					`menu_pos_str` = #{entity.menuPosStr},
+			  	 </if>	
+		         <if test="entity.icon != null" >
+					`icon` = #{entity.icon},
+			  	 </if>	
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <update id="updateIncreateNumbers" parameterType="java.util.Map" >
+			UPDATE `auth_function`
+			<set>
+			  <foreach collection="increateNumbers" item="numberCloums">
+				`${numberCloums.column}` = `${numberCloums.column}` + #{numberCloums.number},
+			  </foreach>
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <sql id="map_params_where_condition" >
+		    <trim prefix="WHERE" prefixOverrides="AND">
+		      	<if test="id != null" >
+			       AND `name` = #{name}
+			    </if>
+		      	<if test="id != null" >
+			       AND `url` = #{url}
+			    </if>
+		      	<if test="id != null" >
+			       AND `pid` = #{pid}
+			    </if>
+		      	<if test="id != null" >
+			       AND `level` = #{level}
+			    </if>
+		      	<if test="id != null" >
+			       AND `paixu` = #{paixu}
+			    </if>
+		      	<if test="id != null" >
+			       AND `is_menu` = #{isMenu}
+			    </if>
+		      	<if test="id != null" >
+			       AND `menu_pos_str` = #{menuPosStr}
+			    </if>
+		      	<if test="id != null" >
+			       AND `icon` = #{icon}
+			    </if>
+			  <if test="condition != null">
+				  <if test="condition.name != null" >
+			        AND `name` = #{condition.name}
+				  </if>
+				  <if test="condition.url != null" >
+			        AND `url` = #{condition.url}
+				  </if>
+				  <if test="condition.pid != null" >
+			        AND `pid` = #{condition.pid}
+				  </if>
+				  <if test="condition.level != null" >
+			        AND `level` = #{condition.level}
+				  </if>
+				  <if test="condition.paixu != null" >
+			        AND `paixu` = #{condition.paixu}
+				  </if>
+				  <if test="condition.isMenu != null" >
+			        AND `is_menu` = #{condition.isMenu}
+				  </if>
+				  <if test="condition.menuPosStr != null" >
+			        AND `menu_pos_str` = #{condition.menuPosStr}
+				  </if>
+				  <if test="condition.icon != null" >
+			        AND `icon` = #{condition.icon}
+				  </if>
+			  </if>
+			  <if test="vo != null and !vo.expressionChainList.empty">
+		        AND
+		        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		      <if test="expressionChainList != null and !expressionChainList.empty">
+		        AND
+		        <foreach collection="expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		    </trim>
+		 </sql>
+         <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT
+		    <include refid="Base_Column_List" />
+		    FROM `auth_function`
+		    <include refid="map_params_where_condition" />
+		    <if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize != null" >
+		      LIMIT #{pageBeginIndex},#{pageSize}
+		    </if>
+		    <if test="pageBeginIndex == null and pageSize != null" >
+		      LIMIT #{pageSize}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize == null" >
+		      LIMIT #{pageBeginIndex}
+		    </if>
+		  </select>
+		  <delete id="delete" parameterType="java.util.Map" >
+		    DELETE
+		    FROM `auth_function`
+		    <include refid="map_params_where_condition" />
+		  </delete>
+		  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		    SELECT COUNT(id)
+		    FROM `auth_function`
+		    <include refid="map_params_where_condition" />
+		  </select>
+</mapper>
