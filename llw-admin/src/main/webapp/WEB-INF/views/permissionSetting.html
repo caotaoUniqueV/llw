@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>权限设置</title>
+	<#include "/include/cssjs_up.html" encoding="UTF-8"/>
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <p><button type="button" class="btn btn-outline btn-primary" onclick="window.location.href='../authUser/permissionAdd'">添加</button></p>
+                        <div class="dd" id="nestable2">
+                        <@showHtmlist 0 />
+                        
+                        <#macro showHtmlist parentid>
+							<ol class="dd-list">
+							  <#list authFunctions as bean>
+							  <#if bean.pid == parentid>
+							  <li class="dd-item">
+							    <div class="dd-handle">
+							      <button type="button" style="padding: 3px 12px;" class="btn btn-outline btn-danger" onclick="del(${bean.id},this)">删除</button>
+		                          <button type="button" style="padding: 3px 12px;" class="btn btn-outline btn-info" onclick="window.location.href='../authFunction/permissionEdit?id=${bean.id}'">编辑</button>
+							      ${bean.name} <#if bean.url?? && bean.url != "">[${bean.url}]</#if>
+							    </div>
+							    <@showHtmlist bean.id />
+							  </li>
+							  </#if>
+							  </#list>
+							</ol>
+						</#macro>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<#include "/include/cssjs_down.html" encoding="UTF-8"/>
+<script type="text/javascript" src="../plugin/layui/oliverui.js"></script>
+    <script type="text/javascript">
+    $(function(){
+    	Oliver.use(['ajax','login']);
+    	// activate Nestable for list 2
+        $('#nestable2').nestable({
+            group: 1
+        }).on('change',function(){
+        	
+        });
+        $('#nestable2').nestable('collapseAll');
+    });
+    
+    function del(id,obj){
+    	var index=parent.layer.confirm('是否删除该权限？', {
+    		  btn: ['确定','取消'] //按钮
+    		}, function(){
+    			parent.layer.close(index);
+    			$(obj).ajax({
+    	    		url : "../authFunction/del?id="+id,
+    	    		icon : 1,
+    	    		loading : "删除中...",
+    	    		success : function(result){
+    	    			if(result.code==0){
+    						location.href="../authUser/permissionSetting";
+    					}else{
+    						showToast(result);
+    					}
+    	    		}
+    	    	});
+    		})
+    }
+    </script>
+</body>
+
+</html>

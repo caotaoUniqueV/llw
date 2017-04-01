@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>权限设置</title>
+	<#include "/include/cssjs_up.html" encoding="UTF-8"/>
+</head>
+
+<body class="gray-bg">
+	<div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-sm-12">
+            <ol class="breadcrumb" style="margin-top: 10px;margin-bottom: -10px;">
+                <li>
+                    <a href="../authUser/permissionSetting">权限设置</a>
+                </li>
+                <li>
+                    <strong>权限<#if authFunction.id??>编辑<#else>添加</#if></strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                    	<form class="form-horizontal m-t" id="form">
+                    		<input type="hidden" name="id" value="${authFunction.id}"/>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">名称：</label>
+                                <div class="col-sm-8">
+                                    <input name="name" msg="请输入名称" class="form-control" type="text" value="${authFunction.name}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">是否为菜单：</label>
+                                <div class="col-sm-8">${authFunction.isMenu}
+                                	<select class="form-control m-b" name="isMenu" id="isMenu">
+                                        <option value="1" <#if authFunction.isMenu||!authFunction.id??>selected="selected"</#if> >菜单</option>
+                                        <option value="0" <#if !authFunction.isMenu>selected="selected"</#if> >功能</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" <#if authFunction.isMenu>style="display: none;"</#if> id="urls">
+                                <label class="col-sm-3 control-label">链接地址：</label>
+                                <div class="col-sm-8">
+                                    <input name="url" msg="请输入链接地址" <#if authFunction.isMenu>display="none"</#if> value="${authFunction.url}" class="form-control" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">排序：</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" type="text" name="paixu" value="${authFunction.paixu}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                            	<label class="col-sm-3 control-label">选择上级：</label>
+                                <div class="col-sm-8">
+                                	<div class="dd" id="nestable2">
+			                            <@showHtmlist 0 />
+                        
+				                        <#macro showHtmlist parentid>
+											<ol class="dd-list">
+											  <#list authFunctions as bean>
+											  <#if bean.pid == parentid>
+											  <li class="dd-item">
+											    <div class="dd-handle">
+											      <input type="radio" name="pid" <#if bean.id==authFunction.pid>checked="checked"</#if>  value="${bean.id}"/>
+											      ${bean.name} <#if bean.url?? && bean.url != "">[${bean.url}]</#if>
+											    </div>
+											    <@showHtmlist bean.id />
+											  </li>
+											  </#if>
+											  </#list>
+											</ol>
+										</#macro>
+			                        </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-3">
+                                    <button class="btn btn-primary" type="button" id="tj">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<#include "/include/cssjs_down.html" encoding="UTF-8"/>
+<script type="text/javascript" src="../plugin/layui/oliverui.js"></script>
+    <script type="text/javascript">
+    $(function(){
+    	Oliver.use(['ajax','login'],function(ui){
+    		$("#tj").on("click",function(){
+    			$(this).verify({
+        			url : "../authFunction/save",
+        			formId : "form",
+        			icon : 1,
+        			loading : "提交中...",
+        			success : function (result){
+        				if(result.code==0){
+        					location.href="../authUser/permissionSetting";
+        				}else{
+        					showToast(result);
+        				}
+        			}
+        		})
+    		})
+    	});
+    	// activate Nestable for list 2
+        $('#nestable2').nestable({
+            group: 1
+        }).on('change',function(){
+        	
+        });
+//         $('#nestable2').nestable('collapseAll');
+        $("#isMenu").change(function(){
+        	if($(this).val()==0){
+        		$("#urls").show();
+        	}else{
+        		$("#urls").hide();
+        	}
+        });
+    });
+    </script>
+</body>
+
+</html>
