@@ -26,7 +26,7 @@
 			</#list>
 		 </resultMap>
 		 <sql id="Base_Column_List" >
-				`id`
+				`id`,
 				<#list templateDtos as cl>
 	            <#if !cl_has_next>`${cl.onColumnName}`
 	            <#else>`${cl.onColumnName}`,</#if>
@@ -138,8 +138,11 @@
 		  </update>
 		  <sql id="map_params_where_condition" >
 		    <trim prefix="WHERE" prefixOverrides="AND">
+		    	<if test="id != null" >
+			       AND `id` = <@mapperEl2 'id'/>
+			    </if>
 		      <#list templateDtos as cl2>
-		      	<if test="id != null" >
+		      	<if test="${cl2.onColumnName} != null" >
 			       AND `${cl2.onColumnName}` = <@mapperEl cl2.columnName/>
 			    </if>
 		      </#list>

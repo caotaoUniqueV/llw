@@ -2,7 +2,7 @@ package com.linwang.uitls;
 
 import java.util.List;
 
-public class Page<T> {
+public class Page<T> implements java.io.Serializable{
 	
 	public boolean hidePageBarIFOnlyOnePage = true;//只有一页是否隐藏
 

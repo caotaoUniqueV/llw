@@ -13,7 +13,7 @@
 			<result column="updated_at" property="updatedAt" />
 		 </resultMap>
 		 <sql id="Base_Column_List" >
-				`id`
+				`id`,
 	            `module_name`,
 	            `hostname`,
 	            `ip_address`,
@@ -188,22 +188,25 @@
 		  </update>
 		  <sql id="map_params_where_condition" >
 		    <trim prefix="WHERE" prefixOverrides="AND">
-		      	<if test="id != null" >
+		    	<if test="id != null" >
+			       AND `id` = #{id}
+			    </if>
+		      	<if test="module_name != null" >
 			       AND `module_name` = #{moduleName}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="hostname != null" >
 			       AND `hostname` = #{hostname}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="ip_address != null" >
 			       AND `ip_address` = #{ipAddress}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="isSuccess != null" >
 			       AND `isSuccess` = #{isSuccess}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="created_at != null" >
 			       AND `created_at` = #{createdAt}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="updated_at != null" >
 			       AND `updated_at` = #{updatedAt}
 			    </if>
 			  <if test="condition != null">

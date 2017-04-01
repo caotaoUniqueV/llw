@@ -3,7 +3,7 @@ package com.linwang.uitls.web;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DAOUtils {
+public class DAOUtils implements java.io.Serializable{
 	private static final String COLUMN_REGEX = "^\\*$|^\\w+$";
     private static final String ORDER_BY_REGEX = "[\\w\\s,]+$";
     private static final Set<String> FUNCTION_SET = new HashSet<String>();

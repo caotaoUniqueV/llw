@@ -9,7 +9,7 @@
 			<result column="function_id" property="functionId" />
 		 </resultMap>
 		 <sql id="Base_Column_List" >
-				`id`
+				`id`,
 	            `role_id`,
 	            `function_id`
 	            
@@ -120,10 +120,13 @@
 		  </update>
 		  <sql id="map_params_where_condition" >
 		    <trim prefix="WHERE" prefixOverrides="AND">
-		      	<if test="id != null" >
+		    	<if test="id != null" >
+			       AND `id` = #{id}
+			    </if>
+		      	<if test="role_id != null" >
 			       AND `role_id` = #{roleId}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="function_id != null" >
 			       AND `function_id` = #{functionId}
 			    </if>
 			  <if test="condition != null">

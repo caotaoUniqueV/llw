@@ -15,29 +15,33 @@
     <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
 </head>
 
-<body class="gray-bg">
-    <div class="middle-box text-center loginscreen  animated fadeInDown">
-        <div>
-            <div>
-                <h1 class="logo-name">H+</h1>
-            </div>
-            <h3>后台管理</h3>
-
-            <form class="m-t" id="form">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="用户名" name="username" msg="请输入用户名">
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" placeholder="密码" name="password" msg="请输入密码">
-                </div>
-                <div class="form-group" style="float: left;">
-                    <input type="text" style="float: left;width: 50%;" class="form-control" placeholder="验证码" name="picCode" msg="请输入验证码">
-                    <img id="codeImg" src="../code" onclick="changeCode()" style="float: right;width: 48%;">
-                </div>
-                <button type="button" id="tj" class="btn btn-primary block full-width m-b" onclick="login()">登 录</button>
-            </form>
-        </div>
-    </div>
+<body class="gray-bg"  id="particles-js">
+				<div class="middle-box text-center loginscreen  animated fadeInDown" style="position: absolute;
+    display: block;
+    width: 250px;
+    left: 50%;
+    margin-left: -125px;">
+			        <div>
+			            <div>
+			                <h1 class="logo-name">H+</h1>
+			            </div>
+			            <h3>后台管理</h3>
+			
+			            <form class="m-t" id="form">
+			                <div class="form-group">
+			                    <input type="text" class="form-control" placeholder="用户名" name="username" msg="请输入用户名">
+			                </div>
+			                <div class="form-group">
+			                    <input type="password" class="form-control" placeholder="密码" name="password" msg="请输入密码">
+			                </div>
+			                <div class="form-group" style="float: left;">
+			                    <input type="text" style="float: left;width: 50%;" class="form-control" placeholder="验证码" name="picCode" msg="请输入验证码">
+			                    <img id="codeImg" src="../code" onclick="changeCode()" style="float: right;width: 48%;">
+			                </div>
+			                <button type="button" id="tj" class="btn btn-primary block full-width m-b" onclick="login()">登 录</button>
+			            </form>
+			        </div>
+			    </div>
     <!-- 全局js -->
     <script src="../js/jquery.min.js?v=2.1.4"></script>
     <script type="text/javascript" src="../plugin/layui/oliverui.js"></script>
@@ -52,23 +56,14 @@
 			icon : 1,
 			loading : "登录中...",
 			success : function (result){
-				if(result == "errorPicCode"){
-					showToast("验证码错误");
+				if(result.code==0){
+					location.href="../index/index";
+				}else if(result.code!=null&&result.code!=""&&result.code!=undefined&&result.code!=0){
+					showToast(result.msg);
 					changeCode();
-				}
-				if(result == "noRecord"){
-					showToast("不存在该用户名");
+				}else{
+					showToast(result);
 					changeCode();
-				}
-				if(result == "errorPassword"){
-					showToast("密码错误");
-					changeCode();
-				}
-				if(result == "isLock"){
-					showToast("您的账户已被锁定");
-				}
-				if(result == "success"){
-					showToast("登录成功");
 				}
 			}
 		})
@@ -77,5 +72,8 @@
 		$("#codeImg").attr("src","../code?rnd=" + Math.random());
 	}
     </script>
+    <!-- scripts -->
+	<script src="../js/particles.min.js"></script>
+	<script src="../js/app.js"></script>
 </body>
 </html>

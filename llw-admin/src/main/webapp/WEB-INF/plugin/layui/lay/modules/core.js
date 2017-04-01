@@ -249,6 +249,8 @@ layui.define(function(a) {
                 				 showToast("该请求未初始化");
                 			 }else if(XMLHttpRequest.status=="1"){
                 				 showToast("正在发送请求");
+                			 }else if(XMLHttpRequest.readyState==4){
+                				 showToast(XMLHttpRequest.responseText);
                 			 }
                 		 }
                 		 hideLoading(opts.icon,opts.formId,$id);

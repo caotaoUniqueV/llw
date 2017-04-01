@@ -15,7 +15,7 @@
 			<result column="icon" property="icon" />
 		 </resultMap>
 		 <sql id="Base_Column_List" >
-				`id`
+				`id`,
 	            `name`,
 	            `url`,
 	            `pid`,
@@ -222,28 +222,31 @@
 		  </update>
 		  <sql id="map_params_where_condition" >
 		    <trim prefix="WHERE" prefixOverrides="AND">
-		      	<if test="id != null" >
+		    	<if test="id != null" >
+			       AND `id` = #{id}
+			    </if>
+		      	<if test="name != null" >
 			       AND `name` = #{name}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="url != null" >
 			       AND `url` = #{url}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="pid != null" >
 			       AND `pid` = #{pid}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="level != null" >
 			       AND `level` = #{level}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="paixu != null" >
 			       AND `paixu` = #{paixu}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="is_menu != null" >
 			       AND `is_menu` = #{isMenu}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="menu_pos_str != null" >
 			       AND `menu_pos_str` = #{menuPosStr}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="icon != null" >
 			       AND `icon` = #{icon}
 			    </if>
 			  <if test="condition != null">

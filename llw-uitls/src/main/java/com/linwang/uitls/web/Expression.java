@@ -2,7 +2,7 @@ package com.linwang.uitls.web;
 
 import java.util.List;
 
-public class Expression {
+public class Expression implements java.io.Serializable{
 	private int type;
     private String column;
     private String operator;
@@ -10,6 +10,7 @@ public class Expression {
     private Object value1;
     private List<?> values;
 
+    public Expression(){}
     public Expression(int type, String column, String operator) {
         DAOUtils.checkColumn(column);
         this.type = type;

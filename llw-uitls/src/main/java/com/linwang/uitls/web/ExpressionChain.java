@@ -3,7 +3,7 @@ package com.linwang.uitls.web;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExpressionChain {
+public class ExpressionChain implements java.io.Serializable {
 	private List<Expression> expressionList;
 
     public ExpressionChain() {

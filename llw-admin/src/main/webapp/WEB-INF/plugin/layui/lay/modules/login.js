@@ -435,7 +435,7 @@ layui.define(function(a) {
 		return _b;
 	};
 	var checkData=function(data,ckId,nameId,formType){
-		if(formType=="checkbox"||formType=="radio"){
+		if((formType=="checkbox"||formType=="radio")&&$("#"+ckId).attr("msg")!=null&&$("#"+ckId).attr("msg")!=undefined&&$("#"+ckId).attr("msg")!=""){
 			if(!$("#"+ckId).is(':checked')){
 				successToast($("#"+ckId).attr("msg"));
 				$("#"+ckId).focus();

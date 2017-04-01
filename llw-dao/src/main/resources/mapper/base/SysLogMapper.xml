@@ -15,7 +15,7 @@
 			<result column="date_add" property="dateAdd" />
 		 </resultMap>
 		 <sql id="Base_Column_List" >
-				`id`
+				`id`,
 	            `module_type`,
 	            `oprate_type`,
 	            `name`,
@@ -222,28 +222,31 @@
 		  </update>
 		  <sql id="map_params_where_condition" >
 		    <trim prefix="WHERE" prefixOverrides="AND">
-		      	<if test="id != null" >
+		    	<if test="id != null" >
+			       AND `id` = #{id}
+			    </if>
+		      	<if test="module_type != null" >
 			       AND `module_type` = #{moduleType}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="oprate_type != null" >
 			       AND `oprate_type` = #{oprateType}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="name != null" >
 			       AND `name` = #{name}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="uri != null" >
 			       AND `uri` = #{uri}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="msg != null" >
 			       AND `msg` = #{msg}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="admin_id != null" >
 			       AND `admin_id` = #{adminId}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="ip != null" >
 			       AND `ip` = #{ip}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="date_add != null" >
 			       AND `date_add` = #{dateAdd}
 			    </if>
 			  <if test="condition != null">

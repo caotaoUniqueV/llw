@@ -14,7 +14,7 @@
 			<result column="isLock" property="isLock" />
 		 </resultMap>
 		 <sql id="Base_Column_List" >
-				`id`
+				`id`,
 	            `username`,
 	            `pwd`,
 	            `dateLogin`,
@@ -205,25 +205,28 @@
 		  </update>
 		  <sql id="map_params_where_condition" >
 		    <trim prefix="WHERE" prefixOverrides="AND">
-		      	<if test="id != null" >
+		    	<if test="id != null" >
+			       AND `id` = #{id}
+			    </if>
+		      	<if test="username != null" >
 			       AND `username` = #{username}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="pwd != null" >
 			       AND `pwd` = #{pwd}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="dateLogin != null" >
 			       AND `dateLogin` = #{dateLogin}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="ipLogin != null" >
 			       AND `ipLogin` = #{ipLogin}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="realname != null" >
 			       AND `realname` = #{realname}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="mobile != null" >
 			       AND `mobile` = #{mobile}
 			    </if>
-		      	<if test="id != null" >
+		      	<if test="isLock != null" >
 			       AND `isLock` = #{isLock}
 			    </if>
 			  <if test="condition != null">

@@ -8,8 +8,8 @@
                             <span><img alt="image" class="img-circle" src="../images/profile_small.jpg" /></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                               <span class="block m-t-xs"><strong class="font-bold">Beaut-zihan</strong></span>
-                                <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
+                               <span class="block m-t-xs"><strong class="font-bold">${admin.username}</strong></span>
+                                <span class="text-muted text-xs block">${admin.realname}<b class="caret"></b></span>
                                 </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
@@ -23,24 +23,30 @@
                         <div class="logo-element">H+
                         </div>
                     </li>
+                    <#list authFunctions as first>
                     <li>
-                        <a href="#">
-                            <i class="fa fa-home"></i>
-                            <span class="nav-label">管理员及权限</span>
-                            <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a class="J_menuItem" href="index_v1.html" data-index="0">权限设置</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="index_v2.html">角色管理</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="index_v3.html">管理员列表</a>
-                            </li>
-                        </ul>
+                        <#if first.pid == 0>
+	                        <#if first.url?? && first.url != "">
+	                        	<a class="J_menuItem" href="../${first.url}"><i class="fa fa-columns"></i> <span class="nav-label">${first.name}</span></a>
+	                        <#else>
+		                        <a href="#">
+		                            <i class="fa fa-home"></i>
+		                            <span class="nav-label">${first.name}</span>
+		                            <span class="fa arrow"></span>
+		                        </a>
+		                        <ul class="nav nav-second-level">
+	                        	<#list authFunctions as second>
+	                        	    <#if second.pid==first.id>
+			                            <li>
+			                                <a class="J_menuItem" href="../${second.url}" data-index="${second_index}">${second.name}</a>
+			                            </li>
+		                            </#if>
+	                            </#list>
+	                        </ul>
+	                        </#if>
+                        </#if>
                     </li>
+                    </#list>
                 </ul>
             </div>
         </nav>

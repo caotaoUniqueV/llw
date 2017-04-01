@@ -47,6 +47,14 @@
    <mvc:resources location="/WEB-INF/images/" mapping="/images/**"/>
    <mvc:resources location="/WEB-INF/fonts/" mapping="/fonts/**"/>
    <mvc:resources location="/" mapping="/*.html"/>
+   
+   <!-- 访问拦截  -->  
+   <mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**/**"/>
+			<bean class="com.linwang.interceptor.LoginHandlerInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
     
     <bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
