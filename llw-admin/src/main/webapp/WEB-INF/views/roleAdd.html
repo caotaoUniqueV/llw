@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>角色管理</title>
+	<#include "/include/cssjs_up.html" encoding="UTF-8"/>
+</head>
+
+<body class="gray-bg">
+	<div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-sm-12">
+            <ol class="breadcrumb" style="margin-top: 10px;margin-bottom: -10px;">
+                <li>
+                    <a href="../authUser/roleManagement">角色管理</a>
+                </li>
+                <li>
+                    <strong>角色<#if authRole.id??>编辑<#else>添加</#if></strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                    	<form class="form-horizontal m-t" id="form">
+                    		<input type="hidden" name="id" value="${authRole.id}"/>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">名称：</label>
+                                <div class="col-sm-8">
+                                    <input name="name" msg="请输入名称" class="form-control" type="text" value="${authRole.name}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">说明：</label>
+                                <div class="col-sm-8">
+                                    <textarea name="profile" msg="请输入说明" class="form-control">${authRole.profile}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                            	<label class="col-sm-3 control-label">选择权限：</label>
+                                <div class="col-sm-8">
+                                	<div class="dd" id="nestable2">
+			                            <@showHtmlist 0 />
+                        
+				                        <#macro showHtmlist parentid>
+											<ol class="dd-list">
+											  <#list authFunctions as bean>
+											  <#if bean.pid == parentid>
+											  <li class="dd-item">
+											    <div class="dd-handle">
+											    	<#assign checedFlag = false>
+												      <#list myActions as sel>
+												      <#if sel.functionId == bean.id>
+												      <#assign checedFlag = true>
+												      <#break>
+												      </#if>
+												      </#list>
+											      <input type="checkbox" name="roleIds" ${checedFlag?string("checked","")} pid="${bean.pid}"  value="${bean.id}"/>
+											      ${bean.name} <#if bean.url?? && bean.url != "">[${bean.url}]</#if>
+											    </div>
+											    <@showHtmlist bean.id />
+											  </li>
+											  </#if>
+											  </#list>
+											</ol>
+										</#macro>
+			                        </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-3">
+                                    <button class="btn btn-primary" type="button" id="tj">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<#include "/include/cssjs_down.html" encoding="UTF-8"/>
+<script type="text/javascript" src="../plugin/layui/oliverui.js"></script>
+    <script type="text/javascript">
+    $(function(){
+    	Oliver.use(['ajax','login'],function(ui){
+    		$("#tj").on("click",function(){
+    			$(this).verify({
+        			url : "../authRole/save",
+        			formId : "form",
+        			icon : 1,
+        			loading : "提交中...",
+        			success : function (result){
+        				if(result.code==0){
+        					location.href="../authUser/roleManagement";
+        				}else{
+        					showToast(result);
+        				}
+        			}
+        		})
+    		})
+    	});
+    	// activate Nestable for list 2
+        $('#nestable2').nestable({
+            group: 1
+        }).on('change',function(){
+        	
+        });
+	    $("#nestable2 :checkbox").each(function(){
+	        $(this).change(function(){
+	          var selectedStatus = $(this).prop("checked");
+	          if(selectedStatus){
+	            //选中全部子集
+	            $(this).parents(".dd-item:first").find(":checkbox").prop("checked", true);
+	            //选中全部父级
+	            $(this).parents(".dd-item").find(":checkbox:first").prop("checked", true);
+	          } else {
+	            //取消全部子集
+	            $(this).parents(".dd-item:first").find(":checkbox").prop("checked", false);
+	          }
+	        });
+	        
+	    });  
+    });
+    </script>
+</body>
+
+</html>

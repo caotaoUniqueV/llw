@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>友情链接管理</title>
+	<#include "/include/cssjs_up.html" encoding="UTF-8"/>
+</head>
+
+<body class="gray-bg">
+	<div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-sm-12">
+            <ol class="breadcrumb" style="margin-top: 10px;margin-bottom: -10px;">
+                <li>
+                    <a href="../link/manage">友情链接管理</a>
+                </li>
+                <li>
+                    <strong>友情链接<#if link.id??>编辑<#else>添加</#if></strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                    	<form class="form-horizontal m-t" id="form">
+                    		<input type="hidden" name="id" value="${link.id}"/>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">名称：</label>
+                                <div class="col-sm-8">
+                                    <input name="name" msg="请输入名称" class="form-control" type="text" value="${link.name}">
+                                </div>
+                            </div>
+                            
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label">打开方式：</label>
+                                <div class="col-sm-8">
+                                	<select class="form-control m-b" name="target">
+                                        <option value="_balck"  <#if !link.target?? || link.target == "" || link.target == "_balck">selected="selected"</#if> >_balck</option>
+                                        <option value="open" <#if link.target?? && link.target != "" && link.target == "open">selected="selected"</#if> >open</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label">排序：</label>
+                                <div class="col-sm-8">
+                                    <input name="sort" msg="请输入排序" class="form-control" type="text" value="${link.sort}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">URL地址：</label>
+                                <div class="col-sm-8">
+                                    <input name="url" msg="请输入URL" class="form-control" type="text" value="${link.url}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">说明：</label>
+                                <div class="col-sm-8">
+                                    <textarea name="description" class="form-control">${link.description}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-3">
+                                    <button class="btn btn-primary" type="button" id="tj">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<#include "/include/cssjs_down.html" encoding="UTF-8"/>
+<script type="text/javascript" src="../plugin/layui/oliverui.js"></script>
+    <script type="text/javascript">
+    $(function(){
+    	Oliver.use(['ajax','login'],function(ui){
+    		$("#tj").on("click",function(){
+    			$(this).verify({
+        			url : "../link/save",
+        			formId : "form",
+        			icon : 1,
+        			loading : "提交中...",
+        			success : function (result){
+        				if(result.code==0){
+        					showToast(result.msg,2000,function(){
+    	    					location.href="../link/manage";
+    	    				})
+        				}else{
+        					showToast(result);
+        				}
+        			}
+        		})
+    		})
+    	});
+    	// activate Nestable for list 2
+        $('#nestable2').nestable({
+            group: 1
+        }).on('change',function(){
+        	
+        });
+	   
+    });
+    </script>
+</body>
+
+</html>
