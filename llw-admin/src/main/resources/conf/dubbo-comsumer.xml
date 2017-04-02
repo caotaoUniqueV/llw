@@ -21,4 +21,5 @@
  <dubbo:reference interface="com.linwang.api.IAuthFunctionService" id="authFunctionService"/>
  <dubbo:reference interface="com.linwang.api.IAuthRoleFunctionService" id="authRoleFunctionService"/>
  <dubbo:reference interface="com.linwang.api.IAuthRoleService" id="authRoleService"/>
+ <dubbo:reference interface="com.linwang.api.ISysLogService" id="sysLogService"/>
 </beans>

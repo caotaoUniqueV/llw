@@ -19,12 +19,12 @@ import com.linwang.dto.TemplateDto;
 public class GenerateUitl {
 	private static DataSource dataSource;
 	public static void main(String[] args) throws SQLException {
-		List<String> list=allTable();
-		for (int i = 0; i < list.size(); i++) {
-			String string = list.get(i);
-			GenerateUitl.run(string);
+//		List<String> list=allTable();
+//		for (int i = 0; i < list.size(); i++) {
+//			String string = list.get(i);
+			GenerateUitl.run("t_link");
 			System.out.println(" "); 
-		}
+//		}
 	}
 	
 	//获取数据库连接
@@ -32,9 +32,9 @@ public class GenerateUitl {
 		if(dataSource == null){
 			DriverManagerDataSource ds = new DriverManagerDataSource();
             ds.setDriverClassName("com.mysql.jdbc.Driver");
-            ds.setUrl("jdbc:mysql://121.40.205.102:3307/ylm?useUnicode=true&characterEncoding=utf-8");
+            ds.setUrl("jdbc:mysql://127.0.0.1:3306/ylm?useUnicode=true&characterEncoding=utf-8");
             ds.setUsername("root");
-            ds.setPassword("zju123456");
+            ds.setPassword("123456");
 			dataSource = ds;
 		}
         return dataSource.getConnection();

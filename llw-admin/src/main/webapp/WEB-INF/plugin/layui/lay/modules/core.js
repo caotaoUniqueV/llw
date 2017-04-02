@@ -250,7 +250,9 @@ layui.define(function(a) {
                 			 }else if(XMLHttpRequest.status=="1"){
                 				 showToast("正在发送请求");
                 			 }else if(XMLHttpRequest.readyState==4){
-                				 showToast(XMLHttpRequest.responseText);
+                				 showToast(XMLHttpRequest.responseText,null,function(){
+                					 location.href=location.href;
+                				 });
                 			 }
                 		 }
                 		 hideLoading(opts.icon,opts.formId,$id);

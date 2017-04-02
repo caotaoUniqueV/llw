@@ -14,6 +14,7 @@
  <bean id="authFunctionService" class="com.linwang.impl.AuthFunctionServiceImpl" />
  <bean id="authRoleFunctionService" class="com.linwang.impl.AuthRoleFunctionServiceImpl" />
  <bean id="authRoleService" class="com.linwang.impl.AuthRoleServiceImpl" />
+ <bean id="sysLogService" class="com.linwang.impl.SysLogServiceImpl" />
  <!-- 提供方应用信息，用于计算依赖关系 -->
  <dubbo:application name="llw-provider-app"/>
  <!-- 使用zookeeper注册中心暴露服务地址 -->
@@ -26,6 +27,7 @@
  <dubbo:service interface="com.linwang.api.IAuthFunctionService" ref="authFunctionService"/>
  <dubbo:service interface="com.linwang.api.IAuthRoleFunctionService" ref="authRoleFunctionService"/>
  <dubbo:service interface="com.linwang.api.IAuthRoleService" ref="authRoleService"/>
+ <dubbo:service interface="com.linwang.api.ISysLogService" ref="sysLogService"/>
 <dubbo:annotation />
 <context:component-scan base-package="com.linwang.api,com.linwang.impl">
     <context:include-filter type="annotation" expression="com.alibaba.dubbo.config.annotation.Service" />

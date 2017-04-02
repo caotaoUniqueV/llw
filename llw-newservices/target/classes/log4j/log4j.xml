@@ -8,7 +8,7 @@
         </layout>
     </appender>
     <appender name="rollingFile" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="${app1.root}/WEB-INF/logs/newservices.log"/>
+        <param name="File" value="${app2.root}/WEB-INF/logs/newservices.log"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern"

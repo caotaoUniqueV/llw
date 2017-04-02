@@ -37,7 +37,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">是否为菜单：</label>
-                                <div class="col-sm-8">${authFunction.isMenu}
+                                <div class="col-sm-8">
                                 	<select class="form-control m-b" name="isMenu" id="isMenu">
                                         <option value="1" <#if authFunction.isMenu||!authFunction.id??>selected="selected"</#if> >菜单</option>
                                         <option value="0" <#if !authFunction.isMenu>selected="selected"</#if> >功能</option>
@@ -122,8 +122,10 @@
         $("#isMenu").change(function(){
         	if($(this).val()==0){
         		$("#urls").show();
+        		$("input[name='url']").attr("display","block");
         	}else{
         		$("#urls").hide();
+        		$("input[name='url']").attr("display","none");
         	}
         });
     });

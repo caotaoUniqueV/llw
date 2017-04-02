@@ -24,16 +24,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
+
+
+
+
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONObject;
+import com.linwang.redis.JedisPoolManager;
+import com.linwang.redis.RedisCacheManager;
+import com.linwang.rpc.base.BaseRpc;
 import com.linwang.uitls.AccountDigestUtils;
 import com.linwang.uitls.Page;
 import com.linwang.uitls.PicCodeUtils;
 import com.linwang.uitls.web.JSONResultCode;
 import com.linwang.api.IAuthFunctionService;
 import com.linwang.api.IAuthUserService;
-import com.linwang.base.BaseRpc;
 import com.linwang.entity.AuthFunction;
+import com.linwang.entity.AuthRole;
+import com.linwang.entity.AuthRoleFunction;
 import com.linwang.entity.AuthUser;
 
 
@@ -44,6 +52,8 @@ public class AuthUserRpc extends BaseRpc{
 	 private IAuthFunctionService authFunctionService;
 	 @Reference(version="1.0.0")
 	 private IAuthUserService authUserService; 
+	 @Autowired
+	 private RedisCacheManager redisCacheManager;
 	
 	 @RequestMapping(value="login",method=RequestMethod.POST)
 	 @ResponseBody
@@ -59,21 +69,10 @@ public class AuthUserRpc extends BaseRpc{
 	 @RequestMapping(value="permissionSetting",method=RequestMethod.GET)
 	 @RequiresPermissions("/authUser/permissionSetting")
 	 public String permissionSetting(Model model) throws Exception{
-		 AuthFunction authFunction=new AuthFunction();
-		 authFunction.setOrderBy("paixu ASC");
-		 List<AuthFunction> authFunctions=authFunctionService.getList(authFunction);
+		 JedisPoolManager jedisPoolManager=redisCacheManager.getRedisManager();
+		 List<AuthFunction> authFunctions=JSONObject.parseArray(jedisPoolManager.get("permissionAll"),AuthFunction.class);
 		 model.addAttribute("authFunctions", authFunctions);
 	    return "permissionSetting";
-	 }
-	 
-	 @RequestMapping(value="permissionAdd",method=RequestMethod.GET)
-	 @RequiresPermissions("/authUser/permissionAdd")
-	 public String permissionAdd(Model model) throws Exception{
-		 AuthFunction authFunction=new AuthFunction();
-		 authFunction.setOrderBy("paixu ASC");
-		 List<AuthFunction> authFunctions=authFunctionService.getList(authFunction);
-		 model.addAttribute("authFunctions", authFunctions);
-	    return "permissionAdd";
 	 }
 	 
 	 @RequestMapping(value="roleManagement",method=RequestMethod.GET)
@@ -86,6 +85,23 @@ public class AuthUserRpc extends BaseRpc{
 	 @RequiresPermissions("/authUser/managers")
 	 public String managers() throws Exception{
 	    return "managers";
+	 }
+	 
+	 @RequestMapping(value="managerAdd",method=RequestMethod.GET)
+	 @RequiresPermissions("/authUser/managerAdd")
+	 public String roleAdd(Model model,Integer id) throws Exception{
+		 JedisPoolManager jedisPoolManager=redisCacheManager.getRedisManager();
+//		 List<AuthFunction> authFunctions=JSONObject.parseArray(jedisPoolManager.get("permissionAll"),AuthFunction.class);
+//		 model.addAttribute("authFunctions", authFunctions);
+//		 
+//		 if(id!=null){
+//			//获取该角色的权限
+//	         AuthRoleFunction condition2 = new AuthRoleFunction();
+//	         condition2.setRoleId(id);
+//	         List<AuthRoleFunction> myActions = authRoleFunctionService.getList(condition2);
+//	         model.addAttribute("myActions", myActions);
+//		 }
+	    return "managerAdd";
 	 }
 	 
 	 @RequestMapping(value="list",method=RequestMethod.GET)

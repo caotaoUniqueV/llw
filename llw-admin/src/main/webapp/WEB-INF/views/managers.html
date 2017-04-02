@@ -22,6 +22,9 @@
                                         <button type="button" class="btn btn-sm btn-primary" onclick="list($('#name').val())">搜索</button> </span>
                                 </div>
                             </div>
+                            <div class="col-sm-2">
+                            	<button type="button" class="btn btn-sm btn-success" onclick="window.location.href='../authUser/managerAdd'">添加</button>
+                            </div>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped">
@@ -60,14 +63,17 @@
                       <td>{{!p.realname}}</td>
                       <td>{{!p.mobile}}</td>
                       <td><i class="fa {{? p.isLock==0}}fa-check{{??}}fa-times{{?}} text-navy"></i></td>
-                      <td></td>
+                      <td>
+						 <button type="button" class="btn btn-outline btn-primary" style="margin-right: 10px;" onclick="window.location.href='../authUser/managerAdd?id={{!p.id}}'">编辑</button>
+						 <button type="button" class="btn btn-outline btn-danger">删除</button>
+					  </td>
                 </tr>
 	   {{~ }}
 </script>
 <script type="text/javascript">
 var ui;
 $(function(){
-	Oliver.use(['ajax','login','laypage','dot'],function(u){
+	Oliver.use(['ajax','laypage','dot'],function(u){
 		ui=u;
 		list('');
 	});

@@ -6,7 +6,9 @@ import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.cache.Cache;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,11 +24,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 import com.linwang.redis.JedisPoolManager;
 import com.linwang.redis.RedisCacheManager;
+import com.linwang.rpc.base.BaseRpc;
 import com.linwang.uitls.AccountDigestUtils;
 import com.linwang.uitls.PicCodeUtils;
 import com.linwang.uitls.web.JSONResultCode;
 import com.linwang.api.IAuthFunctionService;
-import com.linwang.base.BaseRpc;
 import com.linwang.entity.AuthFunction;
 
 
@@ -48,23 +50,15 @@ public class AuthFunctionRpc extends BaseRpc{
 		 if(Strings.isNullOrEmpty(authFunction.getUrl())){
 			 authFunction.setUrl("");
 		 }
+		 JedisPoolManager jedisPoolManager=redisCacheManager.getRedisManager();
 		 if(authFunction.getId()==null){
 			 authFunctionService.insertSelective(authFunction);
+			 addSysLog("权限设置","添加",JSONObject.toJSONString(authFunction));
 		 }else{
-			 JedisPoolManager jedisPoolManager=redisCacheManager.getRedisManager();
-			 List<AuthFunction> authFunctions=JSONObject.parseArray(jedisPoolManager.get("permission"),AuthFunction.class);
 			 authFunctionService.updateByPrimaryKeySelective(authFunction);
-			 int i=0;
-			 for (AuthFunction authFunction2 : authFunctions) {
-				 i++;
-				 if(authFunction2.getId()==authFunction.getId()){
-					 authFunctions.remove(authFunction2);
-					 break;
-				 }
-			 }
-			 authFunctions.add(i,authFunction);
-			 jedisPoolManager.set("permission",JSONObject.toJSONString(authFunctions));
+			 addSysLog("权限设置","编辑",JSONObject.toJSONString(authFunction));
 		 }
+		 jedisPoolManager.set("isPermission","1");//表示需要进行权限更新
 		 return new JSONResultCode(0);
 	 }
 	 
@@ -72,29 +66,27 @@ public class AuthFunctionRpc extends BaseRpc{
 	 @ResponseBody
 	 @RequiresPermissions("/authFunction/del")
 	 public JSONResultCode del(Integer id) throws Exception{
-		 AuthFunction a=authFunctionService.selectByPrimaryKey(id);
+		 AuthFunction authFunction=authFunctionService.selectByPrimaryKey(id);
+		 authFunctionService.deleteByPrimaryKey(id);
+		 addSysLog("权限设置","删除",JSONObject.toJSONString(authFunction));
 		 JedisPoolManager jedisPoolManager=redisCacheManager.getRedisManager();
-		 List<AuthFunction> authFunctions=JSONObject.parseArray(jedisPoolManager.get("permission"),AuthFunction.class);
-		 int i=authFunctionService.deleteByPrimaryKey(id);
-		 if(i>0){
-			 authFunctions.remove(a);
-			 jedisPoolManager.set("permission",JSONObject.toJSONString(authFunctions));
-		 }
+		 jedisPoolManager.set("isPermission","1");//表示需要进行权限更新
 		 return new JSONResultCode(0);
 	 }
 	 
 	 @RequestMapping(value="permissionEdit",method=RequestMethod.GET)
 	 @RequiresPermissions("/authFunction/permissionEdit")
 	 public String permissionAdd(Model model,Integer id) throws Exception{
-		 AuthFunction authFunction=new AuthFunction();
-		 authFunction.setOrderBy("paixu ASC");
-		 List<AuthFunction> authFunctions=authFunctionService.getList(authFunction);
+		 JedisPoolManager jedisPoolManager=redisCacheManager.getRedisManager();
+		 List<AuthFunction> authFunctions=JSONObject.parseArray(jedisPoolManager.get("permissionAll"),AuthFunction.class);
 		 model.addAttribute("authFunctions", authFunctions);
 		 
-		 AuthFunction condition=new AuthFunction();
-		 condition.setId(id);
-		 AuthFunction aFunction_=authFunctionService.getByCondition(condition);
-		 model.addAttribute("authFunction", aFunction_);
+		 if(id!=null){
+			 AuthFunction condition=new AuthFunction();
+			 condition.setId(id);
+			 AuthFunction aFunction_=authFunctionService.getByCondition(condition);
+			 model.addAttribute("authFunction", aFunction_);
+		 }
 	    return "permissionAdd";
 	 }
 }

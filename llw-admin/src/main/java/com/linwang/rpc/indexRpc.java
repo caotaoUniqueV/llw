@@ -17,10 +17,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.linwang.api.IAuthFunctionService;
 import com.linwang.api.IAuthRoleFunctionService;
 import com.linwang.api.IAuthRoleService;
-import com.linwang.base.BaseRpc;
 import com.linwang.entity.AuthFunction;
 import com.linwang.redis.JedisPoolManager;
 import com.linwang.redis.RedisCacheManager;
+import com.linwang.rpc.base.BaseRpc;
 
 @Controller
 @RequestMapping("/index")

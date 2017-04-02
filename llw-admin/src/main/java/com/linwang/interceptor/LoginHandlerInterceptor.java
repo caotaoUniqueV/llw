@@ -20,11 +20,9 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter {
 	 private RedisCacheManager redisCacheManager;
 	 public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 	            throws Exception {
-		 StringBuilder redirectURL = new StringBuilder();
-	     redirectURL.append(request.getRequestURI());
-		 JedisPoolManager jedisPoolManager=redisCacheManager.getRedisManager();
-		 AuthUser authUser=JSONObject.parseObject(jedisPoolManager.get("admin"),AuthUser.class);
-		 request.setAttribute("admin",authUser);
+//		 StringBuilder redirectURL = new StringBuilder();
+//	     redirectURL.append(request.getRequestURI());
+//		 JedisPoolManager jedisPoolManager=redisCacheManager.getRedisManager();
 		 return true;
 	 }
 }
