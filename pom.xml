@@ -392,13 +392,24 @@
                     <source>1.7</source>
                     <target>1.7</target>
                     <encoding>UTF-8</encoding>
-
-                    <compilerArguments>
                         <verbose/>
                         <bootclasspath>${java.home}/lib/rt.jar;${java.home}/lib/jce.jar</bootclasspath>
                     </compilerArguments>
                 </configuration>
             </plugin>
+</build>
+<directory>
+
+</directory>
+
+</build>
+
+
+
+
+
+
+>>>>>>> 04dbd819d00a08e7a6300f9c72a5016db528240d
 
         </plugins>
     </build>
