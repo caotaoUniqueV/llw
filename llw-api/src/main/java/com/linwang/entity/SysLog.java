@@ -8,13 +8,13 @@ public class SysLog extends BaseModelBean{
 	private java.lang.Integer id;
 	private java.lang.String moduleType;//所属模块
 	private java.lang.String oprateType;//操作类型
-	private java.lang.String name;
-	private java.lang.String uri;
-	private java.lang.String msg;
-	private java.lang.Integer adminId;
-	private java.lang.String ip;
+	private java.lang.String name;//当前权限
+	private java.lang.String uri;//相关链接
+	private java.lang.String msg;//操作记录
+	private java.lang.String adminName;//管理员
+	private java.lang.String ip;//IP地址
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private java.util.Date dateAdd;
+	private java.util.Date dateAdd;//操作时间
    
     public java.lang.Integer getId() {
         return id;
@@ -52,11 +52,11 @@ public class SysLog extends BaseModelBean{
     public void setMsg(java.lang.String msg) {
         this.msg = msg;
     }
-    public java.lang.Integer getAdminId() {
-        return adminId;
+    public java.lang.String getAdminName() {
+        return adminName;
     }
-    public void setAdminId(java.lang.Integer adminId) {
-        this.adminId = adminId;
+    public void setAdminName(java.lang.String adminName) {
+        this.adminName = adminName;
     }
     public java.lang.String getIp() {
         return ip;

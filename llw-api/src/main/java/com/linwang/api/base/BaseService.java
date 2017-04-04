@@ -21,9 +21,9 @@ public interface BaseService<T,PK extends Serializable> {
     abstract int deleteByPrimaryKey(PK id);
     int delete(Object condition);
 
-    int insert(Object record);
+    int insert(T record);
 
-    int insertSelective(Object record);
+    int insertSelective(T record);
 
     T selectByPrimaryKey(PK id);
     
