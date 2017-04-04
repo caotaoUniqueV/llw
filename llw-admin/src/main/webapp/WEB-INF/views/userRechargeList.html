@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>充值记录</title>
+<#include '/include/cssjs_up.html' encoding="UTF-8"/></head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control"id="name"> <span class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary" onclick="list($('#name').val())">搜索</button> </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>	
+                                    		<th>编号</th>
+                                        	<th></th>
+                                        	<th>充值流水编号</th>
+                                        	<th>WEIXIN ALIPAY NETBANK</th>
+                                        	<th>第三方支付返回订单号</th>
+                                        	<th></th>
+                                        	<th></th>
+                                        	<th></th>
+                                        	<th>0 未支付 1 已支付 2 失败</th>
+                                        	<th></th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody id="list">
+                                    
+                                </tbody>
+                            </table>
+                            <div id="demo7" style="text-align:center;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<#include '/include/cssjs_down.html' encoding="UTF-8"/><script type="text/javascript" src="../plugin/layui/oliverui.js"></script>
+<script type="text/x-dot-template" id="customer-tpl">
+	   {{~it.property:p:index}}
+		 		<tr> 
+		 			  <td>{{!p.id}}</td>
+                      	<td>{{!p.uid}}</td>
+                      	<td>{{!p.orderNo}}</td>
+                      	<td>{{!p.payGate}}</td>
+                      	<td>{{!p.payGateTradeId}}</td>
+                      	<td>{{!p.money}}</td>
+		 			  	<td>{{! new Date(p.dateAdd).Format("yyyy-MM-dd hh:mm:ss")}}</td>
+		 			  	<td>{{! new Date(p.dateUpdate).Format("yyyy-MM-dd hh:mm:ss")}}</td>
+                      	<td>{{!p.status}}</td>
+                      	<td>{{!p.remark}}</td>
+                      
+                </tr>
+	   {{~ }}
+</script>
+<script type="text/javascript">
+var ui;
+$(function(){
+	Oliver.use(['ajax','laypage','dot'],function(u){
+		ui=u;
+		list('');
+	});
+});
+function list(name){
+	ui.laypage({
+		url : "../userRecharge/list",
+		data :{
+			id : name
+		},
+		elem : "#list",
+		cont : "demo7",
+		rows : 10,
+		versions : "v2",
+		success : function(res){
+			var tpl = doT.template($("#customer-tpl").text());
+			var data = {property:res.data.result};
+        	return tpl(data);
+		}
+	});
+}
+</script>
+</body>
+
+</html>

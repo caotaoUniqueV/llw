@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章管理</title>
+<#include '/include/cssjs_up.html' encoding="UTF-8"/></head>
+
+<body class="gray-bg">
+	<div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-sm-12">
+            <ol class="breadcrumb" style="margin-top: 10px;margin-bottom: -10px;">
+                <li>
+                    <a href="../newsArticle/newsArticlePage">文章管理</a>
+                </li>
+                <li>
+                    <strong><#if newsArticle.id??>编辑<#else>添加</#if></strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                    	<form class="form-horizontal m-t" id="form">
+                    		<input type="hidden" name="id" value="${newsArticle.id}"/>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">类别主键ID：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="typeId" msg="请输入类别主键ID" class="form-control" type="text" value="${newsArticle.typeId}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">标题：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="title" msg="请输入标题" class="form-control" type="text" value="${newsArticle.title}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">内容：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="content" msg="请输入内容" class="form-control" type="text" value="${newsArticle.content}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">状态：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="status" msg="请输入状态" class="form-control" type="text" value="${newsArticle.status}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">排序：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="sort" msg="请输入排序" class="form-control" type="text" value="${newsArticle.sort}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">图片：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="picture" msg="请输入图片" class="form-control" type="text" value="${newsArticle.picture}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">模式：1列表，2单页：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="mode" msg="请输入模式：1列表，2单页" class="form-control" type="text" value="${newsArticle.mode}">
+		                                </div>
+		                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-3">
+                                    <button class="btn btn-primary" type="button" id="tj">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<#include '/include/cssjs_down.html' encoding="UTF-8"/><script type="text/javascript" src="../plugin/layui/oliverui.js"></script>
+    <script type="text/javascript">
+    $(function(){
+    	$('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    	Oliver.use(['ajax','login'],function(ui){
+    		$("#tj").on("click",function(){
+    			$(this).verify({
+        			url : "../newsArticle/save",
+        			formId : "form",
+        			icon : 1,
+        			loading : "提交中...",
+        			success : function (result){
+        				if(result.code==0){
+        					location.href="../newsArticle/newsArticlePage";
+        				}else{
+        					showToast(result);
+        				}
+        			}
+        		})
+    		})
+    	});
+    });
+    </script>
+</body>
+
+</html>
