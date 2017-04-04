@@ -10,7 +10,7 @@
 			<result column="name" property="name" />
 			<result column="uri" property="uri" />
 			<result column="msg" property="msg" />
-			<result column="admin_id" property="adminId" />
+			<result column="adminName" property="adminName" />
 			<result column="ip" property="ip" />
 			<result column="date_add" property="dateAdd" />
 		 </resultMap>
@@ -21,7 +21,7 @@
 	            `name`,
 	            `uri`,
 	            `msg`,
-	            `admin_id`,
+	            `adminName`,
 	            `ip`,
 	            `date_add`
 	            
@@ -63,7 +63,7 @@
 	             `name`,
 	             `uri`,
 	             `msg`,
-	             `admin_id`,
+	             `adminName`,
 	             `ip`,
 	             `date_add`
 	             
@@ -75,7 +75,7 @@
 				 #{name},
 				 #{uri},
 				 #{msg},
-				 #{adminId},
+				 #{adminName},
 				 #{ip},
 				 #{dateAdd}	         	
 		      )    
@@ -101,8 +101,8 @@
 		              <if test="msg!= null" >
 						`msg`,
 					  </if>
-		              <if test="adminId!= null" >
-						`admin_id`,
+		              <if test="adminName!= null" >
+						`adminName`,
 					  </if>
 		              <if test="ip!= null" >
 						`ip`,
@@ -127,8 +127,8 @@
 		         	   <if test="msg != null" >
 						#{msg},
 					   </if>
-		         	   <if test="adminId != null" >
-						#{adminId},
+		         	   <if test="adminName != null" >
+						#{adminName},
 					   </if>
 		         	   <if test="ip != null" >
 						#{ip},
@@ -156,8 +156,8 @@
 		         <if test="msg != null" >
 					`msg` = #{msg},
 			  	 </if>	
-		         <if test="adminId != null" >
-					`admin_id` = #{adminId},
+		         <if test="adminName != null" >
+					`adminName` = #{adminName},
 			  	 </if>	
 		         <if test="ip != null" >
 					`ip` = #{ip},
@@ -175,7 +175,7 @@
 					`name` = #{name},
 					`uri` = #{uri},
 					`msg` = #{msg},
-					`admin_id` = #{adminId},
+					`adminName` = #{adminName},
 					`ip` = #{ip},
 					`date_add` = #{dateAdd}
 	         		
@@ -199,8 +199,8 @@
 		         <if test="entity.msg != null" >
 					`msg` = #{entity.msg},
 			  	 </if>	
-		         <if test="entity.adminId != null" >
-					`admin_id` = #{entity.adminId},
+		         <if test="entity.adminName != null" >
+					`adminName` = #{entity.adminName},
 			  	 </if>	
 		         <if test="entity.ip != null" >
 					`ip` = #{entity.ip},
@@ -225,10 +225,10 @@
 		    	<if test="id != null" >
 			       AND `id` = #{id}
 			    </if>
-		      	<if test="module_type != null" >
+		      	<if test="moduleType != null" >
 			       AND `module_type` = #{moduleType}
 			    </if>
-		      	<if test="oprate_type != null" >
+		      	<if test="oprateType != null" >
 			       AND `oprate_type` = #{oprateType}
 			    </if>
 		      	<if test="name != null" >
@@ -240,13 +240,13 @@
 		      	<if test="msg != null" >
 			       AND `msg` = #{msg}
 			    </if>
-		      	<if test="admin_id != null" >
-			       AND `admin_id` = #{adminId}
+		      	<if test="adminName != null" >
+			       AND `adminName` = #{adminName}
 			    </if>
 		      	<if test="ip != null" >
 			       AND `ip` = #{ip}
 			    </if>
-		      	<if test="date_add != null" >
+		      	<if test="dateAdd != null" >
 			       AND `date_add` = #{dateAdd}
 			    </if>
 			  <if test="condition != null">
@@ -265,8 +265,8 @@
 				  <if test="condition.msg != null" >
 			        AND `msg` = #{condition.msg}
 				  </if>
-				  <if test="condition.adminId != null" >
-			        AND `admin_id` = #{condition.adminId}
+				  <if test="condition.adminName != null" >
+			        AND `adminName` = #{condition.adminName}
 				  </if>
 				  <if test="condition.ip != null" >
 			        AND `ip` = #{condition.ip}
