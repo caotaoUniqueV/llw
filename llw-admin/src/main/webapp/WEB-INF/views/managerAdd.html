@@ -32,37 +32,44 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">用户名：</label>
                                 <div class="col-sm-8">
-                                    <input name="username" msg="请输入用户名" class="form-control" type="text" value="${authUser.name}">
+                                    <input name="username" msg="请输入用户名" class="form-control" type="text" value="${authUser.username}">
                                 </div>
                             </div>
+                            <#if !authUser.id??>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">密码：</label>
                                 <div class="col-sm-8">
-                                    <input name="pwd" msg="请输入密码" class="form-control" type="text" value="${authUser.name}">
+                                    <input name="pwd" msg="请输入密码" class="form-control" type="password" value="">
                                 </div>
                             </div>
+                            </#if>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">姓名：</label>
                                 <div class="col-sm-8">
-                                    <input name="realname" class="form-control" type="text" value="${authUser.name}">
+                                    <input name="realname" class="form-control" type="text" value="${authUser.realname}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">手机号：</label>
                                 <div class="col-sm-8">
-                                    <input name="mobile" class="form-control" type="text" value="${authUser.name}">
+                                    <input name="mobile" class="form-control" type="text" value="${authUser.mobile}">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">权限：</label>
-
-                                <div class="col-sm-10">
-                                    <label class="checkbox-inline i-checks">
-                                        <input type="checkbox" value="option1">a</label>
-                                    <label class="checkbox-inline i-checks">
-                                        <input type="checkbox" value="option2">b</label>
-                                    <label class="checkbox-inline i-checks">
-                                        <input type="checkbox" value="option3">c</label>
+                                <label class="col-sm-3 control-label">权限：</label>
+                                <div class="col-sm-8">
+                                	<#list authRoles as role>
+                                		<#assign checedFlag = false>
+                                		<#list myRoles as sel>
+									      <#if sel.roleId == role.id>
+									      <#assign checedFlag = true>
+									      <#break>
+									      </#if>
+									    </#list>
+	                                    <label class="checkbox-inline i-checks">
+	                                        <input type="checkbox" value="${role.id}" name="roleIds" ${checedFlag?string("checked","")}>${role.name}
+	                                    </label>
+                                    </#list>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -80,6 +87,10 @@
 <script type="text/javascript" src="../plugin/layui/oliverui.js"></script>
     <script type="text/javascript">
     $(function(){
+    	$('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
     	Oliver.use(['ajax','login'],function(ui){
     		$("#tj").on("click",function(){
     			$(this).verify({
@@ -89,7 +100,7 @@
         			loading : "提交中...",
         			success : function (result){
         				if(result.code==0){
-        					location.href="../authUser/roleManagement";
+        					location.href="../authUser/managers";
         				}else{
         					showToast(result);
         				}

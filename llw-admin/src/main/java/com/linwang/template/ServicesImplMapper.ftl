@@ -8,7 +8,7 @@ import com.linwang.impl.base.BaseServiceImpl;
 import javax.annotation.Resource;
 
 @Service(version="1.0.0")
-public class ${servicesImpl} extends BaseServiceImpl<${methodName},java.lang.String,DaoSupport,java.lang.Integer> implements ${IServices} {
+public class ${servicesImpl} extends BaseServiceImpl<${methodName},java.lang.String,DaoSupport<${methodName}>,java.lang.Integer> implements ${IServices} {
  
 	@Resource(name = "daoSupport")
 	private DaoSupport dao;
