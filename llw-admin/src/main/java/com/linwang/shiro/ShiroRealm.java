@@ -31,11 +31,13 @@ import com.linwang.api.IAuthRoleService;
 import com.linwang.api.IAuthUserRoleService;
 import com.linwang.api.IAuthUserService;
 import com.linwang.entity.AuthFunction;
+import com.linwang.entity.AuthRole;
 import com.linwang.entity.AuthRoleFunction;
 import com.linwang.entity.AuthUser;
 import com.linwang.entity.AuthUserRole;
 import com.linwang.redis.JedisPoolManager;
 import com.linwang.uitls.AccountDigestUtils;
+import com.linwang.uitls.StaticProp;
 import com.linwang.uitls.web.Expressions;
 
 
@@ -65,7 +67,7 @@ public class ShiroRealm extends AuthorizingRealm {
 	
 	/*
 	 * 登录信息和用户验证信息验证(non-Javadoc)
-	 * 认证操作，判断一个请求是否被允许进入系统 
+	 * 认证操作，判断一个请求是否被允许进入系统  AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key"))
 	 * @see org.apache.shiro.realm.AuthenticatingRealm#doGetAuthenticationInfo(org.apache.shiro.authc.AuthenticationToken)
 	 */
 	@Override
@@ -73,10 +75,10 @@ public class ShiroRealm extends AuthorizingRealm {
 		String username = (String)token.getPrincipal();  				//得到用户名 
 	    String password = new String((char[])token.getCredentials()); 	//得到密码
 	    Session session=SecurityUtils.getSubject().getSession();
-	    String isLogin=jedisPoolManager.get("isLogin");//是否需要更新
+	    String isLogin=jedisPoolManager.get("isLogin:"+ AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key")));//是否需要更新
 	    AuthUser admin=null;
 		if(!Strings.isNullOrEmpty(isLogin)&&"0".equals(isLogin)){
-			admin=JSONObject.parseObject(jedisPoolManager.get("admin"), AuthUser.class);
+			admin=JSONObject.parseObject(jedisPoolManager.get("admin:"+ AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key"))), AuthUser.class);
 		}else{
 			//表没有记录插入默认记录
 			 admin=authUserService.getByCondition(null);
@@ -94,7 +96,10 @@ public class ShiroRealm extends AuthorizingRealm {
 			 AuthUser condition = new AuthUser();
 		     condition.setUsername(username);
 			 admin = authUserService.getByCondition(condition);
-			 jedisPoolManager.set("isLogin","0");
+			 if(admin!=null){
+				 jedisPoolManager.set("admin:"+ AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key")),JSONObject.toJSONString(admin));
+				 jedisPoolManager.set("isLogin:"+ AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key")),"0");
+			 }
 		}
 		if(admin == null){
 			 throw new UnknownAccountException("账号不存在");
@@ -110,7 +115,6 @@ public class ShiroRealm extends AuthorizingRealm {
 		 admin.setIpLogin(session.getHost());
 		 authUserService.updateByPrimaryKey(admin);
 		 session.setAttribute("admin",admin);
-		 jedisPoolManager.set("admin",JSONObject.toJSONString(admin));
 		 return new SimpleAuthenticationInfo(username, password, getName());
 	}
 	
@@ -125,25 +129,42 @@ public class ShiroRealm extends AuthorizingRealm {
 		Set<String> permissions=Sets.newHashSet();
 		List<String> permissions_=Lists.newArrayList();
 		permissions.add("admin:admin");
+		List<AuthRole> authRoles=Lists.newArrayList();
 		List<AuthFunction> authFunctions=Lists.newArrayList();
 		List<AuthFunction> authFunctionAlls=Lists.newArrayList();
-		String isPermission=jedisPoolManager.get("isPermission");//是否需要更新
+		String isPermission=jedisPoolManager.get("isPermission:"+ AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key")));//是否需要更新
 		if(!Strings.isNullOrEmpty(isPermission)&&"0".equals(isPermission)){
-			permissions_=JSONObject.parseArray(jedisPoolManager.get("stringPermissions"),String.class);
+			permissions_=JSONObject.parseArray(jedisPoolManager.get("stringPermissions:"+ AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key"))),String.class);
 			permissions.addAll(permissions_);
-			authFunctions=JSONObject.parseArray(jedisPoolManager.get("permission"),AuthFunction.class);
-			authFunctionAlls=JSONObject.parseArray(jedisPoolManager.get("permissionAll"),AuthFunction.class);
+			authFunctions=JSONObject.parseArray(jedisPoolManager.get("permission:"+ AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key"))),AuthFunction.class);
+			authFunctionAlls=JSONObject.parseArray(jedisPoolManager.get("permissionAll:"+ AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key"))),AuthFunction.class);
+			authRoles=JSONObject.parseArray(jedisPoolManager.get("roles:"+ AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key"))),AuthRole.class);
 		}else{
-			AuthUser admin=JSONObject.parseObject(jedisPoolManager.get("admin"), AuthUser.class);
+			AuthUser admin=JSONObject.parseObject(jedisPoolManager.get("admin:"+ AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key"))), AuthUser.class);
+		    
+			
+			AuthFunction authFunction=new AuthFunction();
+			authFunction.setOrderBy("paixu ASC");
+			authFunctionAlls=authFunctionService.getList(authFunction);
+			
+			authRoles=authRoleService.getList();
+			jedisPoolManager.set("roles:"+ AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key")),JSONObject.toJSONString(authRoles));
+			jedisPoolManager.set("permissionAll:"+ AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key")),JSONObject.toJSONString(authFunctionAlls));
+		    jedisPoolManager.set("permission:"+ AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key")),JSONObject.toJSONString(authFunctions));
+			
 		    
 		    AuthUserRole authUserRole=new AuthUserRole();
 		    authUserRole.setUserId(admin.getId());
 		    List<AuthUserRole> roleActionsList = authUserRoleService.getList(authUserRole);
 		    if(roleActionsList==null){
-		    	return null;
+		    	SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+		        authorizationInfo.setStringPermissions(permissions);
+		        return authorizationInfo;
 		    }
 		    if(roleActionsList.size()==0){
-		    	return null;
+		    	SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+		        authorizationInfo.setStringPermissions(permissions);
+		        return authorizationInfo;
 		    }
 		    List<Integer> action2s = Lists.newArrayList(-1);
 		    for (AuthUserRole authUserRole_ : roleActionsList) {//获取角色
@@ -154,16 +175,20 @@ public class ShiroRealm extends AuthorizingRealm {
 			authRoleFunction.and(Expressions.in("role_id", action2s));
 			List<AuthRoleFunction> authRoleFunctions =authRoleFunctionService.getList(authRoleFunction);
 			if(authRoleFunctions==null){
-				return null;
+				SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+		        authorizationInfo.setStringPermissions(permissions);
+		        return authorizationInfo;
 		    }
 		    if(authRoleFunctions.size()==0){
-		    	return null;
+		    	SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+		        authorizationInfo.setStringPermissions(permissions);
+		        return authorizationInfo;
 		    }
 		    List<Integer> actions = Lists.newArrayList(-1);
 	        for(AuthRoleFunction roleActions : authRoleFunctions){
 	            actions.add(roleActions.getFunctionId());
 	        }
-		    AuthFunction authFunction=new AuthFunction();
+		    authFunction=new AuthFunction();
 		    authFunction.setOrderBy("paixu ASC");
 			authFunction.and(Expressions.in("id", actions));
 			List<AuthFunction> authFunction_=authFunctionService.getList(authFunction);
@@ -173,13 +198,9 @@ public class ShiroRealm extends AuthorizingRealm {
 				}
 				authFunctions.add(authFunction2);
 			}
-			authFunction=new AuthFunction();
-			authFunction.setOrderBy("paixu ASC");
-			authFunctionAlls=authFunctionService.getList(authFunction);
-			jedisPoolManager.set("permissionAll",JSONObject.toJSONString(authFunctionAlls));
-		    jedisPoolManager.set("permission",JSONObject.toJSONString(authFunctions));
-		    jedisPoolManager.set("stringPermissions",JSONObject.toJSONString(permissions));
-		    jedisPoolManager.set("isPermission","0");
+		    jedisPoolManager.set("stringPermissions:"+ AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key")),JSONObject.toJSONString(permissions));
+		    jedisPoolManager.set("isPermission:"+ AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key")),"0");
+		    jedisPoolManager.set("permission:"+ AccountDigestUtils.getMd5Pwd(username,StaticProp.sysConfig.get("cookie.secret.key")),JSONObject.toJSONString(authFunctions));
 		}
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         authorizationInfo.setStringPermissions(permissions);

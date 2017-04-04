@@ -41,10 +41,10 @@
 		    DELETE FROM `auth_role`
 		    WHERE `id` = #{id}
 		  </delete>
-         <insert id="insertAuthRole" useGeneratedKeys="true" keyProperty="id" parameterType="com.linwang.entity.AuthRole">
-         	<!--  <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+         <insert id="insertAuthRole" parameterType="com.linwang.entity.AuthRole">
+         	 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
 		      SELECT LAST_INSERT_ID()
-		     </selectKey> -->
+		     </selectKey>
              insert into `auth_role`(
 	             `name`,
 	             `profile`
@@ -56,7 +56,7 @@
 				 #{profile}	         	
 		      )    
 	      </insert>
-	      <insert id="insertSelective" parameterType="com.linwang.entity.AuthRole" keyProperty="id">
+	      <insert id="insertSelective" parameterType="com.linwang.entity.AuthRole" >
 			    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
 			      SELECT LAST_INSERT_ID()
 			    </selectKey>

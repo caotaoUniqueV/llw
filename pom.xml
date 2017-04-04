@@ -22,7 +22,13 @@
 	<!--         <jackson.version>2.5.0</jackson.version> -->
 	  </properties>
   
+  	 
 	  <dependencies>
+	  		 <dependency>
+			  <groupId>com.upyun</groupId>
+			  <artifactId>java-sdk</artifactId>
+			  <version>3.13</version>
+			</dependency>
 	        <!-- spring核心�?-->
 	        <!-- springframe start -->
 	        <dependency>

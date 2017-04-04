@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ConfigNoticeTempleMapper">
+         <resultMap id="BaseResultMap" type="com.linwang.entity.ConfigNoticeTemple" extends="associationMap">
+			<id column="id" property="id" />
+			<result column="nid" property="nid" />
+			<result column="notice_type" property="noticeType" />
+			<result column="is_enable" property="isEnable" />
+			<result column="name" property="name" />
+			<result column="remark" property="remark" />
+			<result column="type" property="type" />
+			<result column="title_templet" property="titleTemplet" />
+			<result column="templet" property="templet" />
+			<result column="date_add" property="dateAdd" />
+			<result column="date_update" property="dateUpdate" />
+		 </resultMap>
+		 <sql id="Base_Column_List" >
+				`id`,
+	            `nid`,
+	            `notice_type`,
+	            `is_enable`,
+	            `name`,
+	            `remark`,
+	            `type`,
+	            `title_templet`,
+	            `templet`,
+	            `date_add`,
+	            `date_update`
+	            
+		 </sql>
+		 <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `config_notice_temple`
+		    WHERE `id` = #{id}
+		  </select>
+		  <select id="getByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `config_notice_temple`
+		    <include refid="map_params_where_condition" />
+			<if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+			LIMIT 1
+		  </select>
+		  <select id="aggregate" parameterType="java.util.Map" resultType="java.util.Map">
+		    SELECT ${aggregate_sql} FROM `config_notice_temple`
+		    <include refid="map_params_where_condition" />
+		  </select>
+		  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		    DELETE FROM `config_notice_temple`
+		    WHERE `id` = #{id}
+		  </delete>
+         <insert id="insertConfigNoticeTemple" parameterType="com.linwang.entity.ConfigNoticeTemple">
+         	 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+		      SELECT LAST_INSERT_ID()
+		     </selectKey>
+             insert into `config_notice_temple`(
+	             `nid`,
+	             `notice_type`,
+	             `is_enable`,
+	             `name`,
+	             `remark`,
+	             `type`,
+	             `title_templet`,
+	             `templet`,
+	             `date_add`,
+	             `date_update`
+	             
+             ) 
+	         values 
+	         (
+				 #{nid},
+				 #{noticeType},
+				 #{isEnable},
+				 #{name},
+				 #{remark},
+				 #{type},
+				 #{titleTemplet},
+				 #{templet},
+				 #{dateAdd},
+				 #{dateUpdate}	         	
+		      )    
+	      </insert>
+	      <insert id="insertSelective" parameterType="com.linwang.entity.ConfigNoticeTemple" >
+			    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+			      SELECT LAST_INSERT_ID()
+			    </selectKey>
+			    INSERT INTO `config_notice_temple`
+			    <trim prefix="(" suffix=")" suffixOverrides="," >
+		              <if test="nid!= null" >
+						`nid`,
+					  </if>
+		              <if test="noticeType!= null" >
+						`notice_type`,
+					  </if>
+		              <if test="isEnable!= null" >
+						`is_enable`,
+					  </if>
+		              <if test="name!= null" >
+						`name`,
+					  </if>
+		              <if test="remark!= null" >
+						`remark`,
+					  </if>
+		              <if test="type!= null" >
+						`type`,
+					  </if>
+		              <if test="titleTemplet!= null" >
+						`title_templet`,
+					  </if>
+		              <if test="templet!= null" >
+						`templet`,
+					  </if>
+		              <if test="dateAdd!= null" >
+						`date_add`,
+					  </if>
+		              <if test="dateUpdate!= null" >
+						`date_update`,
+					  </if>
+			    </trim>
+			    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		         	   <if test="nid != null" >
+						#{nid},
+					   </if>
+		         	   <if test="noticeType != null" >
+						#{noticeType},
+					   </if>
+		         	   <if test="isEnable != null" >
+						#{isEnable},
+					   </if>
+		         	   <if test="name != null" >
+						#{name},
+					   </if>
+		         	   <if test="remark != null" >
+						#{remark},
+					   </if>
+		         	   <if test="type != null" >
+						#{type},
+					   </if>
+		         	   <if test="titleTemplet != null" >
+						#{titleTemplet},
+					   </if>
+		         	   <if test="templet != null" >
+						#{templet},
+					   </if>
+		         	   <if test="dateAdd != null" >
+						#{dateAdd},
+					   </if>
+		         	   <if test="dateUpdate != null" >
+						#{dateUpdate},
+					   </if>
+			    </trim>
+		  </insert>
+          <update id="updateByPrimaryKeySelective" parameterType="com.linwang.entity.ConfigNoticeTemple" >
+			UPDATE `config_notice_temple`
+			<set >
+		         <if test="nid != null" >
+					`nid` = #{nid},
+			  	 </if>	
+		         <if test="noticeType != null" >
+					`notice_type` = #{noticeType},
+			  	 </if>	
+		         <if test="isEnable != null" >
+					`is_enable` = #{isEnable},
+			  	 </if>	
+		         <if test="name != null" >
+					`name` = #{name},
+			  	 </if>	
+		         <if test="remark != null" >
+					`remark` = #{remark},
+			  	 </if>	
+		         <if test="type != null" >
+					`type` = #{type},
+			  	 </if>	
+		         <if test="titleTemplet != null" >
+					`title_templet` = #{titleTemplet},
+			  	 </if>	
+		         <if test="templet != null" >
+					`templet` = #{templet},
+			  	 </if>	
+		         <if test="dateAdd != null" >
+					`date_add` = #{dateAdd},
+			  	 </if>	
+		         <if test="dateUpdate != null" >
+					`date_update` = #{dateUpdate},
+			  	 </if>	
+			</set>
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByPrimaryKey" parameterType="com.linwang.entity.ConfigNoticeTemple" >
+			UPDATE `config_notice_temple` SET
+					`nid` = #{nid},
+					`notice_type` = #{noticeType},
+					`is_enable` = #{isEnable},
+					`name` = #{name},
+					`remark` = #{remark},
+					`type` = #{type},
+					`title_templet` = #{titleTemplet},
+					`templet` = #{templet},
+					`date_add` = #{dateAdd},
+					`date_update` = #{dateUpdate}
+	         		
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByCondition" parameterType="java.util.Map" >
+			UPDATE `config_notice_temple`
+			<set>
+		         <if test="entity.nid != null" >
+					`nid` = #{entity.nid},
+			  	 </if>	
+		         <if test="entity.noticeType != null" >
+					`notice_type` = #{entity.noticeType},
+			  	 </if>	
+		         <if test="entity.isEnable != null" >
+					`is_enable` = #{entity.isEnable},
+			  	 </if>	
+		         <if test="entity.name != null" >
+					`name` = #{entity.name},
+			  	 </if>	
+		         <if test="entity.remark != null" >
+					`remark` = #{entity.remark},
+			  	 </if>	
+		         <if test="entity.type != null" >
+					`type` = #{entity.type},
+			  	 </if>	
+		         <if test="entity.titleTemplet != null" >
+					`title_templet` = #{entity.titleTemplet},
+			  	 </if>	
+		         <if test="entity.templet != null" >
+					`templet` = #{entity.templet},
+			  	 </if>	
+		         <if test="entity.dateAdd != null" >
+					`date_add` = #{entity.dateAdd},
+			  	 </if>	
+		         <if test="entity.dateUpdate != null" >
+					`date_update` = #{entity.dateUpdate},
+			  	 </if>	
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <update id="updateIncreateNumbers" parameterType="java.util.Map" >
+			UPDATE `config_notice_temple`
+			<set>
+			  <foreach collection="increateNumbers" item="numberCloums">
+				`${numberCloums.column}` = `${numberCloums.column}` + #{numberCloums.number},
+			  </foreach>
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <sql id="map_params_where_condition" >
+		    <trim prefix="WHERE" prefixOverrides="AND">
+		    	<if test="id != null" >
+			       AND `id` = #{id}
+			    </if>
+		      	<if test="nid != null" >
+			       AND `nid` = #{nid}
+			    </if>
+		      	<if test="noticeType != null" >
+			       AND `notice_type` = #{noticeType}
+			    </if>
+		      	<if test="isEnable != null" >
+			       AND `is_enable` = #{isEnable}
+			    </if>
+		      	<if test="name != null" >
+			       AND `name` = #{name}
+			    </if>
+		      	<if test="remark != null" >
+			       AND `remark` = #{remark}
+			    </if>
+		      	<if test="type != null" >
+			       AND `type` = #{type}
+			    </if>
+		      	<if test="titleTemplet != null" >
+			       AND `title_templet` = #{titleTemplet}
+			    </if>
+		      	<if test="templet != null" >
+			       AND `templet` = #{templet}
+			    </if>
+		      	<if test="dateAdd != null" >
+			       AND `date_add` = #{dateAdd}
+			    </if>
+		      	<if test="dateUpdate != null" >
+			       AND `date_update` = #{dateUpdate}
+			    </if>
+			  <if test="condition != null">
+				  <if test="condition.nid != null" >
+			        AND `nid` = #{condition.nid}
+				  </if>
+				  <if test="condition.noticeType != null" >
+			        AND `notice_type` = #{condition.noticeType}
+				  </if>
+				  <if test="condition.isEnable != null" >
+			        AND `is_enable` = #{condition.isEnable}
+				  </if>
+				  <if test="condition.name != null" >
+			        AND `name` = #{condition.name}
+				  </if>
+				  <if test="condition.remark != null" >
+			        AND `remark` = #{condition.remark}
+				  </if>
+				  <if test="condition.type != null" >
+			        AND `type` = #{condition.type}
+				  </if>
+				  <if test="condition.titleTemplet != null" >
+			        AND `title_templet` = #{condition.titleTemplet}
+				  </if>
+				  <if test="condition.templet != null" >
+			        AND `templet` = #{condition.templet}
+				  </if>
+				  <if test="condition.dateAdd != null" >
+			        AND `date_add` = #{condition.dateAdd}
+				  </if>
+				  <if test="condition.dateUpdate != null" >
+			        AND `date_update` = #{condition.dateUpdate}
+				  </if>
+			  </if>
+			  <if test="vo != null and !vo.expressionChainList.empty">
+		        AND
+		        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		      <if test="expressionChainList != null and !expressionChainList.empty">
+		        AND
+		        <foreach collection="expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		    </trim>
+		 </sql>
+         <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT
+		    <include refid="Base_Column_List" />
+		    FROM `config_notice_temple`
+		    <include refid="map_params_where_condition" />
+		    <if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize != null" >
+		      LIMIT #{pageBeginIndex},#{pageSize}
+		    </if>
+		    <if test="pageBeginIndex == null and pageSize != null" >
+		      LIMIT #{pageSize}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize == null" >
+		      LIMIT #{pageBeginIndex}
+		    </if>
+		  </select>
+		  <delete id="delete" parameterType="java.util.Map" >
+		    DELETE
+		    FROM `config_notice_temple`
+		    <include refid="map_params_where_condition" />
+		  </delete>
+		  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		    SELECT COUNT(id)
+		    FROM `config_notice_temple`
+		    <include refid="map_params_where_condition" />
+		  </select>
+</mapper>

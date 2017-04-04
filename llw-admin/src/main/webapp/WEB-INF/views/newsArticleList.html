@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章管理</title>
+<#include '/include/cssjs_up.html' encoding="UTF-8"/></head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <input type="text" placeholder="请输入关键词" class="input-sm form-control"id="name"> <span class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary" onclick="list($('#name').val())">搜索</button> </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                            	<button type="button" class="btn btn-sm btn-success" onclick="window.location.href='../newsArticle/add'">添加</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>	
+                                    		<th>编号</th>
+                                        	<th>类别主键ID</th>
+                                        	<th>标题</th>
+                                        	<th>内容</th>
+                                        	<th>创建时间</th>
+                                        	<th>修改时间</th>
+                                        	<th>状态</th>
+                                        	<th>排序</th>
+                                        	<th>图片</th>
+                                        	<th>发布时间</th>
+                                        	<th>模式：1列表，2单页</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="list">
+                                    
+                                </tbody>
+                            </table>
+                            <div id="demo7" style="text-align:center;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<#include '/include/cssjs_down.html' encoding="UTF-8"/><script type="text/javascript" src="../plugin/layui/oliverui.js"></script>
+<script type="text/x-dot-template" id="customer-tpl">
+	   {{~it.property:p:index}}
+		 		<tr> 
+		 			  <td>{{!p.id}}</td>
+                      	<td>{{!p.typeId}}</td>
+                      	<td>{{!p.title}}</td>
+                      	<td>{{!p.content}}</td>
+		 			  	<td>{{! new Date(p.gmtCreate).Format("yyyy-MM-dd hh:mm:ss")}}</td>
+		 			  	<td>{{! new Date(p.gmtModify).Format("yyyy-MM-dd hh:mm:ss")}}</td>
+                      	<td>{{!p.status}}</td>
+                      	<td>{{!p.sort}}</td>
+                      	<td>{{!p.picture}}</td>
+		 			  	<td>{{! new Date(p.gmtSend).Format("yyyy-MM-dd hh:mm:ss")}}</td>
+                      	<td>{{!p.mode}}</td>
+                      <td>
+						 <button type="button" class="btn btn-outline btn-primary" style="margin-right: 10px;" onclick="window.location.href='../newsArticle/add?id={{!p.id}}'">编辑</button>
+						 <button type="button" class="btn btn-outline btn-danger" onclick="del({{!p.id}},this)">删除</button>
+					  </td>
+                </tr>
+	   {{~ }}
+</script>
+<script type="text/javascript">
+var ui;
+$(function(){
+	Oliver.use(['ajax','laypage','dot'],function(u){
+		ui=u;
+		list('');
+	});
+});
+function list(name){
+	ui.laypage({
+		url : "../newsArticle/list",
+		data :{
+			id : name
+		},
+		elem : "#list",
+		cont : "demo7",
+		rows : 10,
+		versions : "v2",
+		success : function(res){
+			var tpl = doT.template($("#customer-tpl").text());
+			var data = {property:res.data.result};
+        	return tpl(data);
+		}
+	});
+}
+function del(id,obj){
+	var index=parent.layer.confirm('是否删除该管理员？', {
+		  btn: ['确定','取消'] //按钮
+		}, function(){
+			parent.layer.close(index);
+			$(obj).ajax({
+	    		url : "../newsArticle/del?id="+id,
+	    		icon : 1,
+	    		loading : "删除中...",
+	    		success : function(result){
+	    			if(result.code==0){
+						location.href="../newsArticle/newsArticlePage";
+					}else{
+						showToast(result);
+					}
+	    		}
+	    	});
+		})
+}
+</script>
+</body>
+
+</html>

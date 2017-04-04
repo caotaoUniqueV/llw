@@ -2,7 +2,6 @@
 <html>
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理员列表</title>
@@ -58,14 +57,18 @@
 		 		<tr>
                       <td>{{!p.id}}</td>
                       <td>{{!p.username}}</td>
-                      <td>{{! new Date(p.dateLogin).Format("yyyy-MM-dd hh:mm:ss")}}</td>
-                      <td>{{!p.ipLogin}}</td>
-                      <td>{{!p.realname}}</td>
-                      <td>{{!p.mobile}}</td>
-                      <td><i class="fa {{? p.isLock==0}}fa-check{{??}}fa-times{{?}} text-navy"></i></td>
+                      <td>{{? p.dateLogin!=null&&p.dateLogin!=''}}{{! new Date(p.dateLogin).Format("yyyy-MM-dd hh:mm:ss")}}{{??}}-{{?}}</td>
+                      <td>{{? p.ipLogin!=null&&p.ipLogin!=''}}{{!p.ipLogin}}{{??}}-{{?}}</td>
+                      <td>{{? p.realname!=null&&p.realname!=''}}{{!p.realname}}{{??}}-{{?}}</td>
+                      <td>{{? p.mobile!=null&&p.mobile!=''}}{{!p.mobile}}{{??}}-{{?}}</td>
+                      <td><i class="fa {{? p.isLock==0}}fa-check{{??}}fa-times{{?}} text-navy" {{? p.isLock==1}}style="color:#ED5565"{{?}}></i></td>
                       <td>
 						 <button type="button" class="btn btn-outline btn-primary" style="margin-right: 10px;" onclick="window.location.href='../authUser/managerAdd?id={{!p.id}}'">编辑</button>
-						 <button type="button" class="btn btn-outline btn-danger">删除</button>
+						 {{? p.username!='admin'}}
+							<button type="button" class="btn btn-outline btn-warning" style="margin-right: 10px;" onclick="upd({{!p.id}},this,1,'重置中...','重置成功')">重置密码</button>
+							<button type="button" class="btn btn-outline btn-danger" style="margin-right: 10px;" onclick="upd({{!p.id}},this,{{? p.isLock==0}}2,'禁用中...','禁用成功'{{??}}3,'启用中...','启用成功'{{?}})">{{? p.isLock==0}}禁用{{??}}启用{{?}}</button>
+							<button type="button" class="btn btn-outline btn-danger" onclick="del({{!p.id}},this)">删除</button>
+						 {{?}}
 					  </td>
                 </tr>
 	   {{~ }}
@@ -92,6 +95,45 @@ function list(name){
 			var tpl = doT.template($("#customer-tpl").text());
 			var data = {property:res.data.result};
         	return tpl(data);
+		}
+	});
+}
+function del(id,obj){
+	var index=parent.layer.confirm('是否删除该管理员？', {
+		  btn: ['确定','取消'] //按钮
+		}, function(){
+			parent.layer.close(index);
+			$(obj).ajax({
+	    		url : "../authUser/del?id="+id,
+	    		icon : 1,
+	    		loading : "删除中...",
+	    		success : function(result){
+	    			if(result.code==0){
+						location.href="../authUser/managers";
+					}else{
+						showToast(result);
+					}
+	    		}
+	    	});
+		})
+}
+
+function upd(id,obj,type,loading,msg){
+	$(obj).ajax({
+		url : "../authUser/save?id="+id,
+		icon : 1,
+		data : {
+			type : type
+		},
+		loading : loading,
+		success : function(result){
+			if(result.code==0){
+				showToast(msg,null,function(){
+					location.href="../authUser/managers";
+				})
+			}else{
+				showToast(result);
+			}
 		}
 	});
 }

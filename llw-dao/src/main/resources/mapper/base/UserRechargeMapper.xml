@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserRechargeMapper">
+         <resultMap id="BaseResultMap" type="com.linwang.entity.UserRecharge" extends="associationMap">
+			<id column="id" property="id" />
+			<result column="uid" property="uid" />
+			<result column="order_no" property="orderNo" />
+			<result column="pay_gate" property="payGate" />
+			<result column="pay_gate_trade_id" property="payGateTradeId" />
+			<result column="money" property="money" />
+			<result column="date_add" property="dateAdd" />
+			<result column="date_update" property="dateUpdate" />
+			<result column="status" property="status" />
+			<result column="remark" property="remark" />
+		 </resultMap>
+		 <sql id="Base_Column_List" >
+				`id`,
+	            `uid`,
+	            `order_no`,
+	            `pay_gate`,
+	            `pay_gate_trade_id`,
+	            `money`,
+	            `date_add`,
+	            `date_update`,
+	            `status`,
+	            `remark`
+	            
+		 </sql>
+		 <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `user_recharge`
+		    WHERE `id` = #{id}
+		  </select>
+		  <select id="getByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `user_recharge`
+		    <include refid="map_params_where_condition" />
+			<if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+			LIMIT 1
+		  </select>
+		  <select id="aggregate" parameterType="java.util.Map" resultType="java.util.Map">
+		    SELECT ${aggregate_sql} FROM `user_recharge`
+		    <include refid="map_params_where_condition" />
+		  </select>
+		  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		    DELETE FROM `user_recharge`
+		    WHERE `id` = #{id}
+		  </delete>
+         <insert id="insertUserRecharge" parameterType="com.linwang.entity.UserRecharge">
+         	 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+		      SELECT LAST_INSERT_ID()
+		     </selectKey>
+             insert into `user_recharge`(
+	             `uid`,
+	             `order_no`,
+	             `pay_gate`,
+	             `pay_gate_trade_id`,
+	             `money`,
+	             `date_add`,
+	             `date_update`,
+	             `status`,
+	             `remark`
+	             
+             ) 
+	         values 
+	         (
+				 #{uid},
+				 #{orderNo},
+				 #{payGate},
+				 #{payGateTradeId},
+				 #{money},
+				 #{dateAdd},
+				 #{dateUpdate},
+				 #{status},
+				 #{remark}	         	
+		      )    
+	      </insert>
+	      <insert id="insertSelective" parameterType="com.linwang.entity.UserRecharge" >
+			    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+			      SELECT LAST_INSERT_ID()
+			    </selectKey>
+			    INSERT INTO `user_recharge`
+			    <trim prefix="(" suffix=")" suffixOverrides="," >
+		              <if test="uid!= null" >
+						`uid`,
+					  </if>
+		              <if test="orderNo!= null" >
+						`order_no`,
+					  </if>
+		              <if test="payGate!= null" >
+						`pay_gate`,
+					  </if>
+		              <if test="payGateTradeId!= null" >
+						`pay_gate_trade_id`,
+					  </if>
+		              <if test="money!= null" >
+						`money`,
+					  </if>
+		              <if test="dateAdd!= null" >
+						`date_add`,
+					  </if>
+		              <if test="dateUpdate!= null" >
+						`date_update`,
+					  </if>
+		              <if test="status!= null" >
+						`status`,
+					  </if>
+		              <if test="remark!= null" >
+						`remark`,
+					  </if>
+			    </trim>
+			    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		         	   <if test="uid != null" >
+						#{uid},
+					   </if>
+		         	   <if test="orderNo != null" >
+						#{orderNo},
+					   </if>
+		         	   <if test="payGate != null" >
+						#{payGate},
+					   </if>
+		         	   <if test="payGateTradeId != null" >
+						#{payGateTradeId},
+					   </if>
+		         	   <if test="money != null" >
+						#{money},
+					   </if>
+		         	   <if test="dateAdd != null" >
+						#{dateAdd},
+					   </if>
+		         	   <if test="dateUpdate != null" >
+						#{dateUpdate},
+					   </if>
+		         	   <if test="status != null" >
+						#{status},
+					   </if>
+		         	   <if test="remark != null" >
+						#{remark},
+					   </if>
+			    </trim>
+		  </insert>
+          <update id="updateByPrimaryKeySelective" parameterType="com.linwang.entity.UserRecharge" >
+			UPDATE `user_recharge`
+			<set >
+		         <if test="uid != null" >
+					`uid` = #{uid},
+			  	 </if>	
+		         <if test="orderNo != null" >
+					`order_no` = #{orderNo},
+			  	 </if>	
+		         <if test="payGate != null" >
+					`pay_gate` = #{payGate},
+			  	 </if>	
+		         <if test="payGateTradeId != null" >
+					`pay_gate_trade_id` = #{payGateTradeId},
+			  	 </if>	
+		         <if test="money != null" >
+					`money` = #{money},
+			  	 </if>	
+		         <if test="dateAdd != null" >
+					`date_add` = #{dateAdd},
+			  	 </if>	
+		         <if test="dateUpdate != null" >
+					`date_update` = #{dateUpdate},
+			  	 </if>	
+		         <if test="status != null" >
+					`status` = #{status},
+			  	 </if>	
+		         <if test="remark != null" >
+					`remark` = #{remark},
+			  	 </if>	
+			</set>
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByPrimaryKey" parameterType="com.linwang.entity.UserRecharge" >
+			UPDATE `user_recharge` SET
+					`uid` = #{uid},
+					`order_no` = #{orderNo},
+					`pay_gate` = #{payGate},
+					`pay_gate_trade_id` = #{payGateTradeId},
+					`money` = #{money},
+					`date_add` = #{dateAdd},
+					`date_update` = #{dateUpdate},
+					`status` = #{status},
+					`remark` = #{remark}
+	         		
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByCondition" parameterType="java.util.Map" >
+			UPDATE `user_recharge`
+			<set>
+		         <if test="entity.uid != null" >
+					`uid` = #{entity.uid},
+			  	 </if>	
+		         <if test="entity.orderNo != null" >
+					`order_no` = #{entity.orderNo},
+			  	 </if>	
+		         <if test="entity.payGate != null" >
+					`pay_gate` = #{entity.payGate},
+			  	 </if>	
+		         <if test="entity.payGateTradeId != null" >
+					`pay_gate_trade_id` = #{entity.payGateTradeId},
+			  	 </if>	
+		         <if test="entity.money != null" >
+					`money` = #{entity.money},
+			  	 </if>	
+		         <if test="entity.dateAdd != null" >
+					`date_add` = #{entity.dateAdd},
+			  	 </if>	
+		         <if test="entity.dateUpdate != null" >
+					`date_update` = #{entity.dateUpdate},
+			  	 </if>	
+		         <if test="entity.status != null" >
+					`status` = #{entity.status},
+			  	 </if>	
+		         <if test="entity.remark != null" >
+					`remark` = #{entity.remark},
+			  	 </if>	
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <update id="updateIncreateNumbers" parameterType="java.util.Map" >
+			UPDATE `user_recharge`
+			<set>
+			  <foreach collection="increateNumbers" item="numberCloums">
+				`${numberCloums.column}` = `${numberCloums.column}` + #{numberCloums.number},
+			  </foreach>
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <sql id="map_params_where_condition" >
+		    <trim prefix="WHERE" prefixOverrides="AND">
+		    	<if test="id != null" >
+			       AND `id` = #{id}
+			    </if>
+		      	<if test="uid != null" >
+			       AND `uid` = #{uid}
+			    </if>
+		      	<if test="orderNo != null" >
+			       AND `order_no` = #{orderNo}
+			    </if>
+		      	<if test="payGate != null" >
+			       AND `pay_gate` = #{payGate}
+			    </if>
+		      	<if test="payGateTradeId != null" >
+			       AND `pay_gate_trade_id` = #{payGateTradeId}
+			    </if>
+		      	<if test="money != null" >
+			       AND `money` = #{money}
+			    </if>
+		      	<if test="dateAdd != null" >
+			       AND `date_add` = #{dateAdd}
+			    </if>
+		      	<if test="dateUpdate != null" >
+			       AND `date_update` = #{dateUpdate}
+			    </if>
+		      	<if test="status != null" >
+			       AND `status` = #{status}
+			    </if>
+		      	<if test="remark != null" >
+			       AND `remark` = #{remark}
+			    </if>
+			  <if test="condition != null">
+				  <if test="condition.uid != null" >
+			        AND `uid` = #{condition.uid}
+				  </if>
+				  <if test="condition.orderNo != null" >
+			        AND `order_no` = #{condition.orderNo}
+				  </if>
+				  <if test="condition.payGate != null" >
+			        AND `pay_gate` = #{condition.payGate}
+				  </if>
+				  <if test="condition.payGateTradeId != null" >
+			        AND `pay_gate_trade_id` = #{condition.payGateTradeId}
+				  </if>
+				  <if test="condition.money != null" >
+			        AND `money` = #{condition.money}
+				  </if>
+				  <if test="condition.dateAdd != null" >
+			        AND `date_add` = #{condition.dateAdd}
+				  </if>
+				  <if test="condition.dateUpdate != null" >
+			        AND `date_update` = #{condition.dateUpdate}
+				  </if>
+				  <if test="condition.status != null" >
+			        AND `status` = #{condition.status}
+				  </if>
+				  <if test="condition.remark != null" >
+			        AND `remark` = #{condition.remark}
+				  </if>
+			  </if>
+			  <if test="vo != null and !vo.expressionChainList.empty">
+		        AND
+		        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		      <if test="expressionChainList != null and !expressionChainList.empty">
+		        AND
+		        <foreach collection="expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		    </trim>
+		 </sql>
+         <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT
+		    <include refid="Base_Column_List" />
+		    FROM `user_recharge`
+		    <include refid="map_params_where_condition" />
+		    <if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize != null" >
+		      LIMIT #{pageBeginIndex},#{pageSize}
+		    </if>
+		    <if test="pageBeginIndex == null and pageSize != null" >
+		      LIMIT #{pageSize}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize == null" >
+		      LIMIT #{pageBeginIndex}
+		    </if>
+		  </select>
+		  <delete id="delete" parameterType="java.util.Map" >
+		    DELETE
+		    FROM `user_recharge`
+		    <include refid="map_params_where_condition" />
+		  </delete>
+		  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		    SELECT COUNT(id)
+		    FROM `user_recharge`
+		    <include refid="map_params_where_condition" />
+		  </select>
+</mapper>

@@ -8,7 +8,7 @@ import com.linwang.impl.base.BaseServiceImpl;
 import javax.annotation.Resource;
 
 @Service(version="1.0.0")
-public class SysTaskHandelServiceImpl extends BaseServiceImpl<SysTaskHandel,java.lang.String,DaoSupport,java.lang.Integer> implements ISysTaskHandelService {
+public class SysTaskHandelServiceImpl extends BaseServiceImpl<SysTaskHandel,java.lang.String,DaoSupport<SysTaskHandel>,java.lang.Integer> implements ISysTaskHandelService {
  
 	@Resource(name = "daoSupport")
 	private DaoSupport dao;

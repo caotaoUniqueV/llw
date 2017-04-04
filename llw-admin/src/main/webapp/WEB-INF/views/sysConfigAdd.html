@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统参数</title>
+<#include '/include/cssjs_up.html' encoding="UTF-8"/></head>
+
+<body class="gray-bg">
+	<div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-sm-12">
+            <ol class="breadcrumb" style="margin-top: 10px;margin-bottom: -10px;">
+                <li>
+                    <a href="../sysConfig/sysConfigPage">系统参数</a>
+                </li>
+                <li>
+                    <strong><#if sysConfig.id??>编辑<#else>添加</#if></strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                    	<form class="form-horizontal m-t" id="form">
+                    		<input type="hidden" name="id" value="${sysConfig.id}"/>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">参数类型,预留：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="type" msg="请输入参数类型,预留" class="form-control" type="text" value="${sysConfig.type}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">0 文本字符串  1 开关 2 上传文件：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="dateType" msg="请输入0 文本字符串  1 开关 2 上传文件" class="form-control" type="text" value="${sysConfig.dateType}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">参数编号：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="key" msg="请输入参数编号" class="form-control" type="text" value="${sysConfig.key}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">参数值：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="value" msg="请输入参数值" class="form-control" type="text" value="${sysConfig.value}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">备注：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="remark" msg="请输入备注" class="form-control" type="text" value="${sysConfig.remark}">
+		                                </div>
+		                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-3">
+                                    <button class="btn btn-primary" type="button" id="tj">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<#include '/include/cssjs_down.html' encoding="UTF-8"/><script type="text/javascript" src="../plugin/layui/oliverui.js"></script>
+    <script type="text/javascript">
+    $(function(){
+    	$('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    	Oliver.use(['ajax','login'],function(ui){
+    		$("#tj").on("click",function(){
+    			$(this).verify({
+        			url : "../sysConfig/save",
+        			formId : "form",
+        			icon : 1,
+        			loading : "提交中...",
+        			success : function (result){
+        				if(result.code==0){
+        					location.href="../sysConfig/sysConfigPage";
+        				}else{
+        					showToast(result);
+        				}
+        			}
+        		})
+    		})
+    	});
+    });
+    </script>
+</body>
+
+</html>

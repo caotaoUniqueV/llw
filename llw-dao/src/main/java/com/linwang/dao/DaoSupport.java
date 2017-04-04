@@ -1,5 +1,6 @@
 package com.linwang.dao;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -7,15 +8,17 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.poi.ss.formula.functions.T;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 
 @Repository("daoSupport")
-public class DaoSupport implements DAO{
+public class DaoSupport<T> implements DAO<T>{
 
 	@Resource(name = "sqlSessionTemplate")
 	private SqlSessionTemplate sqlSessionTemplate;
+	
 	/**
 	 * 保存对象
 	 * @param str
@@ -23,8 +26,31 @@ public class DaoSupport implements DAO{
 	 * @return
 	 * @throws Exception
 	 */
-	public int insert(String str, Object obj){
-		return sqlSessionTemplate.insert(str, obj);
+	public int insert(String str, T obj){
+		int val=0;
+		try {
+			sqlSessionTemplate.insert(str, obj);
+			Class entityClass=obj.getClass();
+			Field[] fs = entityClass.getDeclaredFields();
+			Field.setAccessible(fs, true);
+			for(int i = 0 ; i < fs.length; i++){
+			       Field f = fs[i];
+			       if(f.getName().equals("id")){
+			    	   val=(Integer) f.get(obj);
+			    	   break;
+			       }
+			}
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return val;
 	}
 	
 	/**
@@ -34,7 +60,7 @@ public class DaoSupport implements DAO{
 	 * @return
 	 * @throws Exception
 	 */
-	public Object batchSave(String str, List objs )throws Exception{
+	public int batchSave(String str, List objs )throws Exception{
 		return sqlSessionTemplate.insert(str, objs);
 	}
 	
@@ -92,7 +118,7 @@ public class DaoSupport implements DAO{
 	 * @return
 	 * @throws Exception
 	 */
-	public Object findForObject(String str, Object obj){
+	public T findForObject(String str, Object obj){
 		return sqlSessionTemplate.selectOne(str, obj);
 	}
 

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活动管理</title>
+<#include '/include/cssjs_up.html' encoding="UTF-8"/>
+	<style type="text/css">
+    		.webuploader-pick{
+				    background: #1a7bb9!important;
+				    padding: 0px!important;
+				    color: #fff!important;
+				    display: block!important;
+    		}
+	</style>
+</head>
+
+<body class="gray-bg">
+	<div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-sm-12">
+            <ol class="breadcrumb" style="margin-top: 10px;margin-bottom: -10px;">
+                <li>
+                    <a href="../activityInfo/activityInfoPage">活动管理</a>
+                </li>
+                <li>
+                    <strong><#if activityInfo.id??>编辑<#else>添加</#if></strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                    	<form class="form-horizontal m-t" id="form">
+                    		<input type="hidden" name="id" value="${activityInfo.id}"/>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">标题：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="title" msg="请输入标题" class="form-control" type="text" value="${activityInfo.title}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">描述：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="description" msg="请输入描述" class="form-control" type="text" value="${activityInfo.description}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">总人数：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="totalPeople" msg="请输入总人数" class="form-control" type="text" value="${activityInfo.totalPeople}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">活动图片：</label>
+		                                <div class="col-sm-8">
+		                                	<button class="btn btn-success" type="button" id="upd"><i class="fa fa-upload"></i>&nbsp;&nbsp;<span class="bold">上传</span></button>
+		                                    <input name="picture" msg="请输入活动图片" class="form-control" type="hidden" value="${activityInfo.picture}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group" id="styImgs" style="display: none;">
+		                            	<label class="col-sm-3 control-label"></label>
+		                            	<div class="col-sm-8" id="imgs">
+			                            	
+                        				</div>
+		                            </div>
+		                            <div class="form-group" id="date">
+		                                <label class="col-sm-3 control-label">时间：</label>
+		                                <div class="col-sm-8">
+		                                    <div class="input-group date">
+		                                    	<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+		                                        <input type="text" class="form-control" value="">
+		                                    </div>
+		                                </div>
+		                            </div>
+		                            <div class="form-group" id="data_5">
+			                            <label class="col-sm-3 control-label">报名时间：</label>
+			                            <div class="col-sm-8">
+			                            	<div class="input-daterange input-group" style="width: 100%;">
+			                            		<input type="text" class="input-sm form-control"name="start" value="">
+			                                	<span class="input-group-addon">到</span>
+			                                	<input type="text" class="input-sm form-control" name="end" value="">
+		                                    </div>
+			                            </div>
+			                        </div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-3">
+                                    <button class="btn btn-primary" type="button" id="tj">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<#include '/include/cssjs_down.html' encoding="UTF-8"/>
+<script type="text/javascript" src="../plugin/layui/oliverui.js"></script>
+<script type="text/x-dot-template" id="customer-tpl">
+	   <a class="fancybox" href="javascript:;">
+	       <img alt="image" src="{{!it.url}}">
+	   </a>
+</script>
+<!-- Input Mask-->
+    <script type="text/javascript">
+    $(function(){
+    	$('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    	$('#data_5 .input-daterange').datepicker({
+            keyboardNavigation: false,
+            forceParse: false,
+            autoclose: true
+        });
+    	$('#date .input-group.date').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true
+        });
+    	Oliver.use(['ajax','login','upload','dot'],function(ui){
+    		$("#tj").on("click",function(){
+    			$(this).verify({
+        			url : "../activityInfo/save",
+        			formId : "form",
+        			icon : 1,
+        			loading : "提交中...",
+        			success : function (result){
+        				if(result.code==0){
+        					location.href="../activityInfo/activityInfoPage";
+        				}else{
+        					showToast(result);
+        				}
+        			}
+        		})
+    		})
+    		
+    		$("#upd").upload({server : '../activityInfo/webUpload',uploadType : 'img'},function(res){
+    			$("#styImgs").show();
+    			var tpl = doT.template($("#customer-tpl").text());
+    			var data = {url:res.url};
+    			$("#imgs").append(tpl(data));
+			})
+    	});
+    });
+    </script>
+</body>
+
+</html>

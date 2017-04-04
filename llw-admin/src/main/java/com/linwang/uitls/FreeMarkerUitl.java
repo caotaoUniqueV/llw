@@ -69,6 +69,14 @@ public class FreeMarkerUitl {
 		
 //		createFile(map,path+"com/linwang/template",path.replace("target/classes/","")+"src/main/java/com/linwang/rpc","ActionMapper.ftl",MapUtils.getString(map, "methodName")+"Rpc.java");
 //		System.out.println("--------------------------生成"+MapUtils.getString(map, "methodName")+"Rpc.java实现类文件成功--------------------------");
+//		
+//		createFile(map,path+"com/linwang/template",path.replace("target/classes/","")+"src/main/webapp/WEB-INF/views","HtmlListMapper.ftl",MapUtils.getString(map, "rpcService")+"List.html");
+//		System.out.println("--------------------------生成"+MapUtils.getString(map, "rpcService")+"List.html页面文件成功--------------------------");
+//		
+//		if(MapUtils.getInteger(map, "add")==0){
+//			createFile(map,path+"com/linwang/template",path.replace("target/classes/","")+"src/main/webapp/WEB-INF/views","HtmlEditMapper.ftl",MapUtils.getString(map, "rpcService")+"Add.html");
+//			System.out.println("--------------------------生成"+MapUtils.getString(map, "rpcService")+"Add.html页面文件成功--------------------------");
+//		}
 	}
 	
 }

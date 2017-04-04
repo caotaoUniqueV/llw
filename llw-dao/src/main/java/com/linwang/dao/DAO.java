@@ -2,7 +2,7 @@ package com.linwang.dao;
 
 import java.io.Serializable;
 
-public interface DAO{
+public interface DAO<T>{
 	/**
 	 * 删除对象 
 	 * @param str
@@ -18,7 +18,7 @@ public interface DAO{
 	 * @return
 	 * @throws Exception
 	 */
-	public int insert(String str, Object obj);
+	public int insert(String str, T obj);
 	
 	/**
 	 * 修改对象
@@ -36,7 +36,7 @@ public interface DAO{
 	 * @return
 	 * @throws Exception
 	 */
-	public Object findForObject(String str, Object obj);
+	public T findForObject(String str, Object obj);
 
 	/**
 	 * 查找对象

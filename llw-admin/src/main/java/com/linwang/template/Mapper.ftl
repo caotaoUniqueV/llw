@@ -142,7 +142,7 @@
 			       AND `id` = <@mapperEl2 'id'/>
 			    </if>
 		      <#list templateDtos as cl2>
-		      	<if test="${cl2.onColumnName} != null" >
+		      	<if test="${cl2.columnName} != null" >
 			       AND `${cl2.onColumnName}` = <@mapperEl cl2.columnName/>
 			    </if>
 		      </#list>

@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserThirdLoginMapper">
+         <resultMap id="BaseResultMap" type="com.linwang.entity.UserThirdLogin" extends="associationMap">
+			<id column="id" property="id" />
+			<result column="platform" property="platform" />
+			<result column="uid" property="uid" />
+			<result column="platform_id" property="platformId" />
+			<result column="created_at" property="createdAt" />
+			<result column="created_ip" property="createdIp" />
+		 </resultMap>
+		 <sql id="Base_Column_List" >
+				`id`,
+	            `platform`,
+	            `uid`,
+	            `platform_id`,
+	            `created_at`,
+	            `created_ip`
+	            
+		 </sql>
+		 <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `user_third_login`
+		    WHERE `id` = #{id}
+		  </select>
+		  <select id="getByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `user_third_login`
+		    <include refid="map_params_where_condition" />
+			<if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+			LIMIT 1
+		  </select>
+		  <select id="aggregate" parameterType="java.util.Map" resultType="java.util.Map">
+		    SELECT ${aggregate_sql} FROM `user_third_login`
+		    <include refid="map_params_where_condition" />
+		  </select>
+		  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		    DELETE FROM `user_third_login`
+		    WHERE `id` = #{id}
+		  </delete>
+         <insert id="insertUserThirdLogin" parameterType="com.linwang.entity.UserThirdLogin">
+         	 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+		      SELECT LAST_INSERT_ID()
+		     </selectKey>
+             insert into `user_third_login`(
+	             `platform`,
+	             `uid`,
+	             `platform_id`,
+	             `created_at`,
+	             `created_ip`
+	             
+             ) 
+	         values 
+	         (
+				 #{platform},
+				 #{uid},
+				 #{platformId},
+				 #{createdAt},
+				 #{createdIp}	         	
+		      )    
+	      </insert>
+	      <insert id="insertSelective" parameterType="com.linwang.entity.UserThirdLogin" >
+			    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+			      SELECT LAST_INSERT_ID()
+			    </selectKey>
+			    INSERT INTO `user_third_login`
+			    <trim prefix="(" suffix=")" suffixOverrides="," >
+		              <if test="platform!= null" >
+						`platform`,
+					  </if>
+		              <if test="uid!= null" >
+						`uid`,
+					  </if>
+		              <if test="platformId!= null" >
+						`platform_id`,
+					  </if>
+		              <if test="createdAt!= null" >
+						`created_at`,
+					  </if>
+		              <if test="createdIp!= null" >
+						`created_ip`,
+					  </if>
+			    </trim>
+			    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		         	   <if test="platform != null" >
+						#{platform},
+					   </if>
+		         	   <if test="uid != null" >
+						#{uid},
+					   </if>
+		         	   <if test="platformId != null" >
+						#{platformId},
+					   </if>
+		         	   <if test="createdAt != null" >
+						#{createdAt},
+					   </if>
+		         	   <if test="createdIp != null" >
+						#{createdIp},
+					   </if>
+			    </trim>
+		  </insert>
+          <update id="updateByPrimaryKeySelective" parameterType="com.linwang.entity.UserThirdLogin" >
+			UPDATE `user_third_login`
+			<set >
+		         <if test="platform != null" >
+					`platform` = #{platform},
+			  	 </if>	
+		         <if test="uid != null" >
+					`uid` = #{uid},
+			  	 </if>	
+		         <if test="platformId != null" >
+					`platform_id` = #{platformId},
+			  	 </if>	
+		         <if test="createdAt != null" >
+					`created_at` = #{createdAt},
+			  	 </if>	
+		         <if test="createdIp != null" >
+					`created_ip` = #{createdIp},
+			  	 </if>	
+			</set>
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByPrimaryKey" parameterType="com.linwang.entity.UserThirdLogin" >
+			UPDATE `user_third_login` SET
+					`platform` = #{platform},
+					`uid` = #{uid},
+					`platform_id` = #{platformId},
+					`created_at` = #{createdAt},
+					`created_ip` = #{createdIp}
+	         		
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByCondition" parameterType="java.util.Map" >
+			UPDATE `user_third_login`
+			<set>
+		         <if test="entity.platform != null" >
+					`platform` = #{entity.platform},
+			  	 </if>	
+		         <if test="entity.uid != null" >
+					`uid` = #{entity.uid},
+			  	 </if>	
+		         <if test="entity.platformId != null" >
+					`platform_id` = #{entity.platformId},
+			  	 </if>	
+		         <if test="entity.createdAt != null" >
+					`created_at` = #{entity.createdAt},
+			  	 </if>	
+		         <if test="entity.createdIp != null" >
+					`created_ip` = #{entity.createdIp},
+			  	 </if>	
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <update id="updateIncreateNumbers" parameterType="java.util.Map" >
+			UPDATE `user_third_login`
+			<set>
+			  <foreach collection="increateNumbers" item="numberCloums">
+				`${numberCloums.column}` = `${numberCloums.column}` + #{numberCloums.number},
+			  </foreach>
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <sql id="map_params_where_condition" >
+		    <trim prefix="WHERE" prefixOverrides="AND">
+		    	<if test="id != null" >
+			       AND `id` = #{id}
+			    </if>
+		      	<if test="platform != null" >
+			       AND `platform` = #{platform}
+			    </if>
+		      	<if test="uid != null" >
+			       AND `uid` = #{uid}
+			    </if>
+		      	<if test="platformId != null" >
+			       AND `platform_id` = #{platformId}
+			    </if>
+		      	<if test="createdAt != null" >
+			       AND `created_at` = #{createdAt}
+			    </if>
+		      	<if test="createdIp != null" >
+			       AND `created_ip` = #{createdIp}
+			    </if>
+			  <if test="condition != null">
+				  <if test="condition.platform != null" >
+			        AND `platform` = #{condition.platform}
+				  </if>
+				  <if test="condition.uid != null" >
+			        AND `uid` = #{condition.uid}
+				  </if>
+				  <if test="condition.platformId != null" >
+			        AND `platform_id` = #{condition.platformId}
+				  </if>
+				  <if test="condition.createdAt != null" >
+			        AND `created_at` = #{condition.createdAt}
+				  </if>
+				  <if test="condition.createdIp != null" >
+			        AND `created_ip` = #{condition.createdIp}
+				  </if>
+			  </if>
+			  <if test="vo != null and !vo.expressionChainList.empty">
+		        AND
+		        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		      <if test="expressionChainList != null and !expressionChainList.empty">
+		        AND
+		        <foreach collection="expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		    </trim>
+		 </sql>
+         <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT
+		    <include refid="Base_Column_List" />
+		    FROM `user_third_login`
+		    <include refid="map_params_where_condition" />
+		    <if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize != null" >
+		      LIMIT #{pageBeginIndex},#{pageSize}
+		    </if>
+		    <if test="pageBeginIndex == null and pageSize != null" >
+		      LIMIT #{pageSize}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize == null" >
+		      LIMIT #{pageBeginIndex}
+		    </if>
+		  </select>
+		  <delete id="delete" parameterType="java.util.Map" >
+		    DELETE
+		    FROM `user_third_login`
+		    <include refid="map_params_where_condition" />
+		  </delete>
+		  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		    SELECT COUNT(id)
+		    FROM `user_third_login`
+		    <include refid="map_params_where_condition" />
+		  </select>
+</mapper>

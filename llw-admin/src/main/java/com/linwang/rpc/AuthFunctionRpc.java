@@ -27,9 +27,11 @@ import com.linwang.redis.RedisCacheManager;
 import com.linwang.rpc.base.BaseRpc;
 import com.linwang.uitls.AccountDigestUtils;
 import com.linwang.uitls.PicCodeUtils;
+import com.linwang.uitls.StaticProp;
 import com.linwang.uitls.web.JSONResultCode;
 import com.linwang.api.IAuthFunctionService;
 import com.linwang.entity.AuthFunction;
+import com.linwang.entity.AuthUser;
 
 
 @Controller
@@ -44,6 +46,7 @@ public class AuthFunctionRpc extends BaseRpc{
 	 @ResponseBody
 	 @RequiresPermissions("/authFunction/save")
 	 public JSONResultCode login(AuthFunction authFunction) throws Exception{
+		 AuthUser admin=(AuthUser) SecurityUtils.getSubject().getSession().getAttribute("admin");
 		 if(authFunction.getPid()==null){
 			 authFunction.setPid(0);
 		 }
@@ -58,7 +61,7 @@ public class AuthFunctionRpc extends BaseRpc{
 			 authFunctionService.updateByPrimaryKeySelective(authFunction);
 			 addSysLog("权限设置","编辑",JSONObject.toJSONString(authFunction));
 		 }
-		 jedisPoolManager.set("isPermission","1");//表示需要进行权限更新
+		 jedisPoolManager.set("isPermission:"+AccountDigestUtils.getMd5Pwd(admin.getUsername(),StaticProp.sysConfig.get("cookie.secret.key")),"1");//表示需要进行权限更新
 		 return new JSONResultCode(0);
 	 }
 	 
@@ -66,19 +69,21 @@ public class AuthFunctionRpc extends BaseRpc{
 	 @ResponseBody
 	 @RequiresPermissions("/authFunction/del")
 	 public JSONResultCode del(Integer id) throws Exception{
+		 AuthUser admin=(AuthUser) SecurityUtils.getSubject().getSession().getAttribute("admin");
 		 AuthFunction authFunction=authFunctionService.selectByPrimaryKey(id);
 		 authFunctionService.deleteByPrimaryKey(id);
 		 addSysLog("权限设置","删除",JSONObject.toJSONString(authFunction));
 		 JedisPoolManager jedisPoolManager=redisCacheManager.getRedisManager();
-		 jedisPoolManager.set("isPermission","1");//表示需要进行权限更新
+		 jedisPoolManager.set("isPermission:"+AccountDigestUtils.getMd5Pwd(admin.getUsername(),StaticProp.sysConfig.get("cookie.secret.key")),"1");//表示需要进行权限更新
 		 return new JSONResultCode(0);
 	 }
 	 
 	 @RequestMapping(value="permissionEdit",method=RequestMethod.GET)
 	 @RequiresPermissions("/authFunction/permissionEdit")
 	 public String permissionAdd(Model model,Integer id) throws Exception{
+		 AuthUser admin=(AuthUser) SecurityUtils.getSubject().getSession().getAttribute("admin");
 		 JedisPoolManager jedisPoolManager=redisCacheManager.getRedisManager();
-		 List<AuthFunction> authFunctions=JSONObject.parseArray(jedisPoolManager.get("permissionAll"),AuthFunction.class);
+		 List<AuthFunction> authFunctions=JSONObject.parseArray(jedisPoolManager.get("permissionAll:"+AccountDigestUtils.getMd5Pwd(admin.getUsername(),StaticProp.sysConfig.get("cookie.secret.key"))),AuthFunction.class);
 		 model.addAttribute("authFunctions", authFunctions);
 		 
 		 if(id!=null){

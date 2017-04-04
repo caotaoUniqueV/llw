@@ -32,6 +32,7 @@ import com.linwang.rpc.base.BaseRpc;
 import com.linwang.uitls.AccountDigestUtils;
 import com.linwang.uitls.Page;
 import com.linwang.uitls.PicCodeUtils;
+import com.linwang.uitls.StaticProp;
 import com.linwang.uitls.web.Expressions;
 import com.linwang.uitls.web.JSONResultCode;
 import com.linwang.api.IAuthFunctionService;
@@ -59,6 +60,9 @@ public class AuthRoleRpc extends BaseRpc{
 	 private IAuthUserRoleService authUserRoleService;
 	 
 	 @Reference(version="1.0.0")
+	 private IAuthUserService authUserService;
+	 
+	 @Reference(version="1.0.0")
 	 private IAuthFunctionService authFunctionService;
 	 
 	 @Autowired
@@ -79,8 +83,9 @@ public class AuthRoleRpc extends BaseRpc{
 	 @RequestMapping(value="roleAdd",method=RequestMethod.GET)
 	 @RequiresPermissions("/authRole/roleAdd")
 	 public String roleAdd(Model model,Integer id) throws Exception{
+		 AuthUser admin=(AuthUser) SecurityUtils.getSubject().getSession().getAttribute("admin");
 		 JedisPoolManager jedisPoolManager=redisCacheManager.getRedisManager();
-		 List<AuthFunction> authFunctions=JSONObject.parseArray(jedisPoolManager.get("permissionAll"),AuthFunction.class);
+		 List<AuthFunction> authFunctions=JSONObject.parseArray(jedisPoolManager.get("permissionAll:"+AccountDigestUtils.getMd5Pwd(admin.getUsername(),StaticProp.sysConfig.get("cookie.secret.key"))),AuthFunction.class);
 		 model.addAttribute("authFunctions", authFunctions);
 		 
 		 if(id!=null){
@@ -102,22 +107,24 @@ public class AuthRoleRpc extends BaseRpc{
 	 @ResponseBody
 	 @RequiresPermissions("/authRole/del")
 	 public JSONResultCode del(Integer id) throws Exception{
+		 AuthUser admin=(AuthUser) SecurityUtils.getSubject().getSession().getAttribute("admin");
 		 AuthRole bean=authRoleService.selectByPrimaryKey(id);
 		 authRoleService.deleteByPrimaryKey(id);
 		 addSysLog("角色管理","删除",JSONObject.toJSONString(bean));
 		 JedisPoolManager jedisPoolManager=redisCacheManager.getRedisManager();
-	     jedisPoolManager.set("isPermission","1");//表示需要进行权限更新
+	     jedisPoolManager.set("isPermission:"+AccountDigestUtils.getMd5Pwd(admin.getUsername(),StaticProp.sysConfig.get("cookie.secret.key")),"1");//表示需要进行权限更新
 		 return new JSONResultCode(0);
 	 }
 	 
 	 @RequestMapping(value="save",method=RequestMethod.POST)
 	 @ResponseBody
 	 @RequiresPermissions("/authRole/save")
-	 public JSONResultCode login(AuthRole bean,Integer[] roleIds) throws Exception{
+	 public JSONResultCode save(AuthRole bean,Integer[] roleIds) throws Exception{
 		 JedisPoolManager jedisPoolManager=redisCacheManager.getRedisManager();
 		 if(bean.getId() == null){
 	            //添加
-	            authRoleService.insertSelective(bean);
+	            int id=authRoleService.insertSelective(bean);
+	            bean.setId(id);
 	            addSysLog("角色管理","添加", JSONObject.toJSONString(bean));
 	     }else{
 	            //修改
@@ -127,7 +134,15 @@ public class AuthRoleRpc extends BaseRpc{
 	    	 	AuthRoleFunction condition=new AuthRoleFunction();
 	    	 	condition.setRoleId(bean.getId());
 	    	 	authRoleFunctionService.delete(condition);
-	    	 	jedisPoolManager.set("isPermission","1");//表示需要进行权限更新
+	    	 	
+	    	 	AuthUserRole aRole=new AuthUserRole();
+	    	 	aRole.setRoleId(bean.getId());
+	    	 	AuthUserRole authUserRole=authUserRoleService.getByCondition(aRole);
+	    	 	
+	    	 	if(authUserRole!=null){
+	    	 		AuthUser admin=authUserService.selectByPrimaryKey(authUserRole.getUserId());
+		    	 	jedisPoolManager.set("isPermission:"+AccountDigestUtils.getMd5Pwd(admin.getUsername(),StaticProp.sysConfig.get("cookie.secret.key")),"1");//表示需要进行权限更新
+	    	 	}
 	            
 	     }
 		 //添加权限

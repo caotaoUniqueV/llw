@@ -9,6 +9,8 @@ import java.util.concurrent.Executors;
 import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
+import main.java.com.UpYun;
+
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -41,7 +43,10 @@ public class StaticProp {
 				"xls",
 				"xlsx"
 	};
+	public static UpYun UP_YUN;
+	public static String upYunPath;
 	
+	public static boolean IS_USER_UPYUN = true;
 	public static String cookieID;//身份认证cookie标志ID
 	
 	public static Connection getDatabaseConnection() throws SQLException {

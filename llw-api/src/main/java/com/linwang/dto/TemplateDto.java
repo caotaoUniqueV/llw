@@ -6,6 +6,13 @@ public class TemplateDto implements java.io.Serializable {
 	private String capitalAttribute;//大写属性
 	private String comment;
 	private String columnName;
+	private String modular;
+	public String getModular() {
+		return modular;
+	}
+	public void setModular(String modular) {
+		this.modular = modular;
+	}
 	private String onColumnName;
 	public String getOnColumnName() {
 		return onColumnName;

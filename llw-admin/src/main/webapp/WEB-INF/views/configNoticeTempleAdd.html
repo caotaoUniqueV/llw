@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>短信模板</title>
+<#include '/include/cssjs_up.html' encoding="UTF-8"/></head>
+
+<body class="gray-bg">
+	<div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-sm-12">
+            <ol class="breadcrumb" style="margin-top: 10px;margin-bottom: -10px;">
+                <li>
+                    <a href="../configNoticeTemple/configNoticeTemplePage">短信模板</a>
+                </li>
+                <li>
+                    <strong><#if configNoticeTemple.id??>编辑<#else>添加</#if></strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                    	<form class="form-horizontal m-t" id="form">
+                    		<input type="hidden" name="id" value="${configNoticeTemple.id}"/>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">编码，与notice_type组合起来唯一：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="nid" msg="请输入编码，与notice_type组合起来唯一" class="form-control" type="text" value="${configNoticeTemple.nid}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">通知类型:1-sms,2-email,3-message：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="noticeType" msg="请输入通知类型:1-sms,2-email,3-message" class="form-control" type="text" value="${configNoticeTemple.noticeType}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">是否启用：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="isEnable" msg="请输入是否启用" class="form-control" type="text" value="${configNoticeTemple.isEnable}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">名称：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="name" msg="请输入名称" class="form-control" type="text" value="${configNoticeTemple.name}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">备注：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="remark" msg="请输入备注" class="form-control" type="text" value="${configNoticeTemple.remark}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">发送类型：1-系统通知，2-用户通知：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="type" msg="请输入发送类型：1-系统通知，2-用户通知" class="form-control" type="text" value="${configNoticeTemple.type}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">标题的freemarker模板：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="titleTemplet" msg="请输入标题的freemarker模板" class="form-control" type="text" value="${configNoticeTemple.titleTemplet}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">内容的freemarker模板：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="templet" msg="请输入内容的freemarker模板" class="form-control" type="text" value="${configNoticeTemple.templet}">
+		                                </div>
+		                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-3">
+                                    <button class="btn btn-primary" type="button" id="tj">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<#include '/include/cssjs_down.html' encoding="UTF-8"/><script type="text/javascript" src="../plugin/layui/oliverui.js"></script>
+    <script type="text/javascript">
+    $(function(){
+    	$('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    	Oliver.use(['ajax','login'],function(ui){
+    		$("#tj").on("click",function(){
+    			$(this).verify({
+        			url : "../configNoticeTemple/save",
+        			formId : "form",
+        			icon : 1,
+        			loading : "提交中...",
+        			success : function (result){
+        				if(result.code==0){
+        					location.href="../configNoticeTemple/configNoticeTemplePage";
+        				}else{
+        					showToast(result);
+        				}
+        			}
+        		})
+    		})
+    	});
+    });
+    </script>
+</body>
+
+</html>

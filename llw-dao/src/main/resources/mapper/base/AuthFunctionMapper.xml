@@ -240,10 +240,10 @@
 		      	<if test="paixu != null" >
 			       AND `paixu` = #{paixu}
 			    </if>
-		      	<if test="is_menu != null" >
+		      	<if test="isMenu != null" >
 			       AND `is_menu` = #{isMenu}
 			    </if>
-		      	<if test="menu_pos_str != null" >
+		      	<if test="menuPosStr != null" >
 			       AND `menu_pos_str` = #{menuPosStr}
 			    </if>
 		      	<if test="icon != null" >

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>短信记录</title>
+<#include '/include/cssjs_up.html' encoding="UTF-8"/></head>
+
+<body class="gray-bg">
+	<div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-sm-12">
+            <ol class="breadcrumb" style="margin-top: 10px;margin-bottom: -10px;">
+                <li>
+                    <a href="../sysLogSms/sysLogSmsPage">短信记录</a>
+                </li>
+                <li>
+                    <strong><#if sysLogSms.id??>编辑<#else>添加</#if></strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                    	<form class="form-horizontal m-t" id="form">
+                    		<input type="hidden" name="id" value="${sysLogSms.id}"/>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">接收用户ID：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="userId" msg="请输入接收用户ID" class="form-control" type="text" value="${sysLogSms.userId}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">标题：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="mobile" msg="请输入标题" class="form-control" type="text" value="${sysLogSms.mobile}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">是否成功：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="isSuccess" msg="请输入是否成功" class="form-control" type="text" value="${sysLogSms.isSuccess}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">发送内容：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="content" msg="请输入发送内容" class="form-control" type="text" value="${sysLogSms.content}">
+		                                </div>
+		                            </div>
+		                            <div class="form-group">
+		                                <label class="col-sm-3 control-label">发送结果信息：</label>
+		                                <div class="col-sm-8">
+		                                    <input name="result" msg="请输入发送结果信息" class="form-control" type="text" value="${sysLogSms.result}">
+		                                </div>
+		                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-8 col-sm-offset-3">
+                                    <button class="btn btn-primary" type="button" id="tj">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<#include '/include/cssjs_down.html' encoding="UTF-8"/><script type="text/javascript" src="../plugin/layui/oliverui.js"></script>
+    <script type="text/javascript">
+    $(function(){
+    	$('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    	Oliver.use(['ajax','login'],function(ui){
+    		$("#tj").on("click",function(){
+    			$(this).verify({
+        			url : "../sysLogSms/save",
+        			formId : "form",
+        			icon : 1,
+        			loading : "提交中...",
+        			success : function (result){
+        				if(result.code==0){
+        					location.href="../sysLogSms/sysLogSmsPage";
+        				}else{
+        					showToast(result);
+        				}
+        			}
+        		})
+    		})
+    	});
+    });
+    </script>
+</body>
+
+</html>

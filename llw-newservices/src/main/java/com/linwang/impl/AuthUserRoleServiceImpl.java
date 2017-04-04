@@ -8,7 +8,7 @@ import com.linwang.impl.base.BaseServiceImpl;
 import javax.annotation.Resource;
 
 @Service(version="1.0.0")
-public class AuthUserRoleServiceImpl extends BaseServiceImpl<AuthUserRole,java.lang.String,DaoSupport,java.lang.Integer> implements IAuthUserRoleService {
+public class AuthUserRoleServiceImpl extends BaseServiceImpl<AuthUserRole,java.lang.String,DaoSupport<AuthUserRole>,java.lang.Integer> implements IAuthUserRoleService {
  
 	@Resource(name = "daoSupport")
 	private DaoSupport dao;

@@ -14,7 +14,7 @@ import com.linwang.uitls.Page;
 import com.linwang.uitls.PageUtil;
 import com.linwang.uitls.web.DAOUtils;
 
-public abstract class BaseServiceImpl<T,PKS extends Serializable,DaoSupport extends DAO,PK extends Serializable> {
+public abstract class BaseServiceImpl<T,PKS extends Serializable,DaoSupport extends DAO<T>,PK extends Serializable> {
 
     protected abstract DaoSupport getDao();
     
@@ -32,11 +32,11 @@ public abstract class BaseServiceImpl<T,PKS extends Serializable,DaoSupport exte
         return getDao().delete(""+getMapper()+".delete",map);
     }
 
-    public int insert(Object record){
+    public int insert(T record){
         return getDao().insert(""+getMapper()+".insert",record);
     }
 
-    public int insertSelective(Object record){
+    public int insertSelective(T record){
         return getDao().insert(""+getMapper()+".insertSelective",record);
     }
 
@@ -126,7 +126,7 @@ public abstract class BaseServiceImpl<T,PKS extends Serializable,DaoSupport exte
             map.putAll(BeanConverter.toMap(condition, false));
         }
         List list=(List)getDao().findForList(""+getMapper()+".getCount", map);
-        return list.size();
+        return (Integer) list.get(0);
     }
 
     public Page<T> getPage(Object condition, Map<String, ?> paramsMap){

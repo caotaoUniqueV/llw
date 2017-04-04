@@ -123,10 +123,10 @@
 		    	<if test="id != null" >
 			       AND `id` = #{id}
 			    </if>
-		      	<if test="role_id != null" >
+		      	<if test="roleId != null" >
 			       AND `role_id` = #{roleId}
 			    </if>
-		      	<if test="function_id != null" >
+		      	<if test="functionId != null" >
 			       AND `function_id` = #{functionId}
 			    </if>
 			  <if test="condition != null">
