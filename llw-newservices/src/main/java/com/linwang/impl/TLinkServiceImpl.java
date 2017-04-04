@@ -8,7 +8,7 @@ import com.linwang.impl.base.BaseServiceImpl;
 import javax.annotation.Resource;
 
 @Service(version="1.0.0")
-public class TLinkServiceImpl extends BaseServiceImpl<TLink,java.lang.String,DaoSupport,java.lang.Integer> implements ITLinkService {
+public class TLinkServiceImpl extends BaseServiceImpl<TLink,java.lang.String,DaoSupport<TLink>,java.lang.Integer> implements ITLinkService {
  
 	@Resource(name = "daoSupport")
 	private DaoSupport dao;
