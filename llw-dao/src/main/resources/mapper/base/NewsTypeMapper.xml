@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="NewsTypeMapper">
+         <resultMap id="BaseResultMap" type="com.linwang.entity.NewsType" extends="associationMap">
+			<id column="id" property="id" />
+			<result column="name" property="name" />
+			<result column="pid" property="pid" />
+			<result column="sort" property="sort" />
+			<result column="has_display" property="hasDisplay" />
+			<result column="img_url" property="imgUrl" />
+			<result column="description" property="description" />
+		 </resultMap>
+		 <sql id="Base_Column_List" >
+				`id`,
+	            `name`,
+	            `pid`,
+	            `sort`,
+	            `has_display`,
+	            `img_url`,
+	            `description`
+	            
+		 </sql>
+		 <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `news_type`
+		    WHERE `id` = #{id}
+		  </select>
+		  <select id="getByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `news_type`
+		    <include refid="map_params_where_condition" />
+			<if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+			LIMIT 1
+		  </select>
+		  <select id="aggregate" parameterType="java.util.Map" resultType="java.util.Map">
+		    SELECT ${aggregate_sql} FROM `news_type`
+		    <include refid="map_params_where_condition" />
+		  </select>
+		  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		    DELETE FROM `news_type`
+		    WHERE `id` = #{id}
+		  </delete>
+         <insert id="insertNewsType" parameterType="com.linwang.entity.NewsType">
+         	 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+		      SELECT LAST_INSERT_ID()
+		     </selectKey>
+             insert into `news_type`(
+	             `name`,
+	             `pid`,
+	             `sort`,
+	             `has_display`,
+	             `img_url`,
+	             `description`
+	             
+             ) 
+	         values 
+	         (
+				 #{name},
+				 #{pid},
+				 #{sort},
+				 #{hasDisplay},
+				 #{imgUrl},
+				 #{description}	         	
+		      )    
+	      </insert>
+	      <insert id="insertSelective" parameterType="com.linwang.entity.NewsType" >
+			    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+			      SELECT LAST_INSERT_ID()
+			    </selectKey>
+			    INSERT INTO `news_type`
+			    <trim prefix="(" suffix=")" suffixOverrides="," >
+		              <if test="name!= null" >
+						`name`,
+					  </if>
+		              <if test="pid!= null" >
+						`pid`,
+					  </if>
+		              <if test="sort!= null" >
+						`sort`,
+					  </if>
+		              <if test="hasDisplay!= null" >
+						`has_display`,
+					  </if>
+		              <if test="imgUrl!= null" >
+						`img_url`,
+					  </if>
+		              <if test="description!= null" >
+						`description`,
+					  </if>
+			    </trim>
+			    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		         	   <if test="name != null" >
+						#{name},
+					   </if>
+		         	   <if test="pid != null" >
+						#{pid},
+					   </if>
+		         	   <if test="sort != null" >
+						#{sort},
+					   </if>
+		         	   <if test="hasDisplay != null" >
+						#{hasDisplay},
+					   </if>
+		         	   <if test="imgUrl != null" >
+						#{imgUrl},
+					   </if>
+		         	   <if test="description != null" >
+						#{description},
+					   </if>
+			    </trim>
+		  </insert>
+          <update id="updateByPrimaryKeySelective" parameterType="com.linwang.entity.NewsType" >
+			UPDATE `news_type`
+			<set >
+		         <if test="name != null" >
+					`name` = #{name},
+			  	 </if>	
+		         <if test="pid != null" >
+					`pid` = #{pid},
+			  	 </if>	
+		         <if test="sort != null" >
+					`sort` = #{sort},
+			  	 </if>	
+		         <if test="hasDisplay != null" >
+					`has_display` = #{hasDisplay},
+			  	 </if>	
+		         <if test="imgUrl != null" >
+					`img_url` = #{imgUrl},
+			  	 </if>	
+		         <if test="description != null" >
+					`description` = #{description},
+			  	 </if>	
+			</set>
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByPrimaryKey" parameterType="com.linwang.entity.NewsType" >
+			UPDATE `news_type` SET
+					`name` = #{name},
+					`pid` = #{pid},
+					`sort` = #{sort},
+					`has_display` = #{hasDisplay},
+					`img_url` = #{imgUrl},
+					`description` = #{description}
+	         		
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByCondition" parameterType="java.util.Map" >
+			UPDATE `news_type`
+			<set>
+		         <if test="entity.name != null" >
+					`name` = #{entity.name},
+			  	 </if>	
+		         <if test="entity.pid != null" >
+					`pid` = #{entity.pid},
+			  	 </if>	
+		         <if test="entity.sort != null" >
+					`sort` = #{entity.sort},
+			  	 </if>	
+		         <if test="entity.hasDisplay != null" >
+					`has_display` = #{entity.hasDisplay},
+			  	 </if>	
+		         <if test="entity.imgUrl != null" >
+					`img_url` = #{entity.imgUrl},
+			  	 </if>	
+		         <if test="entity.description != null" >
+					`description` = #{entity.description},
+			  	 </if>	
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <update id="updateIncreateNumbers" parameterType="java.util.Map" >
+			UPDATE `news_type`
+			<set>
+			  <foreach collection="increateNumbers" item="numberCloums">
+				`${numberCloums.column}` = `${numberCloums.column}` + #{numberCloums.number},
+			  </foreach>
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <sql id="map_params_where_condition" >
+		    <trim prefix="WHERE" prefixOverrides="AND">
+		    	<if test="id != null" >
+			       AND `id` = #{id}
+			    </if>
+		      	<if test="name != null" >
+			       AND `name` = #{name}
+			    </if>
+		      	<if test="pid != null" >
+			       AND `pid` = #{pid}
+			    </if>
+		      	<if test="sort != null" >
+			       AND `sort` = #{sort}
+			    </if>
+		      	<if test="hasDisplay != null" >
+			       AND `has_display` = #{hasDisplay}
+			    </if>
+		      	<if test="imgUrl != null" >
+			       AND `img_url` = #{imgUrl}
+			    </if>
+		      	<if test="description != null" >
+			       AND `description` = #{description}
+			    </if>
+			  <if test="condition != null">
+				  <if test="condition.name != null" >
+			        AND `name` = #{condition.name}
+				  </if>
+				  <if test="condition.pid != null" >
+			        AND `pid` = #{condition.pid}
+				  </if>
+				  <if test="condition.sort != null" >
+			        AND `sort` = #{condition.sort}
+				  </if>
+				  <if test="condition.hasDisplay != null" >
+			        AND `has_display` = #{condition.hasDisplay}
+				  </if>
+				  <if test="condition.imgUrl != null" >
+			        AND `img_url` = #{condition.imgUrl}
+				  </if>
+				  <if test="condition.description != null" >
+			        AND `description` = #{condition.description}
+				  </if>
+			  </if>
+			  <if test="vo != null and !vo.expressionChainList.empty">
+		        AND
+		        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		      <if test="expressionChainList != null and !expressionChainList.empty">
+		        AND
+		        <foreach collection="expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		    </trim>
+		 </sql>
+         <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT
+		    <include refid="Base_Column_List" />
+		    FROM `news_type`
+		    <include refid="map_params_where_condition" />
+		    <if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize != null" >
+		      LIMIT #{pageBeginIndex},#{pageSize}
+		    </if>
+		    <if test="pageBeginIndex == null and pageSize != null" >
+		      LIMIT #{pageSize}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize == null" >
+		      LIMIT #{pageBeginIndex}
+		    </if>
+		  </select>
+		  <delete id="delete" parameterType="java.util.Map" >
+		    DELETE
+		    FROM `news_type`
+		    <include refid="map_params_where_condition" />
+		  </delete>
+		  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		    SELECT COUNT(id)
+		    FROM `news_type`
+		    <include refid="map_params_where_condition" />
+		  </select>
+</mapper>

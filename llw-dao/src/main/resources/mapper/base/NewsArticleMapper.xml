@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="NewsArticleMapper">
+         <resultMap id="BaseResultMap" type="com.linwang.entity.NewsArticle" extends="associationMap">
+			<id column="id" property="id" />
+			<result column="type_id" property="typeId" />
+			<result column="title" property="title" />
+			<result column="content" property="content" />
+			<result column="gmt_create" property="gmtCreate" />
+			<result column="gmt_modify" property="gmtModify" />
+			<result column="status" property="status" />
+			<result column="sort" property="sort" />
+			<result column="picture" property="picture" />
+			<result column="gmt_send" property="gmtSend" />
+			<result column="mode" property="mode" />
+		 </resultMap>
+		 <sql id="Base_Column_List" >
+				`id`,
+	            `type_id`,
+	            `title`,
+	            `content`,
+	            `gmt_create`,
+	            `gmt_modify`,
+	            `status`,
+	            `sort`,
+	            `picture`,
+	            `gmt_send`,
+	            `mode`
+	            
+		 </sql>
+		 <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `news_article`
+		    WHERE `id` = #{id}
+		  </select>
+		  <select id="getByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `news_article`
+		    <include refid="map_params_where_condition" />
+			<if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+			LIMIT 1
+		  </select>
+		  <select id="aggregate" parameterType="java.util.Map" resultType="java.util.Map">
+		    SELECT ${aggregate_sql} FROM `news_article`
+		    <include refid="map_params_where_condition" />
+		  </select>
+		  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		    DELETE FROM `news_article`
+		    WHERE `id` = #{id}
+		  </delete>
+         <insert id="insertNewsArticle" parameterType="com.linwang.entity.NewsArticle">
+         	 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+		      SELECT LAST_INSERT_ID()
+		     </selectKey>
+             insert into `news_article`(
+	             `type_id`,
+	             `title`,
+	             `content`,
+	             `gmt_create`,
+	             `gmt_modify`,
+	             `status`,
+	             `sort`,
+	             `picture`,
+	             `gmt_send`,
+	             `mode`
+	             
+             ) 
+	         values 
+	         (
+				 #{typeId},
+				 #{title},
+				 #{content},
+				 #{gmtCreate},
+				 #{gmtModify},
+				 #{status},
+				 #{sort},
+				 #{picture},
+				 #{gmtSend},
+				 #{mode}	         	
+		      )    
+	      </insert>
+	      <insert id="insertSelective" parameterType="com.linwang.entity.NewsArticle" >
+			    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+			      SELECT LAST_INSERT_ID()
+			    </selectKey>
+			    INSERT INTO `news_article`
+			    <trim prefix="(" suffix=")" suffixOverrides="," >
+		              <if test="typeId!= null" >
+						`type_id`,
+					  </if>
+		              <if test="title!= null" >
+						`title`,
+					  </if>
+		              <if test="content!= null" >
+						`content`,
+					  </if>
+		              <if test="gmtCreate!= null" >
+						`gmt_create`,
+					  </if>
+		              <if test="gmtModify!= null" >
+						`gmt_modify`,
+					  </if>
+		              <if test="status!= null" >
+						`status`,
+					  </if>
+		              <if test="sort!= null" >
+						`sort`,
+					  </if>
+		              <if test="picture!= null" >
+						`picture`,
+					  </if>
+		              <if test="gmtSend!= null" >
+						`gmt_send`,
+					  </if>
+		              <if test="mode!= null" >
+						`mode`,
+					  </if>
+			    </trim>
+			    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		         	   <if test="typeId != null" >
+						#{typeId},
+					   </if>
+		         	   <if test="title != null" >
+						#{title},
+					   </if>
+		         	   <if test="content != null" >
+						#{content},
+					   </if>
+		         	   <if test="gmtCreate != null" >
+						#{gmtCreate},
+					   </if>
+		         	   <if test="gmtModify != null" >
+						#{gmtModify},
+					   </if>
+		         	   <if test="status != null" >
+						#{status},
+					   </if>
+		         	   <if test="sort != null" >
+						#{sort},
+					   </if>
+		         	   <if test="picture != null" >
+						#{picture},
+					   </if>
+		         	   <if test="gmtSend != null" >
+						#{gmtSend},
+					   </if>
+		         	   <if test="mode != null" >
+						#{mode},
+					   </if>
+			    </trim>
+		  </insert>
+          <update id="updateByPrimaryKeySelective" parameterType="com.linwang.entity.NewsArticle" >
+			UPDATE `news_article`
+			<set >
+		         <if test="typeId != null" >
+					`type_id` = #{typeId},
+			  	 </if>	
+		         <if test="title != null" >
+					`title` = #{title},
+			  	 </if>	
+		         <if test="content != null" >
+					`content` = #{content},
+			  	 </if>	
+		         <if test="gmtCreate != null" >
+					`gmt_create` = #{gmtCreate},
+			  	 </if>	
+		         <if test="gmtModify != null" >
+					`gmt_modify` = #{gmtModify},
+			  	 </if>	
+		         <if test="status != null" >
+					`status` = #{status},
+			  	 </if>	
+		         <if test="sort != null" >
+					`sort` = #{sort},
+			  	 </if>	
+		         <if test="picture != null" >
+					`picture` = #{picture},
+			  	 </if>	
+		         <if test="gmtSend != null" >
+					`gmt_send` = #{gmtSend},
+			  	 </if>	
+		         <if test="mode != null" >
+					`mode` = #{mode},
+			  	 </if>	
+			</set>
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByPrimaryKey" parameterType="com.linwang.entity.NewsArticle" >
+			UPDATE `news_article` SET
+					`type_id` = #{typeId},
+					`title` = #{title},
+					`content` = #{content},
+					`gmt_create` = #{gmtCreate},
+					`gmt_modify` = #{gmtModify},
+					`status` = #{status},
+					`sort` = #{sort},
+					`picture` = #{picture},
+					`gmt_send` = #{gmtSend},
+					`mode` = #{mode}
+	         		
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByCondition" parameterType="java.util.Map" >
+			UPDATE `news_article`
+			<set>
+		         <if test="entity.typeId != null" >
+					`type_id` = #{entity.typeId},
+			  	 </if>	
+		         <if test="entity.title != null" >
+					`title` = #{entity.title},
+			  	 </if>	
+		         <if test="entity.content != null" >
+					`content` = #{entity.content},
+			  	 </if>	
+		         <if test="entity.gmtCreate != null" >
+					`gmt_create` = #{entity.gmtCreate},
+			  	 </if>	
+		         <if test="entity.gmtModify != null" >
+					`gmt_modify` = #{entity.gmtModify},
+			  	 </if>	
+		         <if test="entity.status != null" >
+					`status` = #{entity.status},
+			  	 </if>	
+		         <if test="entity.sort != null" >
+					`sort` = #{entity.sort},
+			  	 </if>	
+		         <if test="entity.picture != null" >
+					`picture` = #{entity.picture},
+			  	 </if>	
+		         <if test="entity.gmtSend != null" >
+					`gmt_send` = #{entity.gmtSend},
+			  	 </if>	
+		         <if test="entity.mode != null" >
+					`mode` = #{entity.mode},
+			  	 </if>	
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <update id="updateIncreateNumbers" parameterType="java.util.Map" >
+			UPDATE `news_article`
+			<set>
+			  <foreach collection="increateNumbers" item="numberCloums">
+				`${numberCloums.column}` = `${numberCloums.column}` + #{numberCloums.number},
+			  </foreach>
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <sql id="map_params_where_condition" >
+		    <trim prefix="WHERE" prefixOverrides="AND">
+		    	<if test="id != null" >
+			       AND `id` = #{id}
+			    </if>
+		      	<if test="typeId != null" >
+			       AND `type_id` = #{typeId}
+			    </if>
+		      	<if test="title != null" >
+			       AND `title` = #{title}
+			    </if>
+		      	<if test="content != null" >
+			       AND `content` = #{content}
+			    </if>
+		      	<if test="gmtCreate != null" >
+			       AND `gmt_create` = #{gmtCreate}
+			    </if>
+		      	<if test="gmtModify != null" >
+			       AND `gmt_modify` = #{gmtModify}
+			    </if>
+		      	<if test="status != null" >
+			       AND `status` = #{status}
+			    </if>
+		      	<if test="sort != null" >
+			       AND `sort` = #{sort}
+			    </if>
+		      	<if test="picture != null" >
+			       AND `picture` = #{picture}
+			    </if>
+		      	<if test="gmtSend != null" >
+			       AND `gmt_send` = #{gmtSend}
+			    </if>
+		      	<if test="mode != null" >
+			       AND `mode` = #{mode}
+			    </if>
+			  <if test="condition != null">
+				  <if test="condition.typeId != null" >
+			        AND `type_id` = #{condition.typeId}
+				  </if>
+				  <if test="condition.title != null" >
+			        AND `title` = #{condition.title}
+				  </if>
+				  <if test="condition.content != null" >
+			        AND `content` = #{condition.content}
+				  </if>
+				  <if test="condition.gmtCreate != null" >
+			        AND `gmt_create` = #{condition.gmtCreate}
+				  </if>
+				  <if test="condition.gmtModify != null" >
+			        AND `gmt_modify` = #{condition.gmtModify}
+				  </if>
+				  <if test="condition.status != null" >
+			        AND `status` = #{condition.status}
+				  </if>
+				  <if test="condition.sort != null" >
+			        AND `sort` = #{condition.sort}
+				  </if>
+				  <if test="condition.picture != null" >
+			        AND `picture` = #{condition.picture}
+				  </if>
+				  <if test="condition.gmtSend != null" >
+			        AND `gmt_send` = #{condition.gmtSend}
+				  </if>
+				  <if test="condition.mode != null" >
+			        AND `mode` = #{condition.mode}
+				  </if>
+			  </if>
+			  <if test="vo != null and !vo.expressionChainList.empty">
+		        AND
+		        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		      <if test="expressionChainList != null and !expressionChainList.empty">
+		        AND
+		        <foreach collection="expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		    </trim>
+		 </sql>
+         <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT
+		    <include refid="Base_Column_List" />
+		    FROM `news_article`
+		    <include refid="map_params_where_condition" />
+		    <if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize != null" >
+		      LIMIT #{pageBeginIndex},#{pageSize}
+		    </if>
+		    <if test="pageBeginIndex == null and pageSize != null" >
+		      LIMIT #{pageSize}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize == null" >
+		      LIMIT #{pageBeginIndex}
+		    </if>
+		  </select>
+		  <delete id="delete" parameterType="java.util.Map" >
+		    DELETE
+		    FROM `news_article`
+		    <include refid="map_params_where_condition" />
+		  </delete>
+		  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		    SELECT COUNT(id)
+		    FROM `news_article`
+		    <include refid="map_params_where_condition" />
+		  </select>
+</mapper>

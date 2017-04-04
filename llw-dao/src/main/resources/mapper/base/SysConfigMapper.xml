@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysConfigMapper">
+         <resultMap id="BaseResultMap" type="com.linwang.entity.SysConfig" extends="associationMap">
+			<id column="id" property="id" />
+			<result column="type" property="type" />
+			<result column="date_type" property="dateType" />
+			<result column="key" property="key" />
+			<result column="value" property="value" />
+			<result column="remark" property="remark" />
+			<result column="creat_at" property="creatAt" />
+			<result column="update_at" property="updateAt" />
+		 </resultMap>
+		 <sql id="Base_Column_List" >
+				`id`,
+	            `type`,
+	            `date_type`,
+	            `key`,
+	            `value`,
+	            `remark`,
+	            `creat_at`,
+	            `update_at`
+	            
+		 </sql>
+		 <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `sys_config`
+		    WHERE `id` = #{id}
+		  </select>
+		  <select id="getByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `sys_config`
+		    <include refid="map_params_where_condition" />
+			<if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+			LIMIT 1
+		  </select>
+		  <select id="aggregate" parameterType="java.util.Map" resultType="java.util.Map">
+		    SELECT ${aggregate_sql} FROM `sys_config`
+		    <include refid="map_params_where_condition" />
+		  </select>
+		  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		    DELETE FROM `sys_config`
+		    WHERE `id` = #{id}
+		  </delete>
+         <insert id="insertSysConfig" parameterType="com.linwang.entity.SysConfig">
+         	 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+		      SELECT LAST_INSERT_ID()
+		     </selectKey>
+             insert into `sys_config`(
+	             `type`,
+	             `date_type`,
+	             `key`,
+	             `value`,
+	             `remark`,
+	             `creat_at`,
+	             `update_at`
+	             
+             ) 
+	         values 
+	         (
+				 #{type},
+				 #{dateType},
+				 #{key},
+				 #{value},
+				 #{remark},
+				 #{creatAt},
+				 #{updateAt}	         	
+		      )    
+	      </insert>
+	      <insert id="insertSelective" parameterType="com.linwang.entity.SysConfig" >
+			    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+			      SELECT LAST_INSERT_ID()
+			    </selectKey>
+			    INSERT INTO `sys_config`
+			    <trim prefix="(" suffix=")" suffixOverrides="," >
+		              <if test="type!= null" >
+						`type`,
+					  </if>
+		              <if test="dateType!= null" >
+						`date_type`,
+					  </if>
+		              <if test="key!= null" >
+						`key`,
+					  </if>
+		              <if test="value!= null" >
+						`value`,
+					  </if>
+		              <if test="remark!= null" >
+						`remark`,
+					  </if>
+		              <if test="creatAt!= null" >
+						`creat_at`,
+					  </if>
+		              <if test="updateAt!= null" >
+						`update_at`,
+					  </if>
+			    </trim>
+			    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		         	   <if test="type != null" >
+						#{type},
+					   </if>
+		         	   <if test="dateType != null" >
+						#{dateType},
+					   </if>
+		         	   <if test="key != null" >
+						#{key},
+					   </if>
+		         	   <if test="value != null" >
+						#{value},
+					   </if>
+		         	   <if test="remark != null" >
+						#{remark},
+					   </if>
+		         	   <if test="creatAt != null" >
+						#{creatAt},
+					   </if>
+		         	   <if test="updateAt != null" >
+						#{updateAt},
+					   </if>
+			    </trim>
+		  </insert>
+          <update id="updateByPrimaryKeySelective" parameterType="com.linwang.entity.SysConfig" >
+			UPDATE `sys_config`
+			<set >
+		         <if test="type != null" >
+					`type` = #{type},
+			  	 </if>	
+		         <if test="dateType != null" >
+					`date_type` = #{dateType},
+			  	 </if>	
+		         <if test="key != null" >
+					`key` = #{key},
+			  	 </if>	
+		         <if test="value != null" >
+					`value` = #{value},
+			  	 </if>	
+		         <if test="remark != null" >
+					`remark` = #{remark},
+			  	 </if>	
+		         <if test="creatAt != null" >
+					`creat_at` = #{creatAt},
+			  	 </if>	
+		         <if test="updateAt != null" >
+					`update_at` = #{updateAt},
+			  	 </if>	
+			</set>
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByPrimaryKey" parameterType="com.linwang.entity.SysConfig" >
+			UPDATE `sys_config` SET
+					`type` = #{type},
+					`date_type` = #{dateType},
+					`key` = #{key},
+					`value` = #{value},
+					`remark` = #{remark},
+					`creat_at` = #{creatAt},
+					`update_at` = #{updateAt}
+	         		
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByCondition" parameterType="java.util.Map" >
+			UPDATE `sys_config`
+			<set>
+		         <if test="entity.type != null" >
+					`type` = #{entity.type},
+			  	 </if>	
+		         <if test="entity.dateType != null" >
+					`date_type` = #{entity.dateType},
+			  	 </if>	
+		         <if test="entity.key != null" >
+					`key` = #{entity.key},
+			  	 </if>	
+		         <if test="entity.value != null" >
+					`value` = #{entity.value},
+			  	 </if>	
+		         <if test="entity.remark != null" >
+					`remark` = #{entity.remark},
+			  	 </if>	
+		         <if test="entity.creatAt != null" >
+					`creat_at` = #{entity.creatAt},
+			  	 </if>	
+		         <if test="entity.updateAt != null" >
+					`update_at` = #{entity.updateAt},
+			  	 </if>	
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <update id="updateIncreateNumbers" parameterType="java.util.Map" >
+			UPDATE `sys_config`
+			<set>
+			  <foreach collection="increateNumbers" item="numberCloums">
+				`${numberCloums.column}` = `${numberCloums.column}` + #{numberCloums.number},
+			  </foreach>
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <sql id="map_params_where_condition" >
+		    <trim prefix="WHERE" prefixOverrides="AND">
+		    	<if test="id != null" >
+			       AND `id` = #{id}
+			    </if>
+		      	<if test="type != null" >
+			       AND `type` = #{type}
+			    </if>
+		      	<if test="dateType != null" >
+			       AND `date_type` = #{dateType}
+			    </if>
+		      	<if test="key != null" >
+			       AND `key` = #{key}
+			    </if>
+		      	<if test="value != null" >
+			       AND `value` = #{value}
+			    </if>
+		      	<if test="remark != null" >
+			       AND `remark` = #{remark}
+			    </if>
+		      	<if test="creatAt != null" >
+			       AND `creat_at` = #{creatAt}
+			    </if>
+		      	<if test="updateAt != null" >
+			       AND `update_at` = #{updateAt}
+			    </if>
+			  <if test="condition != null">
+				  <if test="condition.type != null" >
+			        AND `type` = #{condition.type}
+				  </if>
+				  <if test="condition.dateType != null" >
+			        AND `date_type` = #{condition.dateType}
+				  </if>
+				  <if test="condition.key != null" >
+			        AND `key` = #{condition.key}
+				  </if>
+				  <if test="condition.value != null" >
+			        AND `value` = #{condition.value}
+				  </if>
+				  <if test="condition.remark != null" >
+			        AND `remark` = #{condition.remark}
+				  </if>
+				  <if test="condition.creatAt != null" >
+			        AND `creat_at` = #{condition.creatAt}
+				  </if>
+				  <if test="condition.updateAt != null" >
+			        AND `update_at` = #{condition.updateAt}
+				  </if>
+			  </if>
+			  <if test="vo != null and !vo.expressionChainList.empty">
+		        AND
+		        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		      <if test="expressionChainList != null and !expressionChainList.empty">
+		        AND
+		        <foreach collection="expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		    </trim>
+		 </sql>
+         <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT
+		    <include refid="Base_Column_List" />
+		    FROM `sys_config`
+		    <include refid="map_params_where_condition" />
+		    <if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize != null" >
+		      LIMIT #{pageBeginIndex},#{pageSize}
+		    </if>
+		    <if test="pageBeginIndex == null and pageSize != null" >
+		      LIMIT #{pageSize}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize == null" >
+		      LIMIT #{pageBeginIndex}
+		    </if>
+		  </select>
+		  <delete id="delete" parameterType="java.util.Map" >
+		    DELETE
+		    FROM `sys_config`
+		    <include refid="map_params_where_condition" />
+		  </delete>
+		  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		    SELECT COUNT(id)
+		    FROM `sys_config`
+		    <include refid="map_params_where_condition" />
+		  </select>
+</mapper>

@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserShippingAddressMapper">
+         <resultMap id="BaseResultMap" type="com.linwang.entity.UserShippingAddress" extends="associationMap">
+			<id column="id" property="id" />
+			<result column="user_id" property="userId" />
+			<result column="is_default" property="isDefault" />
+			<result column="province" property="province" />
+			<result column="city" property="city" />
+			<result column="area" property="area" />
+			<result column="link_man" property="linkMan" />
+			<result column="address" property="address" />
+			<result column="mobile" property="mobile" />
+			<result column="phone" property="phone" />
+			<result column="company" property="company" />
+			<result column="date_add" property="dateAdd" />
+			<result column="date_update" property="dateUpdate" />
+		 </resultMap>
+		 <sql id="Base_Column_List" >
+				`id`,
+	            `user_id`,
+	            `is_default`,
+	            `province`,
+	            `city`,
+	            `area`,
+	            `link_man`,
+	            `address`,
+	            `mobile`,
+	            `phone`,
+	            `company`,
+	            `date_add`,
+	            `date_update`
+	            
+		 </sql>
+		 <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `user_shipping_address`
+		    WHERE `id` = #{id}
+		  </select>
+		  <select id="getByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `user_shipping_address`
+		    <include refid="map_params_where_condition" />
+			<if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+			LIMIT 1
+		  </select>
+		  <select id="aggregate" parameterType="java.util.Map" resultType="java.util.Map">
+		    SELECT ${aggregate_sql} FROM `user_shipping_address`
+		    <include refid="map_params_where_condition" />
+		  </select>
+		  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		    DELETE FROM `user_shipping_address`
+		    WHERE `id` = #{id}
+		  </delete>
+         <insert id="insertUserShippingAddress" parameterType="com.linwang.entity.UserShippingAddress">
+         	 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+		      SELECT LAST_INSERT_ID()
+		     </selectKey>
+             insert into `user_shipping_address`(
+	             `user_id`,
+	             `is_default`,
+	             `province`,
+	             `city`,
+	             `area`,
+	             `link_man`,
+	             `address`,
+	             `mobile`,
+	             `phone`,
+	             `company`,
+	             `date_add`,
+	             `date_update`
+	             
+             ) 
+	         values 
+	         (
+				 #{userId},
+				 #{isDefault},
+				 #{province},
+				 #{city},
+				 #{area},
+				 #{linkMan},
+				 #{address},
+				 #{mobile},
+				 #{phone},
+				 #{company},
+				 #{dateAdd},
+				 #{dateUpdate}	         	
+		      )    
+	      </insert>
+	      <insert id="insertSelective" parameterType="com.linwang.entity.UserShippingAddress" >
+			    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+			      SELECT LAST_INSERT_ID()
+			    </selectKey>
+			    INSERT INTO `user_shipping_address`
+			    <trim prefix="(" suffix=")" suffixOverrides="," >
+		              <if test="userId!= null" >
+						`user_id`,
+					  </if>
+		              <if test="isDefault!= null" >
+						`is_default`,
+					  </if>
+		              <if test="province!= null" >
+						`province`,
+					  </if>
+		              <if test="city!= null" >
+						`city`,
+					  </if>
+		              <if test="area!= null" >
+						`area`,
+					  </if>
+		              <if test="linkMan!= null" >
+						`link_man`,
+					  </if>
+		              <if test="address!= null" >
+						`address`,
+					  </if>
+		              <if test="mobile!= null" >
+						`mobile`,
+					  </if>
+		              <if test="phone!= null" >
+						`phone`,
+					  </if>
+		              <if test="company!= null" >
+						`company`,
+					  </if>
+		              <if test="dateAdd!= null" >
+						`date_add`,
+					  </if>
+		              <if test="dateUpdate!= null" >
+						`date_update`,
+					  </if>
+			    </trim>
+			    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		         	   <if test="userId != null" >
+						#{userId},
+					   </if>
+		         	   <if test="isDefault != null" >
+						#{isDefault},
+					   </if>
+		         	   <if test="province != null" >
+						#{province},
+					   </if>
+		         	   <if test="city != null" >
+						#{city},
+					   </if>
+		         	   <if test="area != null" >
+						#{area},
+					   </if>
+		         	   <if test="linkMan != null" >
+						#{linkMan},
+					   </if>
+		         	   <if test="address != null" >
+						#{address},
+					   </if>
+		         	   <if test="mobile != null" >
+						#{mobile},
+					   </if>
+		         	   <if test="phone != null" >
+						#{phone},
+					   </if>
+		         	   <if test="company != null" >
+						#{company},
+					   </if>
+		         	   <if test="dateAdd != null" >
+						#{dateAdd},
+					   </if>
+		         	   <if test="dateUpdate != null" >
+						#{dateUpdate},
+					   </if>
+			    </trim>
+		  </insert>
+          <update id="updateByPrimaryKeySelective" parameterType="com.linwang.entity.UserShippingAddress" >
+			UPDATE `user_shipping_address`
+			<set >
+		         <if test="userId != null" >
+					`user_id` = #{userId},
+			  	 </if>	
+		         <if test="isDefault != null" >
+					`is_default` = #{isDefault},
+			  	 </if>	
+		         <if test="province != null" >
+					`province` = #{province},
+			  	 </if>	
+		         <if test="city != null" >
+					`city` = #{city},
+			  	 </if>	
+		         <if test="area != null" >
+					`area` = #{area},
+			  	 </if>	
+		         <if test="linkMan != null" >
+					`link_man` = #{linkMan},
+			  	 </if>	
+		         <if test="address != null" >
+					`address` = #{address},
+			  	 </if>	
+		         <if test="mobile != null" >
+					`mobile` = #{mobile},
+			  	 </if>	
+		         <if test="phone != null" >
+					`phone` = #{phone},
+			  	 </if>	
+		         <if test="company != null" >
+					`company` = #{company},
+			  	 </if>	
+		         <if test="dateAdd != null" >
+					`date_add` = #{dateAdd},
+			  	 </if>	
+		         <if test="dateUpdate != null" >
+					`date_update` = #{dateUpdate},
+			  	 </if>	
+			</set>
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByPrimaryKey" parameterType="com.linwang.entity.UserShippingAddress" >
+			UPDATE `user_shipping_address` SET
+					`user_id` = #{userId},
+					`is_default` = #{isDefault},
+					`province` = #{province},
+					`city` = #{city},
+					`area` = #{area},
+					`link_man` = #{linkMan},
+					`address` = #{address},
+					`mobile` = #{mobile},
+					`phone` = #{phone},
+					`company` = #{company},
+					`date_add` = #{dateAdd},
+					`date_update` = #{dateUpdate}
+	         		
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByCondition" parameterType="java.util.Map" >
+			UPDATE `user_shipping_address`
+			<set>
+		         <if test="entity.userId != null" >
+					`user_id` = #{entity.userId},
+			  	 </if>	
+		         <if test="entity.isDefault != null" >
+					`is_default` = #{entity.isDefault},
+			  	 </if>	
+		         <if test="entity.province != null" >
+					`province` = #{entity.province},
+			  	 </if>	
+		         <if test="entity.city != null" >
+					`city` = #{entity.city},
+			  	 </if>	
+		         <if test="entity.area != null" >
+					`area` = #{entity.area},
+			  	 </if>	
+		         <if test="entity.linkMan != null" >
+					`link_man` = #{entity.linkMan},
+			  	 </if>	
+		         <if test="entity.address != null" >
+					`address` = #{entity.address},
+			  	 </if>	
+		         <if test="entity.mobile != null" >
+					`mobile` = #{entity.mobile},
+			  	 </if>	
+		         <if test="entity.phone != null" >
+					`phone` = #{entity.phone},
+			  	 </if>	
+		         <if test="entity.company != null" >
+					`company` = #{entity.company},
+			  	 </if>	
+		         <if test="entity.dateAdd != null" >
+					`date_add` = #{entity.dateAdd},
+			  	 </if>	
+		         <if test="entity.dateUpdate != null" >
+					`date_update` = #{entity.dateUpdate},
+			  	 </if>	
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <update id="updateIncreateNumbers" parameterType="java.util.Map" >
+			UPDATE `user_shipping_address`
+			<set>
+			  <foreach collection="increateNumbers" item="numberCloums">
+				`${numberCloums.column}` = `${numberCloums.column}` + #{numberCloums.number},
+			  </foreach>
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <sql id="map_params_where_condition" >
+		    <trim prefix="WHERE" prefixOverrides="AND">
+		    	<if test="id != null" >
+			       AND `id` = #{id}
+			    </if>
+		      	<if test="userId != null" >
+			       AND `user_id` = #{userId}
+			    </if>
+		      	<if test="isDefault != null" >
+			       AND `is_default` = #{isDefault}
+			    </if>
+		      	<if test="province != null" >
+			       AND `province` = #{province}
+			    </if>
+		      	<if test="city != null" >
+			       AND `city` = #{city}
+			    </if>
+		      	<if test="area != null" >
+			       AND `area` = #{area}
+			    </if>
+		      	<if test="linkMan != null" >
+			       AND `link_man` = #{linkMan}
+			    </if>
+		      	<if test="address != null" >
+			       AND `address` = #{address}
+			    </if>
+		      	<if test="mobile != null" >
+			       AND `mobile` = #{mobile}
+			    </if>
+		      	<if test="phone != null" >
+			       AND `phone` = #{phone}
+			    </if>
+		      	<if test="company != null" >
+			       AND `company` = #{company}
+			    </if>
+		      	<if test="dateAdd != null" >
+			       AND `date_add` = #{dateAdd}
+			    </if>
+		      	<if test="dateUpdate != null" >
+			       AND `date_update` = #{dateUpdate}
+			    </if>
+			  <if test="condition != null">
+				  <if test="condition.userId != null" >
+			        AND `user_id` = #{condition.userId}
+				  </if>
+				  <if test="condition.isDefault != null" >
+			        AND `is_default` = #{condition.isDefault}
+				  </if>
+				  <if test="condition.province != null" >
+			        AND `province` = #{condition.province}
+				  </if>
+				  <if test="condition.city != null" >
+			        AND `city` = #{condition.city}
+				  </if>
+				  <if test="condition.area != null" >
+			        AND `area` = #{condition.area}
+				  </if>
+				  <if test="condition.linkMan != null" >
+			        AND `link_man` = #{condition.linkMan}
+				  </if>
+				  <if test="condition.address != null" >
+			        AND `address` = #{condition.address}
+				  </if>
+				  <if test="condition.mobile != null" >
+			        AND `mobile` = #{condition.mobile}
+				  </if>
+				  <if test="condition.phone != null" >
+			        AND `phone` = #{condition.phone}
+				  </if>
+				  <if test="condition.company != null" >
+			        AND `company` = #{condition.company}
+				  </if>
+				  <if test="condition.dateAdd != null" >
+			        AND `date_add` = #{condition.dateAdd}
+				  </if>
+				  <if test="condition.dateUpdate != null" >
+			        AND `date_update` = #{condition.dateUpdate}
+				  </if>
+			  </if>
+			  <if test="vo != null and !vo.expressionChainList.empty">
+		        AND
+		        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		      <if test="expressionChainList != null and !expressionChainList.empty">
+		        AND
+		        <foreach collection="expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		    </trim>
+		 </sql>
+         <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT
+		    <include refid="Base_Column_List" />
+		    FROM `user_shipping_address`
+		    <include refid="map_params_where_condition" />
+		    <if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize != null" >
+		      LIMIT #{pageBeginIndex},#{pageSize}
+		    </if>
+		    <if test="pageBeginIndex == null and pageSize != null" >
+		      LIMIT #{pageSize}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize == null" >
+		      LIMIT #{pageBeginIndex}
+		    </if>
+		  </select>
+		  <delete id="delete" parameterType="java.util.Map" >
+		    DELETE
+		    FROM `user_shipping_address`
+		    <include refid="map_params_where_condition" />
+		  </delete>
+		  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		    SELECT COUNT(id)
+		    FROM `user_shipping_address`
+		    <include refid="map_params_where_condition" />
+		  </select>
+</mapper>

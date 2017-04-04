@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommonCityDataMapper">
+         <resultMap id="BaseResultMap" type="com.linwang.entity.CommonCityData" extends="associationMap">
+			<id column="id" property="id" />
+			<result column="name" property="name" />
+			<result column="pinyin" property="pinyin" />
+			<result column="jianpin" property="jianpin" />
+			<result column="first_letter" property="firstLetter" />
+			<result column="depth" property="depth" />
+			<result column="parent_id" property="parentId" />
+		 </resultMap>
+		 <sql id="Base_Column_List" >
+				`id`,
+	            `name`,
+	            `pinyin`,
+	            `jianpin`,
+	            `first_letter`,
+	            `depth`,
+	            `parent_id`
+	            
+		 </sql>
+		 <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `common_city_data`
+		    WHERE `id` = #{id}
+		  </select>
+		  <select id="getByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `common_city_data`
+		    <include refid="map_params_where_condition" />
+			<if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+			LIMIT 1
+		  </select>
+		  <select id="aggregate" parameterType="java.util.Map" resultType="java.util.Map">
+		    SELECT ${aggregate_sql} FROM `common_city_data`
+		    <include refid="map_params_where_condition" />
+		  </select>
+		  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		    DELETE FROM `common_city_data`
+		    WHERE `id` = #{id}
+		  </delete>
+         <insert id="insertCommonCityData" parameterType="com.linwang.entity.CommonCityData">
+         	 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+		      SELECT LAST_INSERT_ID()
+		     </selectKey>
+             insert into `common_city_data`(
+	             `name`,
+	             `pinyin`,
+	             `jianpin`,
+	             `first_letter`,
+	             `depth`,
+	             `parent_id`
+	             
+             ) 
+	         values 
+	         (
+				 #{name},
+				 #{pinyin},
+				 #{jianpin},
+				 #{firstLetter},
+				 #{depth},
+				 #{parentId}	         	
+		      )    
+	      </insert>
+	      <insert id="insertSelective" parameterType="com.linwang.entity.CommonCityData" >
+			    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+			      SELECT LAST_INSERT_ID()
+			    </selectKey>
+			    INSERT INTO `common_city_data`
+			    <trim prefix="(" suffix=")" suffixOverrides="," >
+		              <if test="name!= null" >
+						`name`,
+					  </if>
+		              <if test="pinyin!= null" >
+						`pinyin`,
+					  </if>
+		              <if test="jianpin!= null" >
+						`jianpin`,
+					  </if>
+		              <if test="firstLetter!= null" >
+						`first_letter`,
+					  </if>
+		              <if test="depth!= null" >
+						`depth`,
+					  </if>
+		              <if test="parentId!= null" >
+						`parent_id`,
+					  </if>
+			    </trim>
+			    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		         	   <if test="name != null" >
+						#{name},
+					   </if>
+		         	   <if test="pinyin != null" >
+						#{pinyin},
+					   </if>
+		         	   <if test="jianpin != null" >
+						#{jianpin},
+					   </if>
+		         	   <if test="firstLetter != null" >
+						#{firstLetter},
+					   </if>
+		         	   <if test="depth != null" >
+						#{depth},
+					   </if>
+		         	   <if test="parentId != null" >
+						#{parentId},
+					   </if>
+			    </trim>
+		  </insert>
+          <update id="updateByPrimaryKeySelective" parameterType="com.linwang.entity.CommonCityData" >
+			UPDATE `common_city_data`
+			<set >
+		         <if test="name != null" >
+					`name` = #{name},
+			  	 </if>	
+		         <if test="pinyin != null" >
+					`pinyin` = #{pinyin},
+			  	 </if>	
+		         <if test="jianpin != null" >
+					`jianpin` = #{jianpin},
+			  	 </if>	
+		         <if test="firstLetter != null" >
+					`first_letter` = #{firstLetter},
+			  	 </if>	
+		         <if test="depth != null" >
+					`depth` = #{depth},
+			  	 </if>	
+		         <if test="parentId != null" >
+					`parent_id` = #{parentId},
+			  	 </if>	
+			</set>
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByPrimaryKey" parameterType="com.linwang.entity.CommonCityData" >
+			UPDATE `common_city_data` SET
+					`name` = #{name},
+					`pinyin` = #{pinyin},
+					`jianpin` = #{jianpin},
+					`first_letter` = #{firstLetter},
+					`depth` = #{depth},
+					`parent_id` = #{parentId}
+	         		
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByCondition" parameterType="java.util.Map" >
+			UPDATE `common_city_data`
+			<set>
+		         <if test="entity.name != null" >
+					`name` = #{entity.name},
+			  	 </if>	
+		         <if test="entity.pinyin != null" >
+					`pinyin` = #{entity.pinyin},
+			  	 </if>	
+		         <if test="entity.jianpin != null" >
+					`jianpin` = #{entity.jianpin},
+			  	 </if>	
+		         <if test="entity.firstLetter != null" >
+					`first_letter` = #{entity.firstLetter},
+			  	 </if>	
+		         <if test="entity.depth != null" >
+					`depth` = #{entity.depth},
+			  	 </if>	
+		         <if test="entity.parentId != null" >
+					`parent_id` = #{entity.parentId},
+			  	 </if>	
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <update id="updateIncreateNumbers" parameterType="java.util.Map" >
+			UPDATE `common_city_data`
+			<set>
+			  <foreach collection="increateNumbers" item="numberCloums">
+				`${numberCloums.column}` = `${numberCloums.column}` + #{numberCloums.number},
+			  </foreach>
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <sql id="map_params_where_condition" >
+		    <trim prefix="WHERE" prefixOverrides="AND">
+		    	<if test="id != null" >
+			       AND `id` = #{id}
+			    </if>
+		      	<if test="name != null" >
+			       AND `name` = #{name}
+			    </if>
+		      	<if test="pinyin != null" >
+			       AND `pinyin` = #{pinyin}
+			    </if>
+		      	<if test="jianpin != null" >
+			       AND `jianpin` = #{jianpin}
+			    </if>
+		      	<if test="firstLetter != null" >
+			       AND `first_letter` = #{firstLetter}
+			    </if>
+		      	<if test="depth != null" >
+			       AND `depth` = #{depth}
+			    </if>
+		      	<if test="parentId != null" >
+			       AND `parent_id` = #{parentId}
+			    </if>
+			  <if test="condition != null">
+				  <if test="condition.name != null" >
+			        AND `name` = #{condition.name}
+				  </if>
+				  <if test="condition.pinyin != null" >
+			        AND `pinyin` = #{condition.pinyin}
+				  </if>
+				  <if test="condition.jianpin != null" >
+			        AND `jianpin` = #{condition.jianpin}
+				  </if>
+				  <if test="condition.firstLetter != null" >
+			        AND `first_letter` = #{condition.firstLetter}
+				  </if>
+				  <if test="condition.depth != null" >
+			        AND `depth` = #{condition.depth}
+				  </if>
+				  <if test="condition.parentId != null" >
+			        AND `parent_id` = #{condition.parentId}
+				  </if>
+			  </if>
+			  <if test="vo != null and !vo.expressionChainList.empty">
+		        AND
+		        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		      <if test="expressionChainList != null and !expressionChainList.empty">
+		        AND
+		        <foreach collection="expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		    </trim>
+		 </sql>
+         <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT
+		    <include refid="Base_Column_List" />
+		    FROM `common_city_data`
+		    <include refid="map_params_where_condition" />
+		    <if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize != null" >
+		      LIMIT #{pageBeginIndex},#{pageSize}
+		    </if>
+		    <if test="pageBeginIndex == null and pageSize != null" >
+		      LIMIT #{pageSize}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize == null" >
+		      LIMIT #{pageBeginIndex}
+		    </if>
+		  </select>
+		  <delete id="delete" parameterType="java.util.Map" >
+		    DELETE
+		    FROM `common_city_data`
+		    <include refid="map_params_where_condition" />
+		  </delete>
+		  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		    SELECT COUNT(id)
+		    FROM `common_city_data`
+		    <include refid="map_params_where_condition" />
+		  </select>
+</mapper>

@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CouponModuMapper">
+         <resultMap id="BaseResultMap" type="com.linwang.entity.CouponModu" extends="associationMap">
+			<id column="id" property="id" />
+			<result column="name" property="name" />
+			<result column="amount" property="amount" />
+			<result column="has_percent" property="hasPercent" />
+			<result column="percent" property="percent" />
+			<result column="gmt_create" property="gmtCreate" />
+			<result column="gmt_modify" property="gmtModify" />
+			<result column="description" property="description" />
+		 </resultMap>
+		 <sql id="Base_Column_List" >
+				`id`,
+	            `name`,
+	            `amount`,
+	            `has_percent`,
+	            `percent`,
+	            `gmt_create`,
+	            `gmt_modify`,
+	            `description`
+	            
+		 </sql>
+		 <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `coupon_modu`
+		    WHERE `id` = #{id}
+		  </select>
+		  <select id="getByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `coupon_modu`
+		    <include refid="map_params_where_condition" />
+			<if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+			LIMIT 1
+		  </select>
+		  <select id="aggregate" parameterType="java.util.Map" resultType="java.util.Map">
+		    SELECT ${aggregate_sql} FROM `coupon_modu`
+		    <include refid="map_params_where_condition" />
+		  </select>
+		  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		    DELETE FROM `coupon_modu`
+		    WHERE `id` = #{id}
+		  </delete>
+         <insert id="insertCouponModu" parameterType="com.linwang.entity.CouponModu">
+         	 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+		      SELECT LAST_INSERT_ID()
+		     </selectKey>
+             insert into `coupon_modu`(
+	             `name`,
+	             `amount`,
+	             `has_percent`,
+	             `percent`,
+	             `gmt_create`,
+	             `gmt_modify`,
+	             `description`
+	             
+             ) 
+	         values 
+	         (
+				 #{name},
+				 #{amount},
+				 #{hasPercent},
+				 #{percent},
+				 #{gmtCreate},
+				 #{gmtModify},
+				 #{description}	         	
+		      )    
+	      </insert>
+	      <insert id="insertSelective" parameterType="com.linwang.entity.CouponModu" >
+			    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+			      SELECT LAST_INSERT_ID()
+			    </selectKey>
+			    INSERT INTO `coupon_modu`
+			    <trim prefix="(" suffix=")" suffixOverrides="," >
+		              <if test="name!= null" >
+						`name`,
+					  </if>
+		              <if test="amount!= null" >
+						`amount`,
+					  </if>
+		              <if test="hasPercent!= null" >
+						`has_percent`,
+					  </if>
+		              <if test="percent!= null" >
+						`percent`,
+					  </if>
+		              <if test="gmtCreate!= null" >
+						`gmt_create`,
+					  </if>
+		              <if test="gmtModify!= null" >
+						`gmt_modify`,
+					  </if>
+		              <if test="description!= null" >
+						`description`,
+					  </if>
+			    </trim>
+			    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		         	   <if test="name != null" >
+						#{name},
+					   </if>
+		         	   <if test="amount != null" >
+						#{amount},
+					   </if>
+		         	   <if test="hasPercent != null" >
+						#{hasPercent},
+					   </if>
+		         	   <if test="percent != null" >
+						#{percent},
+					   </if>
+		         	   <if test="gmtCreate != null" >
+						#{gmtCreate},
+					   </if>
+		         	   <if test="gmtModify != null" >
+						#{gmtModify},
+					   </if>
+		         	   <if test="description != null" >
+						#{description},
+					   </if>
+			    </trim>
+		  </insert>
+          <update id="updateByPrimaryKeySelective" parameterType="com.linwang.entity.CouponModu" >
+			UPDATE `coupon_modu`
+			<set >
+		         <if test="name != null" >
+					`name` = #{name},
+			  	 </if>	
+		         <if test="amount != null" >
+					`amount` = #{amount},
+			  	 </if>	
+		         <if test="hasPercent != null" >
+					`has_percent` = #{hasPercent},
+			  	 </if>	
+		         <if test="percent != null" >
+					`percent` = #{percent},
+			  	 </if>	
+		         <if test="gmtCreate != null" >
+					`gmt_create` = #{gmtCreate},
+			  	 </if>	
+		         <if test="gmtModify != null" >
+					`gmt_modify` = #{gmtModify},
+			  	 </if>	
+		         <if test="description != null" >
+					`description` = #{description},
+			  	 </if>	
+			</set>
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByPrimaryKey" parameterType="com.linwang.entity.CouponModu" >
+			UPDATE `coupon_modu` SET
+					`name` = #{name},
+					`amount` = #{amount},
+					`has_percent` = #{hasPercent},
+					`percent` = #{percent},
+					`gmt_create` = #{gmtCreate},
+					`gmt_modify` = #{gmtModify},
+					`description` = #{description}
+	         		
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByCondition" parameterType="java.util.Map" >
+			UPDATE `coupon_modu`
+			<set>
+		         <if test="entity.name != null" >
+					`name` = #{entity.name},
+			  	 </if>	
+		         <if test="entity.amount != null" >
+					`amount` = #{entity.amount},
+			  	 </if>	
+		         <if test="entity.hasPercent != null" >
+					`has_percent` = #{entity.hasPercent},
+			  	 </if>	
+		         <if test="entity.percent != null" >
+					`percent` = #{entity.percent},
+			  	 </if>	
+		         <if test="entity.gmtCreate != null" >
+					`gmt_create` = #{entity.gmtCreate},
+			  	 </if>	
+		         <if test="entity.gmtModify != null" >
+					`gmt_modify` = #{entity.gmtModify},
+			  	 </if>	
+		         <if test="entity.description != null" >
+					`description` = #{entity.description},
+			  	 </if>	
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <update id="updateIncreateNumbers" parameterType="java.util.Map" >
+			UPDATE `coupon_modu`
+			<set>
+			  <foreach collection="increateNumbers" item="numberCloums">
+				`${numberCloums.column}` = `${numberCloums.column}` + #{numberCloums.number},
+			  </foreach>
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <sql id="map_params_where_condition" >
+		    <trim prefix="WHERE" prefixOverrides="AND">
+		    	<if test="id != null" >
+			       AND `id` = #{id}
+			    </if>
+		      	<if test="name != null" >
+			       AND `name` = #{name}
+			    </if>
+		      	<if test="amount != null" >
+			       AND `amount` = #{amount}
+			    </if>
+		      	<if test="hasPercent != null" >
+			       AND `has_percent` = #{hasPercent}
+			    </if>
+		      	<if test="percent != null" >
+			       AND `percent` = #{percent}
+			    </if>
+		      	<if test="gmtCreate != null" >
+			       AND `gmt_create` = #{gmtCreate}
+			    </if>
+		      	<if test="gmtModify != null" >
+			       AND `gmt_modify` = #{gmtModify}
+			    </if>
+		      	<if test="description != null" >
+			       AND `description` = #{description}
+			    </if>
+			  <if test="condition != null">
+				  <if test="condition.name != null" >
+			        AND `name` = #{condition.name}
+				  </if>
+				  <if test="condition.amount != null" >
+			        AND `amount` = #{condition.amount}
+				  </if>
+				  <if test="condition.hasPercent != null" >
+			        AND `has_percent` = #{condition.hasPercent}
+				  </if>
+				  <if test="condition.percent != null" >
+			        AND `percent` = #{condition.percent}
+				  </if>
+				  <if test="condition.gmtCreate != null" >
+			        AND `gmt_create` = #{condition.gmtCreate}
+				  </if>
+				  <if test="condition.gmtModify != null" >
+			        AND `gmt_modify` = #{condition.gmtModify}
+				  </if>
+				  <if test="condition.description != null" >
+			        AND `description` = #{condition.description}
+				  </if>
+			  </if>
+			  <if test="vo != null and !vo.expressionChainList.empty">
+		        AND
+		        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		      <if test="expressionChainList != null and !expressionChainList.empty">
+		        AND
+		        <foreach collection="expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		    </trim>
+		 </sql>
+         <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT
+		    <include refid="Base_Column_List" />
+		    FROM `coupon_modu`
+		    <include refid="map_params_where_condition" />
+		    <if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize != null" >
+		      LIMIT #{pageBeginIndex},#{pageSize}
+		    </if>
+		    <if test="pageBeginIndex == null and pageSize != null" >
+		      LIMIT #{pageSize}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize == null" >
+		      LIMIT #{pageBeginIndex}
+		    </if>
+		  </select>
+		  <delete id="delete" parameterType="java.util.Map" >
+		    DELETE
+		    FROM `coupon_modu`
+		    <include refid="map_params_where_condition" />
+		  </delete>
+		  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		    SELECT COUNT(id)
+		    FROM `coupon_modu`
+		    <include refid="map_params_where_condition" />
+		  </select>
+</mapper>

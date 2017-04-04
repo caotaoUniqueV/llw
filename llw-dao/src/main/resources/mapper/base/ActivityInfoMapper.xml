@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ActivityInfoMapper">
+         <resultMap id="BaseResultMap" type="com.linwang.entity.ActivityInfo" extends="associationMap">
+			<id column="id" property="id" />
+			<result column="title" property="title" />
+			<result column="description" property="description" />
+			<result column="total_people" property="totalPeople" />
+			<result column="gmt_enroll_start" property="gmtEnrollStart" />
+			<result column="gmt_enroll_end" property="gmtEnrollEnd" />
+			<result column="gmt_create" property="gmtCreate" />
+			<result column="gmt_modify" property="gmtModify" />
+			<result column="picture" property="picture" />
+			<result column="state" property="state" />
+		 </resultMap>
+		 <sql id="Base_Column_List" >
+				`id`,
+	            `title`,
+	            `description`,
+	            `total_people`,
+	            `gmt_enroll_start`,
+	            `gmt_enroll_end`,
+	            `gmt_create`,
+	            `gmt_modify`,
+	            `picture`,
+	            `state`
+	            
+		 </sql>
+		 <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `activity_info`
+		    WHERE `id` = #{id}
+		  </select>
+		  <select id="getByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `activity_info`
+		    <include refid="map_params_where_condition" />
+			<if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+			LIMIT 1
+		  </select>
+		  <select id="aggregate" parameterType="java.util.Map" resultType="java.util.Map">
+		    SELECT ${aggregate_sql} FROM `activity_info`
+		    <include refid="map_params_where_condition" />
+		  </select>
+		  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		    DELETE FROM `activity_info`
+		    WHERE `id` = #{id}
+		  </delete>
+         <insert id="insertActivityInfo" parameterType="com.linwang.entity.ActivityInfo">
+         	 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+		      SELECT LAST_INSERT_ID()
+		     </selectKey>
+             insert into `activity_info`(
+	             `title`,
+	             `description`,
+	             `total_people`,
+	             `gmt_enroll_start`,
+	             `gmt_enroll_end`,
+	             `gmt_create`,
+	             `gmt_modify`,
+	             `picture`,
+	             `state`
+	             
+             ) 
+	         values 
+	         (
+				 #{title},
+				 #{description},
+				 #{totalPeople},
+				 #{gmtEnrollStart},
+				 #{gmtEnrollEnd},
+				 #{gmtCreate},
+				 #{gmtModify},
+				 #{picture},
+				 #{state}	         	
+		      )    
+	      </insert>
+	      <insert id="insertSelective" parameterType="com.linwang.entity.ActivityInfo" >
+			    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+			      SELECT LAST_INSERT_ID()
+			    </selectKey>
+			    INSERT INTO `activity_info`
+			    <trim prefix="(" suffix=")" suffixOverrides="," >
+		              <if test="title!= null" >
+						`title`,
+					  </if>
+		              <if test="description!= null" >
+						`description`,
+					  </if>
+		              <if test="totalPeople!= null" >
+						`total_people`,
+					  </if>
+		              <if test="gmtEnrollStart!= null" >
+						`gmt_enroll_start`,
+					  </if>
+		              <if test="gmtEnrollEnd!= null" >
+						`gmt_enroll_end`,
+					  </if>
+		              <if test="gmtCreate!= null" >
+						`gmt_create`,
+					  </if>
+		              <if test="gmtModify!= null" >
+						`gmt_modify`,
+					  </if>
+		              <if test="picture!= null" >
+						`picture`,
+					  </if>
+		              <if test="state!= null" >
+						`state`,
+					  </if>
+			    </trim>
+			    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		         	   <if test="title != null" >
+						#{title},
+					   </if>
+		         	   <if test="description != null" >
+						#{description},
+					   </if>
+		         	   <if test="totalPeople != null" >
+						#{totalPeople},
+					   </if>
+		         	   <if test="gmtEnrollStart != null" >
+						#{gmtEnrollStart},
+					   </if>
+		         	   <if test="gmtEnrollEnd != null" >
+						#{gmtEnrollEnd},
+					   </if>
+		         	   <if test="gmtCreate != null" >
+						#{gmtCreate},
+					   </if>
+		         	   <if test="gmtModify != null" >
+						#{gmtModify},
+					   </if>
+		         	   <if test="picture != null" >
+						#{picture},
+					   </if>
+		         	   <if test="state != null" >
+						#{state},
+					   </if>
+			    </trim>
+		  </insert>
+          <update id="updateByPrimaryKeySelective" parameterType="com.linwang.entity.ActivityInfo" >
+			UPDATE `activity_info`
+			<set >
+		         <if test="title != null" >
+					`title` = #{title},
+			  	 </if>	
+		         <if test="description != null" >
+					`description` = #{description},
+			  	 </if>	
+		         <if test="totalPeople != null" >
+					`total_people` = #{totalPeople},
+			  	 </if>	
+		         <if test="gmtEnrollStart != null" >
+					`gmt_enroll_start` = #{gmtEnrollStart},
+			  	 </if>	
+		         <if test="gmtEnrollEnd != null" >
+					`gmt_enroll_end` = #{gmtEnrollEnd},
+			  	 </if>	
+		         <if test="gmtCreate != null" >
+					`gmt_create` = #{gmtCreate},
+			  	 </if>	
+		         <if test="gmtModify != null" >
+					`gmt_modify` = #{gmtModify},
+			  	 </if>	
+		         <if test="picture != null" >
+					`picture` = #{picture},
+			  	 </if>	
+		         <if test="state != null" >
+					`state` = #{state},
+			  	 </if>	
+			</set>
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByPrimaryKey" parameterType="com.linwang.entity.ActivityInfo" >
+			UPDATE `activity_info` SET
+					`title` = #{title},
+					`description` = #{description},
+					`total_people` = #{totalPeople},
+					`gmt_enroll_start` = #{gmtEnrollStart},
+					`gmt_enroll_end` = #{gmtEnrollEnd},
+					`gmt_create` = #{gmtCreate},
+					`gmt_modify` = #{gmtModify},
+					`picture` = #{picture},
+					`state` = #{state}
+	         		
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByCondition" parameterType="java.util.Map" >
+			UPDATE `activity_info`
+			<set>
+		         <if test="entity.title != null" >
+					`title` = #{entity.title},
+			  	 </if>	
+		         <if test="entity.description != null" >
+					`description` = #{entity.description},
+			  	 </if>	
+		         <if test="entity.totalPeople != null" >
+					`total_people` = #{entity.totalPeople},
+			  	 </if>	
+		         <if test="entity.gmtEnrollStart != null" >
+					`gmt_enroll_start` = #{entity.gmtEnrollStart},
+			  	 </if>	
+		         <if test="entity.gmtEnrollEnd != null" >
+					`gmt_enroll_end` = #{entity.gmtEnrollEnd},
+			  	 </if>	
+		         <if test="entity.gmtCreate != null" >
+					`gmt_create` = #{entity.gmtCreate},
+			  	 </if>	
+		         <if test="entity.gmtModify != null" >
+					`gmt_modify` = #{entity.gmtModify},
+			  	 </if>	
+		         <if test="entity.picture != null" >
+					`picture` = #{entity.picture},
+			  	 </if>	
+		         <if test="entity.state != null" >
+					`state` = #{entity.state},
+			  	 </if>	
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <update id="updateIncreateNumbers" parameterType="java.util.Map" >
+			UPDATE `activity_info`
+			<set>
+			  <foreach collection="increateNumbers" item="numberCloums">
+				`${numberCloums.column}` = `${numberCloums.column}` + #{numberCloums.number},
+			  </foreach>
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <sql id="map_params_where_condition" >
+		    <trim prefix="WHERE" prefixOverrides="AND">
+		    	<if test="id != null" >
+			       AND `id` = #{id}
+			    </if>
+		      	<if test="title != null" >
+			       AND `title` = #{title}
+			    </if>
+		      	<if test="description != null" >
+			       AND `description` = #{description}
+			    </if>
+		      	<if test="totalPeople != null" >
+			       AND `total_people` = #{totalPeople}
+			    </if>
+		      	<if test="gmtEnrollStart != null" >
+			       AND `gmt_enroll_start` = #{gmtEnrollStart}
+			    </if>
+		      	<if test="gmtEnrollEnd != null" >
+			       AND `gmt_enroll_end` = #{gmtEnrollEnd}
+			    </if>
+		      	<if test="gmtCreate != null" >
+			       AND `gmt_create` = #{gmtCreate}
+			    </if>
+		      	<if test="gmtModify != null" >
+			       AND `gmt_modify` = #{gmtModify}
+			    </if>
+		      	<if test="picture != null" >
+			       AND `picture` = #{picture}
+			    </if>
+		      	<if test="state != null" >
+			       AND `state` = #{state}
+			    </if>
+			  <if test="condition != null">
+				  <if test="condition.title != null" >
+			        AND `title` = #{condition.title}
+				  </if>
+				  <if test="condition.description != null" >
+			        AND `description` = #{condition.description}
+				  </if>
+				  <if test="condition.totalPeople != null" >
+			        AND `total_people` = #{condition.totalPeople}
+				  </if>
+				  <if test="condition.gmtEnrollStart != null" >
+			        AND `gmt_enroll_start` = #{condition.gmtEnrollStart}
+				  </if>
+				  <if test="condition.gmtEnrollEnd != null" >
+			        AND `gmt_enroll_end` = #{condition.gmtEnrollEnd}
+				  </if>
+				  <if test="condition.gmtCreate != null" >
+			        AND `gmt_create` = #{condition.gmtCreate}
+				  </if>
+				  <if test="condition.gmtModify != null" >
+			        AND `gmt_modify` = #{condition.gmtModify}
+				  </if>
+				  <if test="condition.picture != null" >
+			        AND `picture` = #{condition.picture}
+				  </if>
+				  <if test="condition.state != null" >
+			        AND `state` = #{condition.state}
+				  </if>
+			  </if>
+			  <if test="vo != null and !vo.expressionChainList.empty">
+		        AND
+		        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		      <if test="expressionChainList != null and !expressionChainList.empty">
+		        AND
+		        <foreach collection="expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		    </trim>
+		 </sql>
+         <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT
+		    <include refid="Base_Column_List" />
+		    FROM `activity_info`
+		    <include refid="map_params_where_condition" />
+		    <if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize != null" >
+		      LIMIT #{pageBeginIndex},#{pageSize}
+		    </if>
+		    <if test="pageBeginIndex == null and pageSize != null" >
+		      LIMIT #{pageSize}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize == null" >
+		      LIMIT #{pageBeginIndex}
+		    </if>
+		  </select>
+		  <delete id="delete" parameterType="java.util.Map" >
+		    DELETE
+		    FROM `activity_info`
+		    <include refid="map_params_where_condition" />
+		  </delete>
+		  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		    SELECT COUNT(id)
+		    FROM `activity_info`
+		    <include refid="map_params_where_condition" />
+		  </select>
+</mapper>

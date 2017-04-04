@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ActivityLevelPrizeMapper">
+         <resultMap id="BaseResultMap" type="com.linwang.entity.ActivityLevelPrize" extends="associationMap">
+			<id column="id" property="id" />
+			<result column="activity_info_id" property="activityInfoId" />
+			<result column="coupon_modu_id" property="couponModuId" />
+			<result column="description" property="description" />
+			<result column="gmt_create" property="gmtCreate" />
+			<result column="gmt_modify" property="gmtModify" />
+			<result column="name" property="name" />
+			<result column="level" property="level" />
+		 </resultMap>
+		 <sql id="Base_Column_List" >
+				`id`,
+	            `activity_info_id`,
+	            `coupon_modu_id`,
+	            `description`,
+	            `gmt_create`,
+	            `gmt_modify`,
+	            `name`,
+	            `level`
+	            
+		 </sql>
+		 <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `activity_level_prize`
+		    WHERE `id` = #{id}
+		  </select>
+		  <select id="getByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT 
+		    <include refid="Base_Column_List" />
+		    FROM `activity_level_prize`
+		    <include refid="map_params_where_condition" />
+			<if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+			LIMIT 1
+		  </select>
+		  <select id="aggregate" parameterType="java.util.Map" resultType="java.util.Map">
+		    SELECT ${aggregate_sql} FROM `activity_level_prize`
+		    <include refid="map_params_where_condition" />
+		  </select>
+		  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+		    DELETE FROM `activity_level_prize`
+		    WHERE `id` = #{id}
+		  </delete>
+         <insert id="insertActivityLevelPrize" parameterType="com.linwang.entity.ActivityLevelPrize">
+         	 <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+		      SELECT LAST_INSERT_ID()
+		     </selectKey>
+             insert into `activity_level_prize`(
+	             `activity_info_id`,
+	             `coupon_modu_id`,
+	             `description`,
+	             `gmt_create`,
+	             `gmt_modify`,
+	             `name`,
+	             `level`
+	             
+             ) 
+	         values 
+	         (
+				 #{activityInfoId},
+				 #{couponModuId},
+				 #{description},
+				 #{gmtCreate},
+				 #{gmtModify},
+				 #{name},
+				 #{level}	         	
+		      )    
+	      </insert>
+	      <insert id="insertSelective" parameterType="com.linwang.entity.ActivityLevelPrize" >
+			    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+			      SELECT LAST_INSERT_ID()
+			    </selectKey>
+			    INSERT INTO `activity_level_prize`
+			    <trim prefix="(" suffix=")" suffixOverrides="," >
+		              <if test="activityInfoId!= null" >
+						`activity_info_id`,
+					  </if>
+		              <if test="couponModuId!= null" >
+						`coupon_modu_id`,
+					  </if>
+		              <if test="description!= null" >
+						`description`,
+					  </if>
+		              <if test="gmtCreate!= null" >
+						`gmt_create`,
+					  </if>
+		              <if test="gmtModify!= null" >
+						`gmt_modify`,
+					  </if>
+		              <if test="name!= null" >
+						`name`,
+					  </if>
+		              <if test="level!= null" >
+						`level`,
+					  </if>
+			    </trim>
+			    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		         	   <if test="activityInfoId != null" >
+						#{activityInfoId},
+					   </if>
+		         	   <if test="couponModuId != null" >
+						#{couponModuId},
+					   </if>
+		         	   <if test="description != null" >
+						#{description},
+					   </if>
+		         	   <if test="gmtCreate != null" >
+						#{gmtCreate},
+					   </if>
+		         	   <if test="gmtModify != null" >
+						#{gmtModify},
+					   </if>
+		         	   <if test="name != null" >
+						#{name},
+					   </if>
+		         	   <if test="level != null" >
+						#{level},
+					   </if>
+			    </trim>
+		  </insert>
+          <update id="updateByPrimaryKeySelective" parameterType="com.linwang.entity.ActivityLevelPrize" >
+			UPDATE `activity_level_prize`
+			<set >
+		         <if test="activityInfoId != null" >
+					`activity_info_id` = #{activityInfoId},
+			  	 </if>	
+		         <if test="couponModuId != null" >
+					`coupon_modu_id` = #{couponModuId},
+			  	 </if>	
+		         <if test="description != null" >
+					`description` = #{description},
+			  	 </if>	
+		         <if test="gmtCreate != null" >
+					`gmt_create` = #{gmtCreate},
+			  	 </if>	
+		         <if test="gmtModify != null" >
+					`gmt_modify` = #{gmtModify},
+			  	 </if>	
+		         <if test="name != null" >
+					`name` = #{name},
+			  	 </if>	
+		         <if test="level != null" >
+					`level` = #{level},
+			  	 </if>	
+			</set>
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByPrimaryKey" parameterType="com.linwang.entity.ActivityLevelPrize" >
+			UPDATE `activity_level_prize` SET
+					`activity_info_id` = #{activityInfoId},
+					`coupon_modu_id` = #{couponModuId},
+					`description` = #{description},
+					`gmt_create` = #{gmtCreate},
+					`gmt_modify` = #{gmtModify},
+					`name` = #{name},
+					`level` = #{level}
+	         		
+			WHERE `id` = #{id}
+		  </update>
+		  <update id="updateByCondition" parameterType="java.util.Map" >
+			UPDATE `activity_level_prize`
+			<set>
+		         <if test="entity.activityInfoId != null" >
+					`activity_info_id` = #{entity.activityInfoId},
+			  	 </if>	
+		         <if test="entity.couponModuId != null" >
+					`coupon_modu_id` = #{entity.couponModuId},
+			  	 </if>	
+		         <if test="entity.description != null" >
+					`description` = #{entity.description},
+			  	 </if>	
+		         <if test="entity.gmtCreate != null" >
+					`gmt_create` = #{entity.gmtCreate},
+			  	 </if>	
+		         <if test="entity.gmtModify != null" >
+					`gmt_modify` = #{entity.gmtModify},
+			  	 </if>	
+		         <if test="entity.name != null" >
+					`name` = #{entity.name},
+			  	 </if>	
+		         <if test="entity.level != null" >
+					`level` = #{entity.level},
+			  	 </if>	
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <update id="updateIncreateNumbers" parameterType="java.util.Map" >
+			UPDATE `activity_level_prize`
+			<set>
+			  <foreach collection="increateNumbers" item="numberCloums">
+				`${numberCloums.column}` = `${numberCloums.column}` + #{numberCloums.number},
+			  </foreach>
+			</set>
+			<include refid="map_params_where_condition" />
+		  </update>
+		  <sql id="map_params_where_condition" >
+		    <trim prefix="WHERE" prefixOverrides="AND">
+		    	<if test="id != null" >
+			       AND `id` = #{id}
+			    </if>
+		      	<if test="activityInfoId != null" >
+			       AND `activity_info_id` = #{activityInfoId}
+			    </if>
+		      	<if test="couponModuId != null" >
+			       AND `coupon_modu_id` = #{couponModuId}
+			    </if>
+		      	<if test="description != null" >
+			       AND `description` = #{description}
+			    </if>
+		      	<if test="gmtCreate != null" >
+			       AND `gmt_create` = #{gmtCreate}
+			    </if>
+		      	<if test="gmtModify != null" >
+			       AND `gmt_modify` = #{gmtModify}
+			    </if>
+		      	<if test="name != null" >
+			       AND `name` = #{name}
+			    </if>
+		      	<if test="level != null" >
+			       AND `level` = #{level}
+			    </if>
+			  <if test="condition != null">
+				  <if test="condition.activityInfoId != null" >
+			        AND `activity_info_id` = #{condition.activityInfoId}
+				  </if>
+				  <if test="condition.couponModuId != null" >
+			        AND `coupon_modu_id` = #{condition.couponModuId}
+				  </if>
+				  <if test="condition.description != null" >
+			        AND `description` = #{condition.description}
+				  </if>
+				  <if test="condition.gmtCreate != null" >
+			        AND `gmt_create` = #{condition.gmtCreate}
+				  </if>
+				  <if test="condition.gmtModify != null" >
+			        AND `gmt_modify` = #{condition.gmtModify}
+				  </if>
+				  <if test="condition.name != null" >
+			        AND `name` = #{condition.name}
+				  </if>
+				  <if test="condition.level != null" >
+			        AND `level` = #{condition.level}
+				  </if>
+			  </if>
+			  <if test="vo != null and !vo.expressionChainList.empty">
+		        AND
+		        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		      <if test="expressionChainList != null and !expressionChainList.empty">
+		        AND
+		        <foreach collection="expressionChainList" item="expressionChain" separator="OR">
+		          <if test="!expressionChain.expressionList.empty">
+		            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+		              <choose>
+		                <when test="expression.type == 0">
+		                  `${expression.column}` ${expression.operator}
+		                </when>
+		                <when test="expression.type == 1">
+		                  `${expression.column}` ${expression.operator} #{expression.value}
+		                </when>
+		                <when test="expression.type == 2">
+		                  `${expression.column}` ${expression.operator} #{expression.value} AND #{expression.value1}
+		                </when>
+		                <when test="expression.type == 3">
+		                  `${expression.column}` ${expression.operator}
+		                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+							#{value}		                     
+		                  </foreach>
+		                </when>
+		              </choose>
+		            </foreach>
+		          </if>
+		        </foreach>
+		      </if>
+		    </trim>
+		 </sql>
+         <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+		    SELECT
+		    <include refid="Base_Column_List" />
+		    FROM `activity_level_prize`
+		    <include refid="map_params_where_condition" />
+		    <if test="orderBy == null" >
+		      ORDER BY `id` DESC
+		    </if>
+		    <if test="orderBy != null" >
+		      ORDER BY ${orderBy}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize != null" >
+		      LIMIT #{pageBeginIndex},#{pageSize}
+		    </if>
+		    <if test="pageBeginIndex == null and pageSize != null" >
+		      LIMIT #{pageSize}
+		    </if>
+		    <if test="pageBeginIndex != null and pageSize == null" >
+		      LIMIT #{pageBeginIndex}
+		    </if>
+		  </select>
+		  <delete id="delete" parameterType="java.util.Map" >
+		    DELETE
+		    FROM `activity_level_prize`
+		    <include refid="map_params_where_condition" />
+		  </delete>
+		  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		    SELECT COUNT(id)
+		    FROM `activity_level_prize`
+		    <include refid="map_params_where_condition" />
+		  </select>
+</mapper>
